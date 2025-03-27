@@ -1,0 +1,146 @@
+{
+  "level_2_queries": {
+    "finance": [
+      {
+        "query_id": "FIN_Q4",
+        "question": "List the product name and revenue_amount for product_id = 2 in Q1 of 2025.",
+        "tables": ["FINANCE_PRODUCTS", "FINANCE_REVENUES"],
+        "join_condition": "FINANCE_PRODUCTS.product_id = FINANCE_REVENUES.product_id",
+        "filter_condition": "product_id = 2 AND quarter = 1 AND year = 2025",
+        "description": "Perform a join between FINANCE_PRODUCTS and FINANCE_REVENUES on product_id, then filter for product_id = 2 for Q1 2025 and return the product 'name' and 'revenue_amount'.",
+        "expected_result_example": "Product: 'Widget B', Revenue Amount: 150000.00",
+        "ground_truth_steps": [
+          "Join FINANCE_PRODUCTS and FINANCE_REVENUES on product_id",
+          "Filter the joined result for product_id = 2, quarter = 1, year = 2025",
+          "Extract and return the 'name' from FINANCE_PRODUCTS and 'revenue_amount' from FINANCE_REVENUES"
+        ]
+      },
+      {
+        "query_id": "FIN_Q5",
+        "question": "Calculate the profit margin for product_id = 3 in Q2 of 2025.",
+        "table": "FINANCE_REVENUES",
+        "filter_condition": "product_id = 3 AND quarter = 2 AND year = 2025",
+        "calculation": "(revenue_amount - cost_amount) / revenue_amount * 100",
+        "description": "Retrieve the revenue_amount and cost_amount from FINANCE_REVENUES for product_id = 3 in Q2 2025, then calculate the profit margin as a percentage.",
+        "expected_result_example": "Profit Margin: 25.0%",
+        "ground_truth_steps": [
+          "Query FINANCE_REVENUES for product_id = 3, quarter = 2, year = 2025",
+          "Retrieve 'revenue_amount' and 'cost_amount'",
+          "Compute profit margin: ((revenue_amount - cost_amount) / revenue_amount) * 100",
+          "Return the computed profit margin"
+        ]
+      },
+      {
+        "query_id": "FIN_Q6",
+        "question": "Compare the total revenue for product_id = 1 in Q1 2025 and Q1 2024 and indicate whether revenue increased.",
+        "table": "FINANCE_REVENUES",
+        "filter_condition": "product_id = 1 AND quarter = 1 AND (year = 2025 OR year = 2024)",
+        "inference": "Determine the difference between the two revenue_amount values and return a boolean flag indicating an increase.",
+        "description": "Retrieve revenue_amount for product_id = 1 for Q1 in both 2025 and 2024 from FINANCE_REVENUES. Then, compare the values to check if revenue in 2025 is higher than in 2024.",
+        "expected_result_example": "2025 Revenue: 200000.00, 2024 Revenue: 180000.00, Increased: true",
+        "ground_truth_steps": [
+          "Query FINANCE_REVENUES for product_id = 1, quarter = 1 for years 2025 and 2024",
+          "Extract revenue_amount for each year",
+          "Compare the two amounts to determine if 2025's revenue is higher",
+          "Return both revenue values along with a boolean flag indicating the increase"
+        ]
+      }
+    ],
+    "hr": [
+      {
+        "query_id": "HR_Q4",
+        "question": "List the first and last names of employees who joined in the last 6 months along with their department names.",
+        "tables": ["HR_EMPLOYEES", "HR_DEPARTMENTS"],
+        "join_condition": "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+        "filter_condition": "hire_date >= (CURRENT_DATE - INTERVAL '6 months')",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS on department_id, filter for employees with a hire_date within the last 6 months, and return the employees' first and last names along with their department names.",
+        "expected_result_example": "Employee: 'Jane Doe', Department: 'Engineering'",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES and HR_DEPARTMENTS on department_id",
+          "Filter for rows where hire_date is within the last 6 months",
+          "Select 'first_name', 'last_name', and department 'name'",
+          "Return the list of matching records"
+        ]
+      },
+      {
+        "query_id": "HR_Q5",
+        "question": "Retrieve the manager's email for the department with department_id = 2.",
+        "tables": ["HR_DEPARTMENTS", "HR_EMPLOYEES"],
+        "join_condition": "HR_DEPARTMENTS.manager_id = HR_EMPLOYEES.employee_id",
+        "filter_condition": "HR_DEPARTMENTS.department_id = 2",
+        "description": "Join HR_DEPARTMENTS with HR_EMPLOYEES on manager_id equals employee_id, filter by department_id = 2, and return the manager's email.",
+        "expected_result_example": "Manager Email: 'manager@example.com'",
+        "ground_truth_steps": [
+          "Join HR_DEPARTMENTS and HR_EMPLOYEES where HR_DEPARTMENTS.manager_id = HR_EMPLOYEES.employee_id",
+          "Filter for department_id = 2",
+          "Return the 'email' field from the matching HR_EMPLOYEES record"
+        ]
+      },
+      {
+        "query_id": "HR_Q6",
+        "question": "Determine the total number of employees per department for departments with more than 10 employees.",
+        "tables": ["HR_EMPLOYEES", "HR_DEPARTMENTS"],
+        "join_condition": "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+        "group_by": "HR_DEPARTMENTS.name",
+        "filter_condition": "COUNT(employee_id) > 10",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS on department_id, group by department name, count the number of employees in each, and filter groups with more than 10 employees.",
+        "expected_result_example": "Department: 'Sales', Total Employees: 15",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES and HR_DEPARTMENTS on department_id",
+          "Group the results by HR_DEPARTMENTS.name",
+          "Count the number of employees in each group",
+          "Filter groups where the count is greater than 10",
+          "Return the department names with their corresponding employee counts"
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "query_id": "OPS_Q4",
+        "question": "Calculate the average cost of maintenance for machine_id = 200.",
+        "table": "OPS_MAINTENANCE",
+        "filter_condition": "machine_id = 200",
+        "calculation": "AVG(cost)",
+        "description": "Filter OPS_MAINTENANCE for records with machine_id = 200 and compute the average of the 'cost' field.",
+        "expected_result_example": "Average Maintenance Cost: 350.00",
+        "ground_truth_steps": [
+          "Query OPS_MAINTENANCE for rows where machine_id = 200",
+          "Calculate the average of the 'cost' field for these rows",
+          "Return the computed average cost"
+        ]
+      },
+      {
+        "query_id": "OPS_Q5",
+        "question": "List the machine_name and the date of the most recent maintenance for each machine located in 'Factory A'.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory A'",
+        "group_by": "OPS_MACHINES.machine_id",
+        "inference": "Select the maintenance record with the maximum date per machine",
+        "description": "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id, filter for machines located in 'Factory A', group by machine_id, and retrieve the most recent maintenance date for each machine along with its machine_name.",
+        "expected_result_example": "Machine: 'Press-42A', Most Recent Maintenance: '2025-03-01'",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id",
+          "Filter for machines where location equals 'Factory A'",
+          "Group records by machine_id and select the record with the maximum maintenance date for each group",
+          "Return the 'machine_name' and the corresponding most recent 'date'"
+        ]
+      },
+      {
+        "query_id": "OPS_Q6",
+        "question": "Determine the number of days since the last maintenance for machine_id = 202, assuming the current date is 2025-03-25.",
+        "table": "OPS_MAINTENANCE",
+        "filter_condition": "machine_id = 202",
+        "calculation": "DATEDIFF('2025-03-25', MAX(date))",
+        "description": "Query OPS_MAINTENANCE for machine_id = 202, find the most recent maintenance date, and calculate the number of days between that date and 2025-03-25.",
+        "expected_result_example": "Days Since Last Maintenance: 15",
+        "ground_truth_steps": [
+          "Query OPS_MAINTENANCE for rows with machine_id = 202",
+          "Identify the maximum (most recent) 'date' from the results",
+          "Calculate the difference in days between '2025-03-25' and the identified date",
+          "Return the computed number of days"
+        ]
+      }
+    ]
+  }
+}

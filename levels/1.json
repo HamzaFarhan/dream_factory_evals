@@ -1,0 +1,118 @@
+{
+  "level_1_queries": {
+    "finance": [
+      {
+        "query_id": "FIN_Q1",
+        "question": "What is the name of the product with product_id = 1?",
+        "table": "FINANCE_PRODUCTS",
+        "filter_condition": "product_id = 1",
+        "description": "Single-table lookup in FINANCE_PRODUCTS by product_id.",
+        "expected_result_example": "Product name: 'Widget A'",
+        "ground_truth_steps": [
+          "Query FINANCE_PRODUCTS for the row with product_id = 1",
+          "Return the 'name' field from that row"
+        ]
+      },
+      {
+        "query_id": "FIN_Q2",
+        "question": "Retrieve the revenue_amount for product_id = 2 in Q1 of 2025.",
+        "table": "FINANCE_REVENUES",
+        "filter_condition": "product_id = 2 AND quarter = 1 AND year = 2025",
+        "description": "Look up FINANCE_REVENUES for Q1 2025 where product_id = 2.",
+        "expected_result_example": "Revenue Amount: 150000.00",
+        "ground_truth_steps": [
+          "Query FINANCE_REVENUES for product_id=2, quarter=1, year=2025",
+          "Return the 'revenue_amount' field"
+        ]
+      },
+      {
+        "query_id": "FIN_Q3",
+        "question": "Give me the description and amount of the expense with expense_id = 10.",
+        "table": "FINANCE_EXPENSES",
+        "filter_condition": "expense_id = 10",
+        "description": "Single-table lookup in FINANCE_EXPENSES by expense_id.",
+        "expected_result_example": "Description: 'Team Building Event', Amount: 1200.00",
+        "ground_truth_steps": [
+          "Query FINANCE_EXPENSES for the row with expense_id = 10",
+          "Return the 'description' and 'amount' fields"
+        ]
+      }
+    ],
+    "hr": [
+      {
+        "query_id": "HR_Q1",
+        "question": "What is the email of the employee with employee_id = 101?",
+        "table": "HR_EMPLOYEES",
+        "filter_condition": "employee_id = 101",
+        "description": "Single-record lookup in HR_EMPLOYEES by employee_id.",
+        "expected_result_example": "Email: 'jdoe@example.com'",
+        "ground_truth_steps": [
+          "Query HR_EMPLOYEES for the row with employee_id = 101",
+          "Return the 'email' field"
+        ]
+      },
+      {
+        "query_id": "HR_Q2",
+        "question": "List the department name for department_id = 2.",
+        "table": "HR_DEPARTMENTS",
+        "filter_condition": "department_id = 2",
+        "description": "Single-table lookup in HR_DEPARTMENTS by department_id.",
+        "expected_result_example": "Department Name: 'Finance'",
+        "ground_truth_steps": [
+          "Query HR_DEPARTMENTS for the row with department_id = 2",
+          "Return the 'name' field"
+        ]
+      },
+      {
+        "query_id": "HR_Q3",
+        "question": "Retrieve the policy description for policy_id = 5.",
+        "table": "HR_POLICIES",
+        "filter_condition": "policy_id = 5",
+        "description": "Single-table lookup in HR_POLICIES by policy_id.",
+        "expected_result_example": "Description: 'Guidelines for remote work requests'",
+        "ground_truth_steps": [
+          "Query HR_POLICIES for the row with policy_id = 5",
+          "Return the 'description' field"
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "query_id": "OPS_Q1",
+        "question": "Which machine_name is associated with machine_id = 200?",
+        "table": "OPS_MACHINES",
+        "filter_condition": "machine_id = 200",
+        "description": "Query OPS_MACHINES by machine_id to get the machine_name.",
+        "expected_result_example": "Machine Name: 'Press-42A'",
+        "ground_truth_steps": [
+          "Query OPS_MACHINES for the row with machine_id = 200",
+          "Return the 'machine_name' field"
+        ]
+      },
+      {
+        "query_id": "OPS_Q2",
+        "question": "What is the date and description of the maintenance record with maintenance_id = 300?",
+        "table": "OPS_MAINTENANCE",
+        "filter_condition": "maintenance_id = 300",
+        "description": "Single-table lookup in OPS_MAINTENANCE by maintenance_id.",
+        "expected_result_example": "Date: '2025-02-15', Description: 'Replaced coolant pump'",
+        "ground_truth_steps": [
+          "Query OPS_MAINTENANCE for the row with maintenance_id = 300",
+          "Return the 'date' and 'description' fields"
+        ]
+      },
+      {
+        "query_id": "OPS_Q3",
+        "question": "Show me the installation_date for the machine with machine_id = 202.",
+        "table": "OPS_MACHINES",
+        "filter_condition": "machine_id = 202",
+        "description": "Single-table lookup in OPS_MACHINES by machine_id.",
+        "expected_result_example": "Installation Date: '2023-08-01'",
+        "ground_truth_steps": [
+          "Query OPS_MACHINES for the row with machine_id = 202",
+          "Return the 'installation_date' field"
+        ]
+      }
+    ]
+  }
+}

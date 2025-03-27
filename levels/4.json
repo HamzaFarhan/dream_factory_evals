@@ -1,0 +1,170 @@
+{
+  "level_4_queries": {
+    "finance": [
+      {
+        "query_id": "FIN_Q10",
+        "question": "For product category 'Electronics', analyze quarterly revenue and profit margin trends over the past four quarters (Q1-Q4 2025) and provide a summary of significant fluctuations with suggested improvement strategies.",
+        "tables": ["FINANCE_PRODUCTS", "FINANCE_REVENUES"],
+        "join_condition": "FINANCE_PRODUCTS.product_id = FINANCE_REVENUES.product_id",
+        "filter_condition": "FINANCE_PRODUCTS.category = 'Electronics' AND year = 2025",
+        "calculation": "profit_margin = ((revenue_amount - cost_amount) / revenue_amount) * 100 for each quarter",
+        "inference": "Identify quarters with significant margin changes and generate a qualitative summary with suggestions.",
+        "description": "Join FINANCE_PRODUCTS and FINANCE_REVENUES, filter for products in the 'Electronics' category for the year 2025, calculate profit margins per quarter, then analyze trends to identify any anomalies or significant fluctuations. Provide a summary explanation and suggestions for improvement.",
+        "expected_result_example": "Q1: Profit Margin 30%, Q2: 28%, Q3: 22% (notable drop), Q4: 25%; Summary: 'A drop in Q3 may be due to increased costs; consider renegotiating supplier contracts.'",
+        "ground_truth_steps": [
+          "Join FINANCE_PRODUCTS with FINANCE_REVENUES on product_id.",
+          "Filter records where category = 'Electronics' and year = 2025.",
+          "Group the data by quarter and compute profit_margin for each quarter.",
+          "Compare the quarterly margins to identify significant fluctuations.",
+          "Provide a summary analysis with potential improvement strategies."
+        ]
+      },
+      {
+        "query_id": "FIN_Q11",
+        "question": "For each product in the 'Electronics' category, rank them in Q4 2024 by their net profit (revenue_amount minus cost_amount) and indicate if any product had a net loss.",
+        "tables": ["FINANCE_PRODUCTS", "FINANCE_REVENUES"],
+        "join_condition": "FINANCE_PRODUCTS.product_id = FINANCE_REVENUES.product_id",
+        "filter_condition": "FINANCE_PRODUCTS.category = 'Electronics' AND quarter = 4 AND year = 2024",
+        "calculation": "net_profit = revenue_amount - cost_amount",
+        "description": "Join FINANCE_PRODUCTS with FINANCE_REVENUES, filter for Q4 2024 records in the 'Electronics' category, calculate net profit for each product, then rank the products by net profit while flagging those with negative values.",
+        "expected_result_example": "Product: 'Widget X', Net Profit: -5000.00 (Net Loss); Product: 'Widget Y', Net Profit: 15000.00",
+        "ground_truth_steps": [
+          "Join the two tables on product_id.",
+          "Filter for records where category = 'Electronics', quarter = 4, and year = 2024.",
+          "For each product, compute net_profit as (revenue_amount - cost_amount).",
+          "Rank the products by net_profit and flag any product with a negative net_profit.",
+          "Return the ranked list with net profit figures."
+        ]
+      },
+      {
+        "query_id": "FIN_Q12",
+        "question": "Compare the cost-to-revenue ratio for products in 'Electronics' between Q4 2024 and Q4 2023 and highlight any significant changes.",
+        "tables": ["FINANCE_PRODUCTS", "FINANCE_REVENUES"],
+        "join_condition": "FINANCE_PRODUCTS.product_id = FINANCE_REVENUES.product_id",
+        "filter_condition": "FINANCE_PRODUCTS.category = 'Electronics' AND quarter = 4 AND (year = 2024 OR year = 2023)",
+        "calculation": "cost_ratio = cost_amount / revenue_amount for each record; then compute differences between years",
+        "description": "Join the relevant tables, filter for the 'Electronics' category in Q4 for both 2023 and 2024, calculate the cost-to-revenue ratio for each product for each year, and compare these ratios to identify significant changes that may indicate cost escalations or efficiency improvements.",
+        "expected_result_example": "Product: 'Widget Z', Q4 2023 Ratio: 0.65, Q4 2024 Ratio: 0.80, Increase of 0.15 indicates rising costs.",
+        "ground_truth_steps": [
+          "Join FINANCE_PRODUCTS and FINANCE_REVENUES on product_id.",
+          "Filter for records where category = 'Electronics' and quarter = 4 for years 2023 and 2024.",
+          "Calculate the cost_ratio for each product as (cost_amount / revenue_amount) for each year.",
+          "Compare the ratios for each product between the two years.",
+          "Highlight and return products with significant ratio changes along with the computed differences."
+        ]
+      }
+    ],
+    "hr": [
+      {
+        "query_id": "HR_Q10",
+        "question": "Analyze the correlation between employee tenure and performance ratings across all departments, and summarize trends along with any departments where the correlation is weak or negative.",
+        "tables": ["HR_EMPLOYEES", "HR_DEPARTMENTS"],
+        "join_condition": "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+        "filter_condition": "Assume HR_EMPLOYEES includes a 'performance_rating' field",
+        "calculation": "tenure = (CURRENT_DATE - hire_date) in years; then compute correlation between tenure and performance_rating per department",
+        "inference": "Identify departments with weak or negative correlations.",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS, calculate each employee's tenure, and compute the correlation between tenure and performance_rating for each department. Provide a summary of the trends, highlighting any departments where the expected positive correlation is weak or negative, along with recommendations.",
+        "expected_result_example": "Engineering: strong positive correlation (r = 0.65), Sales: weak correlation (r = 0.10); Recommendation: 'Sales department may benefit from targeted performance coaching.'",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES and HR_DEPARTMENTS on department_id.",
+          "For each employee, compute tenure as the difference between CURRENT_DATE and hire_date in years.",
+          "Group employees by department and calculate the correlation coefficient between tenure and performance_rating.",
+          "Analyze the correlation values to identify departments with weak or negative trends.",
+          "Return the correlation coefficients along with a summary analysis and recommendations."
+        ]
+      },
+      {
+        "query_id": "HR_Q11",
+        "question": "Integrate HR employee data with expense report compliance records to analyze if employees with longer tenure have fewer compliance breaches, and summarize your findings.",
+        "tables": ["HR_EMPLOYEES", "FINANCE_EXPENSES"],
+        "join_condition": "HR_EMPLOYEES.employee_id = FINANCE_EXPENSES.employee_id",
+        "filter_condition": "Consider only expense reports where breach_flag = true",
+        "calculation": "For each employee, count the number of breaches and compute tenure; analyze correlation between tenure and breach count",
+        "inference": "Determine if longer tenure correlates with fewer breaches.",
+        "description": "Perform a LEFT JOIN between HR_EMPLOYEES and FINANCE_EXPENSES, filter for records with breach_flag = true, and for each employee, count the number of compliance breaches. Then analyze the trend between employee tenure and breach frequency, and provide a summary of the findings with potential recommendations.",
+        "expected_result_example": "Employees with over 5 years tenure average 0.5 breaches vs. 1.2 breaches for those under 5 years, suggesting improved compliance with experience.",
+        "ground_truth_steps": [
+          "Left join HR_EMPLOYEES with FINANCE_EXPENSES on employee_id.",
+          "Filter expense records where breach_flag = true.",
+          "For each employee, count the number of breach incidents.",
+          "Compute tenure from hire_date for each employee.",
+          "Group employees into tenure buckets and calculate average breach counts.",
+          "Analyze and summarize the correlation between tenure and compliance breaches."
+        ]
+      },
+      {
+        "query_id": "HR_Q12",
+        "question": "For the Sales department, compare the average performance rating of employees hired before and after the implementation of a new HR policy (effective date: 2024-06-01) to determine if the policy had a positive impact.",
+        "tables": ["HR_EMPLOYEES", "HR_DEPARTMENTS"],
+        "join_condition": "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+        "filter_condition": "HR_DEPARTMENTS.name = 'Sales'",
+        "calculation": "Partition employees based on hire_date relative to '2024-06-01' and calculate average performance_rating for each group",
+        "inference": "Compare the two averages to assess the impact of the policy.",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS, filter for the Sales department, and partition the employee records into two groups: those hired before 2024-06-01 and those hired on or after that date. Compute the average performance_rating for each group and compare the results to determine the policy's impact.",
+        "expected_result_example": "Average Rating Before: 3.8, After: 4.2, indicating a positive impact.",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES with HR_DEPARTMENTS on department_id.",
+          "Filter records for the Sales department.",
+          "Partition the records into two groups based on hire_date relative to 2024-06-01.",
+          "Calculate the average performance_rating for each group.",
+          "Compare the averages and return an interpretation of the policy's impact."
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "query_id": "OPS_Q10",
+        "question": "Analyze the monthly trend of maintenance frequency for machines in 'Factory A' over the past year and summarize any seasonal patterns or anomalies observed.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory A' AND date BETWEEN '2024-03-26' AND '2025-03-25'",
+        "calculation": "Group maintenance records by month and count the number of events per month",
+        "inference": "Identify seasonal trends or anomalies based on the monthly counts",
+        "description": "Join OPS_MACHINES with OPS_MAINTENANCE, filter for machines in 'Factory A' with maintenance records over the past year, group the records by month, count the number of maintenance events for each month, and analyze the counts to detect seasonal patterns or unusual spikes.",
+        "expected_result_example": "Monthly Maintenance Counts: Jan: 2, Feb: 1, Mar: 3, ...; Summary: 'A spike in March may indicate seasonal challenges requiring preemptive measures.'",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id.",
+          "Filter records where location = 'Factory A' and date is between '2024-03-26' and '2025-03-25'.",
+          "Extract the month from the date field and group records by month.",
+          "Count the number of maintenance events per month.",
+          "Analyze the counts to identify any seasonal trends or anomalies and provide a summary."
+        ]
+      },
+      {
+        "query_id": "OPS_Q11",
+        "question": "For machines in 'Factory A' with multiple maintenance events over the past year, rank them by cost efficiency (total maintenance cost divided by number of events) and provide the anomaly rate for each machine.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory A' AND date BETWEEN '2024-03-26' AND '2025-03-25'",
+        "calculation": "For each machine: cost_efficiency = total_cost / event_count; anomaly_rate = (count of events with anomaly_detected=true) / event_count",
+        "description": "Join the two tables, filter for maintenance records from machines in 'Factory A' over the past year, group the records by machine_id, and for machines with more than one event, calculate the total maintenance cost, count of events, cost efficiency, and anomaly rate. Rank the machines by cost efficiency and return these metrics.",
+        "expected_result_example": "Machine: 'Cutter-15', Cost Efficiency: 200.00, Anomaly Rate: 0.3",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id.",
+          "Filter for records with location = 'Factory A' and date within the specified range.",
+          "Group the records by machine_id.",
+          "For each group, calculate total maintenance cost, count the events, compute cost efficiency, and determine anomaly_rate.",
+          "Filter for machines with more than one maintenance event, rank by cost efficiency, and return the machine name with its metrics."
+        ]
+      },
+      {
+        "query_id": "OPS_Q12",
+        "question": "For each machine in 'Factory A', analyze maintenance descriptions to identify recurring issues, correlate these with maintenance costs over the past year, and produce a summary report highlighting machines with significant recurring problems and suggestions for improvement.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory A' AND date BETWEEN '2024-03-26' AND '2025-03-25'",
+        "inference": "Perform text analysis on maintenance 'description' fields to identify recurring issues; correlate issue frequency with total maintenance cost",
+        "description": "Join OPS_MACHINES with OPS_MAINTENANCE, filter for maintenance records from 'Factory A' over the past year, aggregate the maintenance descriptions per machine, perform term frequency analysis (ignoring common stop words) to detect recurring issues, and correlate these with the total maintenance cost for each machine. Produce a summary report that lists machines with significant recurring issues along with suggested improvement strategies.",
+        "expected_result_example": "Machine: 'Press-42A', Recurring Issue: 'overheating', Occurrence: 4 times, Total Cost: 1800.00; Suggestion: 'Investigate and enhance cooling system efficiency.'",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id.",
+          "Filter for records where location = 'Factory A' and date is within the past year.",
+          "For each machine, aggregate all maintenance 'description' texts.",
+          "Perform term frequency analysis on the aggregated text to identify the most recurring issue(s), excluding common stop words.",
+          "Calculate the total maintenance cost for each machine.",
+          "Correlate the frequency of recurring issues with the maintenance cost, and generate a summary report that includes machine name, recurring issue(s), occurrence count, total cost, and suggested improvement actions."
+        ]
+      }
+    ]
+  }
+}

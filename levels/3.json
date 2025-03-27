@@ -1,0 +1,160 @@
+{
+  "level_3_queries": {
+    "finance": [
+      {
+        "query_id": "FIN_Q7",
+        "question": "List any compliance breaches in Q4 expense reports and provide the corresponding HR policy description that was violated.",
+        "tables": ["FINANCE_EXPENSES", "HR_POLICIES"],
+        "join_condition": "FINANCE_EXPENSES.policy_id = HR_POLICIES.policy_id",
+        "filter_condition": "breach_flag = true AND date >= '2025-10-01' AND date <= '2025-12-31'",
+        "description": "Join FINANCE_EXPENSES with HR_POLICIES on policy_id. Filter for expense reports in Q4 2025 that have a breach_flag set to true. Return the expense report's identifier (or description) along with the corresponding HR policy description outlining the violated rule.",
+        "expected_result_example": "Expense ID: 45, Policy Description: 'Expense reports must be submitted with valid receipts.'",
+        "ground_truth_steps": [
+          "Query FINANCE_EXPENSES for rows with breach_flag = true and date in Q4 2025",
+          "For each row, join with HR_POLICIES using policy_id",
+          "Return the expense identifier (or description) and the associated HR policy 'description'"
+        ]
+      },
+      {
+        "query_id": "FIN_Q8",
+        "question": "Summarize the total profit for each product in Q4 2025 by calculating profit as revenue_amount minus cost_amount, and list the product name alongside the profit value.",
+        "tables": ["FINANCE_PRODUCTS", "FINANCE_REVENUES"],
+        "join_condition": "FINANCE_PRODUCTS.product_id = FINANCE_REVENUES.product_id",
+        "filter_condition": "quarter = 4 AND year = 2025",
+        "calculation": "profit = revenue_amount - cost_amount",
+        "description": "Join FINANCE_PRODUCTS and FINANCE_REVENUES on product_id. Filter records for Q4 2025, calculate profit for each record, group by product, and return the product 'name' with the summed profit.",
+        "expected_result_example": "Product: 'Widget A', Total Profit: 50000.00",
+        "ground_truth_steps": [
+          "Join FINANCE_PRODUCTS and FINANCE_REVENUES on product_id",
+          "Filter for records where quarter = 4 and year = 2025",
+          "For each product, calculate profit as (revenue_amount - cost_amount) and sum if multiple records exist",
+          "Return each product's name and the calculated total profit"
+        ]
+      },
+      {
+        "query_id": "FIN_Q9",
+        "question": "For product_id = 1, compare the profit margin between Q4 2025 and Q4 2024 and return the percentage difference.",
+        "tables": ["FINANCE_REVENUES"],
+        "filter_condition": "product_id = 1 AND quarter = 4 AND (year = 2025 OR year = 2024)",
+        "calculation": "profit_margin = ((revenue_amount - cost_amount) / revenue_amount) * 100",
+        "inference": "Compute profit_margin for both years and then calculate the percentage difference between the two margins.",
+        "description": "Query FINANCE_REVENUES for product_id = 1 in Q4 for both 2025 and 2024. Calculate the profit margin for each year, then determine the difference between the two profit margins.",
+        "expected_result_example": "2025 Profit Margin: 30%, 2024 Profit Margin: 25%, Difference: 5% increase",
+        "ground_truth_steps": [
+          "Query FINANCE_REVENUES for product_id = 1, quarter = 4 for years 2025 and 2024",
+          "For each record, calculate profit_margin = ((revenue_amount - cost_amount) / revenue_amount) * 100",
+          "Compare the two profit margins and compute the difference",
+          "Return both margins along with the percentage difference"
+        ]
+      }
+    ],
+    "hr": [
+      {
+        "query_id": "HR_Q7",
+        "question": "For the Sales department, list the names of employees who have filed expense reports flagged for compliance issues, and provide the corresponding HR policy description that outlines the violated rule.",
+        "tables": [
+          "HR_EMPLOYEES",
+          "HR_DEPARTMENTS",
+          "FINANCE_EXPENSES",
+          "HR_POLICIES"
+        ],
+        "join_conditions": [
+          "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+          "HR_EMPLOYEES.employee_id = FINANCE_EXPENSES.employee_id",
+          "FINANCE_EXPENSES.policy_id = HR_POLICIES.policy_id"
+        ],
+        "filter_condition": "HR_DEPARTMENTS.name = 'Sales' AND FINANCE_EXPENSES.breach_flag = true",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS to filter employees in the Sales department, then join with FINANCE_EXPENSES to find those with flagged expense reports, and finally join with HR_POLICIES to retrieve the violated policy descriptions.",
+        "expected_result_example": "Employee: 'Alice Smith', Policy: 'Expense reports must include valid receipts.'",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES and HR_DEPARTMENTS on department_id and filter for department 'Sales'",
+          "Join the filtered employees with FINANCE_EXPENSES on employee_id to get expense reports with breach_flag = true",
+          "Join these records with HR_POLICIES on policy_id",
+          "Return each employee's name along with the corresponding policy description"
+        ]
+      },
+      {
+        "query_id": "HR_Q8",
+        "question": "Determine the average tenure (in years) of employees in each department.",
+        "tables": ["HR_EMPLOYEES", "HR_DEPARTMENTS"],
+        "join_condition": "HR_EMPLOYEES.department_id = HR_DEPARTMENTS.department_id",
+        "calculation": "tenure = (CURRENT_DATE - hire_date) in years; then AVG(tenure) per department",
+        "description": "Join HR_EMPLOYEES with HR_DEPARTMENTS on department_id. Calculate each employee's tenure based on hire_date, then compute the average tenure for each department.",
+        "expected_result_example": "Department: 'Engineering', Average Tenure: 4.2 years",
+        "ground_truth_steps": [
+          "Join HR_EMPLOYEES and HR_DEPARTMENTS on department_id",
+          "For each employee, compute tenure = (CURRENT_DATE - hire_date) converted to years",
+          "Group by department and calculate the average tenure",
+          "Return each department name with its average tenure"
+        ]
+      },
+      {
+        "query_id": "HR_Q9",
+        "question": "List employees hired before 2019 who have not filed any expense reports flagged for compliance issues.",
+        "tables": ["HR_EMPLOYEES", "FINANCE_EXPENSES"],
+        "join_condition": "HR_EMPLOYEES.employee_id = FINANCE_EXPENSES.employee_id (LEFT JOIN)",
+        "filter_condition": "hire_date < '2019-01-01' AND (FINANCE_EXPENSES.breach_flag IS NULL OR FINANCE_EXPENSES.breach_flag = false)",
+        "description": "Perform a LEFT JOIN between HR_EMPLOYEES and FINANCE_EXPENSES on employee_id. Filter for employees with hire_date before 2019 and ensure that there is no corresponding expense report with breach_flag = true. Return the employee names.",
+        "expected_result_example": "Employee: 'John Doe'",
+        "ground_truth_steps": [
+          "Left join HR_EMPLOYEES with FINANCE_EXPENSES on employee_id",
+          "Filter for employees with hire_date before 2019",
+          "Ensure that for each employee either no matching expense report exists or breach_flag is false",
+          "Return the first and last names of these employees"
+        ]
+      }
+    ],
+    "operations": [
+      {
+        "query_id": "OPS_Q7",
+        "question": "For machines in 'Factory B' during Q1 2025, calculate the average maintenance cost for records with anomaly_detected = true compared to those with anomaly_detected = false.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory B' AND date BETWEEN '2025-01-01' AND '2025-03-31'",
+        "calculation": "Group by anomaly_detected and compute AVG(cost)",
+        "description": "Join OPS_MACHINES with OPS_MAINTENANCE on machine_id, filter for machines in 'Factory B' with maintenance records in Q1 2025, group the records by anomaly_detected flag, and calculate the average maintenance cost for each group.",
+        "expected_result_example": "Anomaly Detected: true, Average Cost: 500.00; false, Average Cost: 300.00",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id",
+          "Filter for records where location = 'Factory B' and date is in Q1 2025",
+          "Group the results by the anomaly_detected flag",
+          "Calculate the average cost for each group and return the values"
+        ]
+      },
+      {
+        "query_id": "OPS_Q8",
+        "question": "For each machine in 'Factory B', retrieve its machine_name and determine the most frequent term in the maintenance descriptions during Q1 2025.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "location = 'Factory B' AND date BETWEEN '2025-01-01' AND '2025-03-31'",
+        "inference": "Perform text analysis on the 'description' field to find the most common term (ignoring stop words)",
+        "description": "Join OPS_MACHINES with OPS_MAINTENANCE on machine_id, filter for records from machines located in 'Factory B' during Q1 2025, and for each machine, analyze the maintenance description text to determine the most frequently occurring term.",
+        "expected_result_example": "Machine: 'Press-42B', Most Frequent Term: 'leak'",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id",
+          "Filter for machines where location equals 'Factory B' and maintenance date is in Q1 2025",
+          "For each machine, aggregate the 'description' texts and perform term frequency analysis (excluding common stop words)",
+          "Identify and return the most frequent term along with the machine_name"
+        ]
+      },
+      {
+        "query_id": "OPS_Q9",
+        "question": "List machines that had more than one maintenance event in Q1 2025 and return their machine_name along with the count of maintenance events.",
+        "tables": ["OPS_MACHINES", "OPS_MAINTENANCE"],
+        "join_condition": "OPS_MACHINES.machine_id = OPS_MAINTENANCE.machine_id",
+        "filter_condition": "date BETWEEN '2025-01-01' AND '2025-03-31'",
+        "group_by": "OPS_MACHINES.machine_id",
+        "calculation": "COUNT(maintenance_id)",
+        "description": "Join OPS_MACHINES with OPS_MAINTENANCE on machine_id, filter records for Q1 2025, group by machine_id, count the maintenance events per machine, and return the machine_name with its event count for those with more than one maintenance event.",
+        "expected_result_example": "Machine: 'Cutter-15', Maintenance Count: 3",
+        "ground_truth_steps": [
+          "Join OPS_MACHINES and OPS_MAINTENANCE on machine_id",
+          "Filter for records with date in Q1 2025",
+          "Group by machine_id and count the number of maintenance events",
+          "Filter groups with count > 1",
+          "Return each machine's name and its maintenance event count"
+        ]
+      }
+    ]
+  }
+}
