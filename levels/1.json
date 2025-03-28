@@ -3,114 +3,206 @@
     "finance": [
       {
         "query_id": "FIN_Q1",
-        "question": "What is the name of the product with product_id = 1?",
+        "question": "What is the name and category of our core product with product_id = 1?",
         "table": "FINANCE_PRODUCTS",
         "filter_condition": "product_id = 1",
-        "description": "Single-table lookup in FINANCE_PRODUCTS by product_id.",
-        "expected_result_example": "Product name: 'Widget A'",
+        "description": "Basic product information lookup.",
+        "expected_result_example": "{'name': 'Enterprise Analytics Suite', 'category': 'Software'}",
         "ground_truth_steps": [
-          "Query FINANCE_PRODUCTS for the row with product_id = 1",
-          "Return the 'name' field from that row"
+          "Query FINANCE_PRODUCTS table filtering for product_id = 1",
+          "Select the 'name' and 'category' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='FINANCE_PRODUCTS', filter='product_id = 1', fields=['name', 'category'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='FINANCE_PRODUCTS', ids=['1'], fields=['name', 'category'])"
+          }
         ]
       },
       {
         "query_id": "FIN_Q2",
-        "question": "Retrieve the revenue_amount for product_id = 2 in Q1 of 2025.",
+        "question": "What was the Q1 2025 revenue for our SaaS product (product_id = 2)?",
         "table": "FINANCE_REVENUES",
-        "filter_condition": "product_id = 2 AND quarter = 1 AND year = 2025",
-        "description": "Look up FINANCE_REVENUES for Q1 2025 where product_id = 2.",
-        "expected_result_example": "Revenue Amount: 150000.00",
+        "filter_condition": "(product_id = 2) AND (quarter = 1) AND (year = 2025)",
+        "description": "Quarterly revenue lookup.",
+        "expected_result_example": "{'revenue_amount': 1750000.00}",
         "ground_truth_steps": [
-          "Query FINANCE_REVENUES for product_id=2, quarter=1, year=2025",
-          "Return the 'revenue_amount' field"
+          "Query FINANCE_REVENUES table filtering for product_id = 2, quarter = 1, and year = 2025",
+          "Select the 'revenue_amount' field"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='FINANCE_REVENUES', filter='(product_id = 2) AND (quarter = 1) AND (year = 2025)', fields=['revenue_amount'])"
+          }
         ]
       },
       {
         "query_id": "FIN_Q3",
-        "question": "Give me the description and amount of the expense with expense_id = 10.",
+        "question": "What was the description, amount, and date of the team offsite expense (expense_id = 10)?",
         "table": "FINANCE_EXPENSES",
         "filter_condition": "expense_id = 10",
-        "description": "Single-table lookup in FINANCE_EXPENSES by expense_id.",
-        "expected_result_example": "Description: 'Team Building Event', Amount: 1200.00",
+        "description": "Expense detail lookup.",
+        "expected_result_example": "{'description': 'Q4 Planning Offsite', 'amount': 12500.00, 'expense_date': '2025-01-15'}",
         "ground_truth_steps": [
-          "Query FINANCE_EXPENSES for the row with expense_id = 10",
-          "Return the 'description' and 'amount' fields"
+          "Query FINANCE_EXPENSES table filtering for expense_id = 10",
+          "Select the 'description', 'amount', and 'expense_date' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='FINANCE_EXPENSES', filter='expense_id = 10', fields=['description', 'amount', 'expense_date'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='FINANCE_EXPENSES', ids=['10'], fields=['description', 'amount', 'expense_date'])"
+          }
         ]
       }
     ],
     "hr": [
       {
         "query_id": "HR_Q1",
-        "question": "What is the email of the employee with employee_id = 101?",
+        "question": "I need the email and department name of our new hire with employee_id = 101.",
         "table": "HR_EMPLOYEES",
         "filter_condition": "employee_id = 101",
-        "description": "Single-record lookup in HR_EMPLOYEES by employee_id.",
-        "expected_result_example": "Email: 'jdoe@example.com'",
+        "description": "Employee contact and department lookup.",
+        "expected_result_example": "{'email': 'sarah.johnson@example.com', 'department_name': 'Engineering'}",
         "ground_truth_steps": [
-          "Query HR_EMPLOYEES for the row with employee_id = 101",
-          "Return the 'email' field"
+          "Query HR_EMPLOYEES table filtering for employee_id = 101",
+          "Select the 'email' and 'department_id' fields",
+          "Use the retrieved 'department_id' to query the HR_DEPARTMENTS table",
+          "Select the 'name' field from HR_DEPARTMENTS"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_EMPLOYEES', filter='employee_id = 101', fields=['email', 'department_id'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='HR_EMPLOYEES', ids=['101'], fields=['email', 'department_id'])"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter='department_id = {department_id_from_previous_step}', fields=['name'])"
+          }
         ]
       },
       {
         "query_id": "HR_Q2",
-        "question": "List the department name for department_id = 2.",
+        "question": "What's the name and manager_id of the Sales department (department_id = 2)?",
         "table": "HR_DEPARTMENTS",
         "filter_condition": "department_id = 2",
-        "description": "Single-table lookup in HR_DEPARTMENTS by department_id.",
-        "expected_result_example": "Department Name: 'Finance'",
+        "description": "Department information lookup.",
+        "expected_result_example": "{'name': 'Sales', 'manager_id': 205}",
         "ground_truth_steps": [
-          "Query HR_DEPARTMENTS for the row with department_id = 2",
-          "Return the 'name' field"
+          "Query HR_DEPARTMENTS table filtering for department_id = 2",
+          "Select the 'name' and 'manager_id' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter='department_id = 2', fields=['name', 'manager_id'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='HR_DEPARTMENTS', ids=['2'], fields=['name', 'manager_id'])"
+          }
         ]
       },
       {
         "query_id": "HR_Q3",
-        "question": "Retrieve the policy description for policy_id = 5.",
+        "question": "When does our remote work policy (policy_id = 5) go into effect? Also retrieve its title.",
         "table": "HR_POLICIES",
         "filter_condition": "policy_id = 5",
-        "description": "Single-table lookup in HR_POLICIES by policy_id.",
-        "expected_result_example": "Description: 'Guidelines for remote work requests'",
+        "description": "Policy information lookup.",
+        "expected_result_example": "{'title': 'Remote Work Guidelines', 'effective_date': '2025-03-01'}",
         "ground_truth_steps": [
-          "Query HR_POLICIES for the row with policy_id = 5",
-          "Return the 'description' field"
+          "Query HR_POLICIES table filtering for policy_id = 5",
+          "Select the 'title' and 'effective_date' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_POLICIES', filter='policy_id = 5', fields=['title', 'effective_date'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='HR_POLICIES', ids=['5'], fields=['title', 'effective_date'])"
+          }
         ]
       }
     ],
     "operations": [
       {
         "query_id": "OPS_Q1",
-        "question": "Which machine_name is associated with machine_id = 200?",
+        "question": "What's the current status and location of Assembly Line 3 (machine_id = 200)?",
         "table": "OPS_MACHINES",
         "filter_condition": "machine_id = 200",
-        "description": "Query OPS_MACHINES by machine_id to get the machine_name.",
-        "expected_result_example": "Machine Name: 'Press-42A'",
+        "description": "Machine status lookup.",
+        "expected_result_example": "{'machine_name': 'Assembly Line 3', 'status': 'Operational', 'location': 'Building C, Floor 2'}",
         "ground_truth_steps": [
-          "Query OPS_MACHINES for the row with machine_id = 200",
-          "Return the 'machine_name' field"
+          "Query OPS_MACHINES table filtering for machine_id = 200",
+          "Select the 'machine_name', 'status', and 'location' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MACHINES', filter='machine_id = 200', fields=['machine_name', 'status', 'location'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='OPS_MACHINES', ids=['200'], fields=['machine_name', 'status', 'location'])"
+          }
         ]
       },
       {
         "query_id": "OPS_Q2",
-        "question": "What is the date and description of the maintenance record with maintenance_id = 300?",
+        "question": "When was the cooling system replacement performed on the machine involved in maintenance_id = 300 and was any anomaly detected?",
         "table": "OPS_MAINTENANCE",
         "filter_condition": "maintenance_id = 300",
-        "description": "Single-table lookup in OPS_MAINTENANCE by maintenance_id.",
-        "expected_result_example": "Date: '2025-02-15', Description: 'Replaced coolant pump'",
+        "description": "Maintenance record lookup.",
+        "expected_result_example": "{'maintenance_date': '2025-02-15', 'maintenance_action': 'Cooling System Replacement', 'anomaly_detected': false}",
         "ground_truth_steps": [
-          "Query OPS_MAINTENANCE for the row with maintenance_id = 300",
-          "Return the 'date' and 'description' fields"
+          "Query OPS_MAINTENANCE table filtering for maintenance_id = 300",
+          "Select the 'maintenance_date', 'maintenance_action', and 'anomaly_detected' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MAINTENANCE', filter='maintenance_id = 300', fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='OPS_MAINTENANCE', ids=['300'], fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
+          }
         ]
       },
       {
         "query_id": "OPS_Q3",
-        "question": "Show me the installation_date for the machine with machine_id = 202.",
+        "question": "When was the robotics unit (machine_id = 202) installed, and what's its current status?",
         "table": "OPS_MACHINES",
         "filter_condition": "machine_id = 202",
-        "description": "Single-table lookup in OPS_MACHINES by machine_id.",
-        "expected_result_example": "Installation Date: '2023-08-01'",
+        "description": "Equipment lifecycle information lookup.",
+        "expected_result_example": "{'installation_date': '2023-08-01', 'status': 'Operational'}",
         "ground_truth_steps": [
-          "Query OPS_MACHINES for the row with machine_id = 202",
-          "Return the 'installation_date' field"
+          "Query OPS_MACHINES table filtering for machine_id = 202",
+          "Select the 'installation_date' and 'status' fields"
+        ],
+        "recommended_tools": [
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MACHINES', filter='machine_id = 202', fields=['installation_date', 'status'])"
+          },
+          {
+            "tool": "get_table_records_by_ids",
+            "example": "get_table_records_by_ids(table_name='OPS_MACHINES', ids=['202'], fields=['installation_date', 'status'])"
+          }
         ]
       }
     ]

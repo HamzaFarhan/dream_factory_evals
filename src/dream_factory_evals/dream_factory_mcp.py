@@ -1,0 +1,141 @@
+import os
+
+import httpx
+from mcp.server.fastmcp import FastMCP
+
+BASE_URL = os.environ["BASE_URL"]
+HEADERS = {
+    "X-DreamFactory-API-Key": os.environ["X-DreamFactory-API-Key"],
+}
+
+server = FastMCP(name="dream_factory_mcp")
+
+
+def get_params(
+    filter: str = "",
+    fields: str | list[str] = "*",
+    limit: int | None = None,
+    offset: int = 0,
+    order_field: str = "",
+) -> dict:
+    params = {}
+    if filter:
+        params["filter"] = filter
+    if fields and isinstance(fields, list):
+        params["fields"] = ",".join(fields)
+    else:
+        params["fields"] = fields
+    if limit:
+        params["limit"] = limit
+    if offset:
+        params["offset"] = offset
+    if order_field:
+        params["order"] = order_field
+    return params
+
+
+def table_url_with_headers(table_name: str) -> dict:
+    return dict(url=f"{BASE_URL}/_table/{table_name}", headers=HEADERS)
+
+
+@server.tool()
+def list_table_names() -> dict:
+    """List the names of all tables in the database.
+
+    Returns:
+        A list of table names.
+    """
+    return httpx.get(url=f"{BASE_URL}/_table", headers=HEADERS).json()
+
+
+@server.tool()
+def get_table_schema(table_name: str) -> dict:
+    """Get the schema of a table.
+
+    Args:
+        table_name: The name of the table.
+
+    Returns:
+        The schema of the table.
+    """
+    return httpx.get(url=f"{BASE_URL}/_schema/{table_name}", headers=HEADERS).json()
+
+
+@server.tool()
+def get_table_records(
+    table_name: str,
+    filter: str = "",
+    fields: str | list[str] = "*",
+    limit: int | None = None,
+    offset: int = 0,
+    order_field: str = "",
+) -> dict:
+    """Get the records of a table.
+
+    Args:
+        table_name: The name of the table to get the records from.
+        filter: The filter to apply to the data. This is equivalent to the WHERE clause of a SQL statement.
+        fields: The fields to return. If *, all fields will be returned. Defaults to *.
+        limit: Max number of records to return. If None, all matching records will be returned, subject to the offset parameter or system settings maximum. Defaults to None.
+        offset: Index of first record to return. For example, to get records 91-100, set offset to 90 and limit to 10. Defaults to 0.
+        order_field: The field to order the records by. Also supports sort direction ASC or DESC such as 'Name ASC'. Default direction is ASC.
+
+    Returns:
+        The records of the table.
+
+    Filter Strings:
+        Supports standardized ANSI SQL syntax with the following operators:
+
+        Logical Operators (clauses must be wrapped in parentheses):
+        - AND: True if both conditions are true
+        - OR: True if either condition is true
+        - NOT: True if the condition is false
+
+        Comparison Operators:
+        - '=' or 'EQ': Equality test
+        - '!=' or 'NE' or '<>': Inequality test
+        - '>' or 'GT': Greater than
+        - '>=' or 'GTE': Greater than or equal
+        - '<' or 'LT': Less than
+        - '<=' or 'LTE': Less than or equal
+        - 'IN': Equality check against values in a set, e.g., a IN (1,2,3)
+        - 'NOT IN' or 'NIN': Inverse of IN (MongoDB only)
+        - 'LIKE': Pattern matching with '%' wildcard
+        - 'CONTAINS': Same as LIKE '%value%'
+        - 'STARTS WITH': Same as LIKE 'value%'
+        - 'ENDS WITH': Same as LIKE '%value'
+
+        Examples:
+        - (first_name='John') AND (last_name='Smith')
+        - (first_name='John') OR (first_name='Jane')
+        - first_name!='John'
+        - first_name like 'J%'
+        - email like '%@mycompany.com'
+        - (Age >= 30) AND (Age < 40)
+
+    """
+    return httpx.get(
+        **table_url_with_headers(table_name=table_name),
+        params=get_params(filter=filter, fields=fields, limit=limit, offset=offset, order_field=order_field),
+    ).json()
+
+
+@server.tool()
+def get_table_records_by_ids(table_name: str, ids: list[str], fields: str | list[str] = "*") -> dict:
+    """Get one or more records from a table by their IDs.
+
+    Args:
+        table_name: The name of the table to get the records from.
+        ids: The IDs of the records to get.
+        fields: The fields to return. If *, all fields will be returned. Defaults to *.
+
+    Returns:
+        The records of the table.
+    """
+    params = {"ids": ",".join(ids)}
+    params.update(get_params(fields=fields))
+    return httpx.get(**table_url_with_headers(table_name=table_name), params=params).json()
+
+
+# if __name__ == "__main__":
+#     server.run()
