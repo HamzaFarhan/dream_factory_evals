@@ -17,11 +17,13 @@ logfire.configure()
 tables_mcp_server = MCPServerStdio(command="uv", args=["run", "dream_factory_mcp.py"], env=env)
 
 agent = Agent(
-    model="google-gla:gemini-2.0-flash",
+    model="google-gla:gemini-1.5-flash",
     name="level_1_agent",
     system_prompt=(
         "Only return 'success' if the main task has been completed."
-        "You may have to complete smaller tasks to get to the main task."
+        "You may have to complete smaller tasks to get to the main task.\n"
+        "It's recommended to first use the 'list_table_names' tool to get the names of all tables in the database. "
+        "Followed by the 'get_table_schema' tool to get the schema of the table."
     ),
     deps_type=Task,
     mcp_servers=[tables_mcp_server],
@@ -44,7 +46,7 @@ async def run_agent(user_prompt: str, message_history: list[_messages.ModelMessa
                 deps=task,
                 result_type=Success,
                 message_history=message_history,
-                usage_limits=UsageLimits(request_limit=5),
+                usage_limits=UsageLimits(request_limit=10),
             )
             result = response.data
             message_history = response.all_messages()

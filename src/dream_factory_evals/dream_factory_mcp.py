@@ -3,12 +3,12 @@ import os
 import httpx
 from mcp.server.fastmcp import FastMCP
 
+server = FastMCP(name="dream_factory_mcp")
+
 BASE_URL = os.environ["BASE_URL"]
 HEADERS = {
     "X-DreamFactory-API-Key": os.environ["X-DreamFactory-API-Key"],
 }
-
-server = FastMCP(name="dream_factory_mcp")
 
 
 def get_params(
@@ -137,5 +137,5 @@ def get_table_records_by_ids(table_name: str, ids: list[str], fields: str | list
     return httpx.get(**table_url_with_headers(table_name=table_name), params=params).json()
 
 
-# if __name__ == "__main__":
-#     server.run()
+if __name__ == "__main__":
+    server.run()
