@@ -74,8 +74,8 @@ def setup_task(main_task: str, user_role: Role, latest_user_prompt: str = "") ->
         system_prompt=(
             "You will be given a main task by the user.\n"
             "You will also be given the role of the user.\n"
-            "You can only access the tables from the user's role. "
-            "So based on the main task and the available table names, you would have a good idea of which tables to use.\n"
+            "The <available_tables> section will list the tables that the user can access based on their role.\n"
+            "So given the main task and the <available_tables>, you would have a good idea of which tables to use.\n"
             "But if you think the user's main task would require you to access a table from a different department, you MUST STOP and return 'success' = False and a helpful detailed message to the user including what your plan was and why you can't do it.\n"
             "Then start off by using the 'get_table_schema' tool to get the schema of the needed tables.\n"
             "Only return 'success' if the main task has been completed."
