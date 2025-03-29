@@ -3,63 +3,85 @@
     "finance": [
       {
         "query_id": "FIN_Q1",
-        "question": "What is the name and category of our core product with product_id = 1?",
+        "question": "Can you tell me about our Enterprise Analytics Suite product? I need to know what category it falls under.",
         "table": "FINANCE_PRODUCTS",
-        "filter_condition": "product_id = 1",
+        "filter_condition": "name = 'Enterprise Analytics Suite'",
         "description": "Basic product information lookup.",
         "expected_result_example": "{'name': 'Enterprise Analytics Suite', 'category': 'Software'}",
         "ground_truth_steps": [
-          "Query FINANCE_PRODUCTS table filtering for product_id = 1",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('FINANCE_PRODUCTS') to examine the schema and available fields",
+          "Query FINANCE_PRODUCTS table filtering for name = 'Enterprise Analytics Suite'",
           "Select the 'name' and 'category' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_PRODUCTS', filter='product_id = 1', fields=['name', 'category'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='FINANCE_PRODUCTS', ids=['1'], fields=['name', 'category'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='FINANCE_PRODUCTS')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='FINANCE_PRODUCTS', filter=\"name = 'Enterprise Analytics Suite'\", fields=['name', 'category'])"
           }
         ]
       },
       {
         "query_id": "FIN_Q2",
-        "question": "What was the Q1 2025 revenue for our SaaS product (product_id = 2)?",
+        "question": "What was our Q1 revenue for product ID 2 this year?",
         "table": "FINANCE_REVENUES",
-        "filter_condition": "(product_id = 2) AND (quarter = 1) AND (year = 2025)",
-        "description": "Quarterly revenue lookup.",
+        "filter_condition": "product_id = 2 AND quarter = 1 AND year = 2025",
+        "description": "Revenue lookup for specific product and time period.",
         "expected_result_example": "{'revenue_amount': 1750000.00}",
         "ground_truth_steps": [
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('FINANCE_REVENUES') to examine available fields",
           "Query FINANCE_REVENUES table filtering for product_id = 2, quarter = 1, and year = 2025",
           "Select the 'revenue_amount' field"
         ],
         "recommended_tools": [
           {
+            "tool": "list_table_names",
+            "example": "list_table_names()"
+          },
+          {
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='FINANCE_REVENUES')"
+          },
+          {
             "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_REVENUES', filter='(product_id = 2) AND (quarter = 1) AND (year = 2025)', fields=['revenue_amount'])"
+            "example": "get_table_records(table_name='FINANCE_REVENUES', filter='product_id = 2 AND quarter = 1 AND year = 2025', fields=['revenue_amount'])"
           }
         ]
       },
       {
         "query_id": "FIN_Q3",
-        "question": "What was the description, amount, and date of the team offsite expense (expense_id = 10)?",
+        "question": "How much did we spend on the leadership offsite in Miami earlier this year? When exactly was it held?",
         "table": "FINANCE_EXPENSES",
-        "filter_condition": "expense_id = 10",
-        "description": "Expense detail lookup.",
-        "expected_result_example": "{'description': 'Q4 Planning Offsite', 'amount': 12500.00, 'expense_date': '2025-01-15'}",
+        "filter_condition": "description LIKE '%Offsite%Miami%' AND expense_date BETWEEN '2025-01-01' AND '2025-06-30'",
+        "description": "Expense detail lookup for a specific event.",
+        "expected_result_example": "{'description': 'Q4 Planning Offsite in Miami', 'amount': 12500.00, 'expense_date': '2025-01-15'}",
         "ground_truth_steps": [
-          "Query FINANCE_EXPENSES table filtering for expense_id = 10",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('FINANCE_EXPENSES') to examine available fields",
+          "Query FINANCE_EXPENSES table filtering for description containing 'Offsite' and 'Miami', within first half of 2025",
           "Select the 'description', 'amount', and 'expense_date' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_EXPENSES', filter='expense_id = 10', fields=['description', 'amount', 'expense_date'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='FINANCE_EXPENSES', ids=['10'], fields=['description', 'amount', 'expense_date'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='FINANCE_EXPENSES')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='FINANCE_EXPENSES', filter=\"description LIKE '%Offsite%Miami%' AND expense_date BETWEEN '2025-01-01' AND '2025-06-30'\", fields=['description', 'amount', 'expense_date'])"
           }
         ]
       }
@@ -67,73 +89,85 @@
     "hr": [
       {
         "query_id": "HR_Q1",
-        "question": "I need the email and department name of our new hire with employee_id = 101.",
+        "question": "I need to find an employee with the email sarah.johnson@example.com. What department are they in?",
         "table": "HR_EMPLOYEES",
-        "filter_condition": "employee_id = 101",
-        "description": "Employee contact and department lookup.",
-        "expected_result_example": "{'email': 'sarah.johnson@example.com', 'department_name': 'Engineering'}",
+        "filter_condition": "email = 'sarah.johnson@example.com'",
+        "description": "Employee lookup by email address.",
+        "expected_result_example": "{'first_name': 'Sarah', 'last_name': 'Johnson', 'department_id': 3}",
         "ground_truth_steps": [
-          "Query HR_EMPLOYEES table filtering for employee_id = 101",
-          "Select the 'email' and 'department_id' fields",
-          "Use the retrieved 'department_id' to query the HR_DEPARTMENTS table",
-          "Select the 'name' field from HR_DEPARTMENTS"
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('HR_EMPLOYEES') to examine available fields",
+          "Query HR_EMPLOYEES table filtering for email = 'sarah.johnson@example.com'",
+          "Select the employee information including 'department_id'"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_EMPLOYEES', filter='employee_id = 101', fields=['email', 'department_id'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='HR_EMPLOYEES', ids=['101'], fields=['email', 'department_id'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='HR_EMPLOYEES')"
           },
           {
             "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter='department_id = {department_id_from_previous_step}', fields=['name'])"
+            "example": "get_table_records(table_name='HR_EMPLOYEES', filter=\"email = 'sarah.johnson@example.com'\", fields=['first_name', 'last_name', 'department_id'])"
           }
         ]
       },
       {
         "query_id": "HR_Q2",
-        "question": "What's the name and manager_id of the Sales department (department_id = 2)?",
+        "question": "What's the ID of the manager for our Sales department?",
         "table": "HR_DEPARTMENTS",
-        "filter_condition": "department_id = 2",
-        "description": "Department information lookup.",
+        "filter_condition": "name = 'Sales'",
+        "description": "Department management lookup.",
         "expected_result_example": "{'name': 'Sales', 'manager_id': 205}",
         "ground_truth_steps": [
-          "Query HR_DEPARTMENTS table filtering for department_id = 2",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('HR_DEPARTMENTS') to examine available fields",
+          "Query HR_DEPARTMENTS table filtering for name = 'Sales'",
           "Select the 'name' and 'manager_id' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter='department_id = 2', fields=['name', 'manager_id'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='HR_DEPARTMENTS', ids=['2'], fields=['name', 'manager_id'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='HR_DEPARTMENTS')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter=\"name = 'Sales'\", fields=['name', 'manager_id'])"
           }
         ]
       },
       {
         "query_id": "HR_Q3",
-        "question": "When does our remote work policy (policy_id = 5) go into effect? Also retrieve its title.",
+        "question": "When does the new remote work policy start? What's it officially called?",
         "table": "HR_POLICIES",
-        "filter_condition": "policy_id = 5",
+        "filter_condition": "title LIKE '%Remote Work%'",
         "description": "Policy information lookup.",
         "expected_result_example": "{'title': 'Remote Work Guidelines', 'effective_date': '2025-03-01'}",
         "ground_truth_steps": [
-          "Query HR_POLICIES table filtering for policy_id = 5",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('HR_POLICIES') to examine available fields",
+          "Query HR_POLICIES table filtering for title containing 'Remote Work'",
           "Select the 'title' and 'effective_date' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_POLICIES', filter='policy_id = 5', fields=['title', 'effective_date'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='HR_POLICIES', ids=['5'], fields=['title', 'effective_date'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='HR_POLICIES')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='HR_POLICIES', filter=\"title LIKE '%Remote Work%'\", fields=['title', 'effective_date'])"
           }
         ]
       }
@@ -141,67 +175,85 @@
     "operations": [
       {
         "query_id": "OPS_Q1",
-        "question": "What's the current status and location of Assembly Line 3 (machine_id = 200)?",
+        "question": "Is Assembly Line 3 in Building C currently operational? I need to check its status.",
         "table": "OPS_MACHINES",
-        "filter_condition": "machine_id = 200",
-        "description": "Machine status lookup.",
+        "filter_condition": "machine_name = 'Assembly Line 3' AND location LIKE 'Building C%'",
+        "description": "Machine status check.",
         "expected_result_example": "{'machine_name': 'Assembly Line 3', 'status': 'Operational', 'location': 'Building C, Floor 2'}",
         "ground_truth_steps": [
-          "Query OPS_MACHINES table filtering for machine_id = 200",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('OPS_MACHINES') to examine available fields",
+          "Query OPS_MACHINES table filtering for machine_name = 'Assembly Line 3' and location starting with 'Building C'",
           "Select the 'machine_name', 'status', and 'location' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MACHINES', filter='machine_id = 200', fields=['machine_name', 'status', 'location'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='OPS_MACHINES', ids=['200'], fields=['machine_name', 'status', 'location'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='OPS_MACHINES')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MACHINES', filter=\"machine_name = 'Assembly Line 3' AND location LIKE 'Building C%'\", fields=['machine_name', 'status', 'location'])"
           }
         ]
       },
       {
         "query_id": "OPS_Q2",
-        "question": "When was the cooling system replacement performed on the machine involved in maintenance_id = 300 and was any anomaly detected?",
+        "question": "Show me all maintenance activities done on machine ID 5 in February. Were any issues detected?",
         "table": "OPS_MAINTENANCE",
-        "filter_condition": "maintenance_id = 300",
-        "description": "Maintenance record lookup.",
-        "expected_result_example": "{'maintenance_date': '2025-02-15', 'maintenance_action': 'Cooling System Replacement', 'anomaly_detected': false}",
+        "filter_condition": "machine_id = 5 AND maintenance_date BETWEEN '2025-02-01' AND '2025-02-28'",
+        "description": "Maintenance record lookup for specific machine.",
+        "expected_result_example": "{'maintenance_date': '2025-02-15', 'maintenance_action': 'HVAC Cooling System Replacement', 'anomaly_detected': false}",
         "ground_truth_steps": [
-          "Query OPS_MAINTENANCE table filtering for maintenance_id = 300",
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('OPS_MAINTENANCE') to examine available fields",
+          "Query OPS_MAINTENANCE table filtering for machine_id = 5 and February 2025 date range",
           "Select the 'maintenance_date', 'maintenance_action', and 'anomaly_detected' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MAINTENANCE', filter='maintenance_id = 300', fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='OPS_MAINTENANCE', ids=['300'], fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='OPS_MAINTENANCE')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MAINTENANCE', filter=\"machine_id = 5 AND maintenance_date BETWEEN '2025-02-01' AND '2025-02-28'\", fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
           }
         ]
       },
       {
         "query_id": "OPS_Q3",
-        "question": "When was the robotics unit (machine_id = 202) installed, and what's its current status?",
+        "question": "When was our automated packaging unit installed? Is it running properly?",
         "table": "OPS_MACHINES",
-        "filter_condition": "machine_id = 202",
-        "description": "Equipment lifecycle information lookup.",
-        "expected_result_example": "{'installation_date': '2023-08-01', 'status': 'Operational'}",
+        "filter_condition": "machine_name LIKE '%packaging%' AND machine_name LIKE '%automat%'",
+        "description": "Equipment installation and status check.",
+        "expected_result_example": "{'machine_name': 'Automated Packaging Unit', 'installation_date': '2023-08-01', 'status': 'Operational'}",
         "ground_truth_steps": [
-          "Query OPS_MACHINES table filtering for machine_id = 202",
-          "Select the 'installation_date' and 'status' fields"
+          "Use list_table_names() to discover available tables",
+          "Use get_table_schema('OPS_MACHINES') to examine available fields",
+          "Query OPS_MACHINES table filtering for machine_name containing 'packaging' and 'automat'",
+          "Select the 'machine_name', 'installation_date', and 'status' fields"
         ],
         "recommended_tools": [
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MACHINES', filter='machine_id = 202', fields=['installation_date', 'status'])"
+            "tool": "list_table_names",
+            "example": "list_table_names()"
           },
           {
-            "tool": "get_table_records_by_ids",
-            "example": "get_table_records_by_ids(table_name='OPS_MACHINES', ids=['202'], fields=['installation_date', 'status'])"
+            "tool": "get_table_schema",
+            "example": "get_table_schema(table_name='OPS_MACHINES')"
+          },
+          {
+            "tool": "get_table_records",
+            "example": "get_table_records(table_name='OPS_MACHINES', filter=\"machine_name LIKE '%packaging%' AND machine_name LIKE '%automat%'\", fields=['machine_name', 'installation_date', 'status'])"
           }
         ]
       }

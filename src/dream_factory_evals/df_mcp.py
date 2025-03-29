@@ -1,14 +1,10 @@
 import os
 
 import httpx
+from loguru import logger
 from mcp.server.fastmcp import FastMCP
 
 server = FastMCP(name="dream_factory_mcp")
-
-BASE_URL = os.environ["BASE_URL"]
-HEADERS = {
-    "X-DreamFactory-API-Key": os.environ["X-DreamFactory-API-Key"],
-}
 
 
 def get_params(
@@ -17,39 +13,49 @@ def get_params(
     limit: int | None = None,
     offset: int = 0,
     order_field: str = "",
+    related: str | list[str] = "",
 ) -> dict:
     params = {}
     if filter:
         params["filter"] = filter
-    if fields and isinstance(fields, list):
-        params["fields"] = ",".join(fields)
-    else:
-        params["fields"] = fields
+    if fields:
+        params["fields"] = fields if isinstance(fields, str) else ",".join(fields)
     if limit:
         params["limit"] = limit
     if offset:
         params["offset"] = offset
     if order_field:
         params["order"] = order_field
+    if related:
+        params["related"] = related if isinstance(related, str) else ",".join(related)
     return params
 
 
-def table_url_with_headers(table_name: str) -> dict:
-    return dict(url=f"{BASE_URL}/_table/{table_name}", headers=HEADERS)
+def table_url_with_headers(
+    table_name: str,
+    base_url: str | None = None,
+    dream_factory_api_key: str | None = None,
+) -> dict:
+    base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
+    dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
+    return dict(url=f"{base_url}/_table/{table_name}", headers={"X-DreamFactory-API-Key": dream_factory_api_key})
 
 
-@server.tool()
-def list_table_names() -> dict:
+def list_table_names(base_url: str | None = None, dream_factory_api_key: str | None = None) -> dict:
     """List the names of all tables in the database.
 
     Returns:
         A list of table names.
     """
-    return httpx.get(url=f"{BASE_URL}/_table", headers=HEADERS).json()
+    base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
+    dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
+    return httpx.get(url=f"{base_url}/_table", headers={"X-DreamFactory-API-Key": dream_factory_api_key}).json()
 
 
 @server.tool()
-def get_table_schema(table_name: str) -> dict:
+def get_table_schema(
+    table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
+) -> dict:
     """Get the schema of a table.
 
     Args:
@@ -58,7 +64,12 @@ def get_table_schema(table_name: str) -> dict:
     Returns:
         The schema of the table.
     """
-    return httpx.get(url=f"{BASE_URL}/_schema/{table_name}", headers=HEADERS).json()
+    base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
+    dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
+    logger.info(f"Accessing schema for table {table_name} with API key {dream_factory_api_key}")
+    return httpx.get(
+        url=f"{base_url}/_schema/{table_name}", headers={"X-DreamFactory-API-Key": dream_factory_api_key}
+    ).json()
 
 
 @server.tool()
@@ -69,6 +80,7 @@ def get_table_records(
     limit: int | None = None,
     offset: int = 0,
     order_field: str = "",
+    related: str | list[str] = "",
 ) -> dict:
     """Get the records of a table.
 
@@ -79,6 +91,7 @@ def get_table_records(
         limit: Max number of records to return. If None, all matching records will be returned, subject to the offset parameter or system settings maximum. Defaults to None.
         offset: Index of first record to return. For example, to get records 91-100, set offset to 90 and limit to 10. Defaults to 0.
         order_field: The field to order the records by. Also supports sort direction ASC or DESC such as 'Name ASC'. Default direction is ASC.
+        related: Names of related tables to join via foreign keys based on the schema (e.g. hr_employees_by_department_id). Can be a single table name as string, a list of table names, or '*' to include all related tables. Defaults to None.
 
     Returns:
         The records of the table.
@@ -116,24 +129,29 @@ def get_table_records(
     """
     return httpx.get(
         **table_url_with_headers(table_name=table_name),
-        params=get_params(filter=filter, fields=fields, limit=limit, offset=offset, order_field=order_field),
+        params=get_params(
+            filter=filter, fields=fields, limit=limit, offset=offset, order_field=order_field, related=related
+        ),
     ).json()
 
 
 @server.tool()
-def get_table_records_by_ids(table_name: str, ids: list[str], fields: str | list[str] = "*") -> dict:
+def get_table_records_by_ids(
+    table_name: str, ids: str | list[str], fields: str | list[str] = "*", related: str | list[str] = ""
+) -> dict:
     """Get one or more records from a table by their IDs.
 
     Args:
         table_name: The name of the table to get the records from.
         ids: The IDs of the records to get.
         fields: The fields to return. If *, all fields will be returned. Defaults to *.
+        related: Names of related tables to join via foreign keys based on the schema (e.g. hr_employees_by_department_id). Can be a single table name as string, a list of table names, or '*' to include all related tables. Defaults to None.
 
     Returns:
         The records of the table.
     """
-    params = {"ids": ",".join(ids)}
-    params.update(get_params(fields=fields))
+    params = {"ids": ids if isinstance(ids, str) else ",".join(ids)}
+    params.update(get_params(fields=fields, related=related))
     return httpx.get(**table_url_with_headers(table_name=table_name), params=params).json()
 
 

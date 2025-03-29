@@ -1,14 +1,15 @@
+import os
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-from dream_factory_evals.dream_factory_mcp import (
-    BASE_URL,
-    HEADERS,
-    get_params,
-    get_table_records,
-    get_table_records_by_ids,
-)
+from dream_factory_evals.df_mcp import get_params, get_table_records, get_table_records_by_ids
+
+BASE_URL = os.environ["DREAM_FACTORY_BASE_URL"]
+HEADERS = {
+    "X-DreamFactory-API-Key": os.environ["DREAM_FACTORY_API_KEY"],
+}
+
 
 # Sample data for hr_employees
 HR_EMPLOYEES_SAMPLE = {
