@@ -112,5 +112,5 @@ async def do_task(
     return result
 
 
-res = await do_task(main_task="I want the department name of alice johnson from hr", user_role=Role.HR)
-res.model_dump()
+# res = await do_task(main_task="I want the department name of alice johnson from hr", user_role=Role.HR)
+# res.model_dump()
