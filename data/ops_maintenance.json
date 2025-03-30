@@ -1,0 +1,162 @@
+[
+  {
+    "maintenance_id": 1,
+    "machine_id": 1,
+    "maintenance_date": "2022-01-15",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "No issues found."
+  },
+  {
+    "maintenance_id": 2,
+    "machine_id": 2,
+    "maintenance_date": "2022-02-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 3,
+    "machine_id": 3,
+    "maintenance_date": "2022-03-25",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Operating normally."
+  },
+  {
+    "maintenance_id": 4,
+    "machine_id": 4,
+    "maintenance_date": "2022-04-30",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 5,
+    "machine_id": 5,
+    "maintenance_date": "2022-05-05",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 6,
+    "machine_id": 6,
+    "maintenance_date": "2022-06-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "All parameters normal."
+  },
+  {
+    "maintenance_id": 7,
+    "machine_id": 7,
+    "maintenance_date": "2022-07-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Updated to latest firmware."
+  },
+  {
+    "maintenance_id": 8,
+    "machine_id": 8,
+    "maintenance_date": "2022-08-20",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "No anomalies detected."
+  },
+  {
+    "maintenance_id": 9,
+    "machine_id": 9,
+    "maintenance_date": "2022-09-25",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replaced worn-out component."
+  },
+  {
+    "maintenance_id": 10,
+    "machine_id": 10,
+    "maintenance_date": "2022-10-30",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "System running smoothly."
+  },
+  {
+    "maintenance_id": 11,
+    "machine_id": 11,
+    "maintenance_date": "2022-11-05",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration within limits."
+  },
+  {
+    "maintenance_id": 12,
+    "machine_id": 12,
+    "maintenance_date": "2022-12-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine maintenance done."
+  },
+  {
+    "maintenance_id": 13,
+    "machine_id": 13,
+    "maintenance_date": "2023-01-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Updated control software."
+  },
+  {
+    "maintenance_id": 14,
+    "machine_id": 14,
+    "maintenance_date": "2023-02-20",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "No issues found."
+  },
+  {
+    "maintenance_id": 15,
+    "machine_id": 15,
+    "maintenance_date": "2023-03-25",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Component replaced due to wear."
+  },
+  {
+    "maintenance_id": 16,
+    "machine_id": 16,
+    "maintenance_date": "2023-04-30",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 17,
+    "machine_id": 17,
+    "maintenance_date": "2023-05-05",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Operating normally."
+  },
+  {
+    "maintenance_id": 18,
+    "machine_id": 18,
+    "maintenance_date": "2023-06-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Firmware updated."
+  },
+  {
+    "maintenance_id": 19,
+    "machine_id": 19,
+    "maintenance_date": "2023-07-15",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "No anomalies detected."
+  },
+  {
+    "maintenance_id": 20,
+    "machine_id": 20,
+    "maintenance_date": "2023-08-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replaced due to malfunction."
+  }
+]

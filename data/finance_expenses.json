@@ -1,0 +1,142 @@
+[
+  {
+    "expense_id": 1,
+    "description": "Expense 1: Office Supplies",
+    "amount": 250,
+    "expense_date": "2022-02-10",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 2,
+    "description": "Expense 2: Travel",
+    "amount": 500,
+    "expense_date": "2022-03-12",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 3,
+    "description": "Expense 3: Marketing Campaign",
+    "amount": 750,
+    "expense_date": "2022-04-15",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 4,
+    "description": "Expense 4: Software Licensing",
+    "amount": 300,
+    "expense_date": "2022-05-18",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 5,
+    "description": "Expense 5: Equipment Maintenance",
+    "amount": 450,
+    "expense_date": "2022-06-20",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 6,
+    "description": "Expense 6: Training",
+    "amount": 200,
+    "expense_date": "2022-07-22",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 7,
+    "description": "Expense 7: Consulting Fees",
+    "amount": 600,
+    "expense_date": "2022-08-25",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 8,
+    "description": "Expense 8: Rent",
+    "amount": 1200,
+    "expense_date": "2022-09-27",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 9,
+    "description": "Expense 9: Utilities",
+    "amount": 350,
+    "expense_date": "2022-10-30",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 10,
+    "description": "Expense 10: Insurance",
+    "amount": 400,
+    "expense_date": "2022-11-02",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 11,
+    "description": "Expense 11: Maintenance",
+    "amount": 500,
+    "expense_date": "2022-12-04",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 12,
+    "description": "Expense 12: Office Renovation",
+    "amount": 800,
+    "expense_date": "2023-01-06",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 13,
+    "description": "Expense 13: Supplies",
+    "amount": 220,
+    "expense_date": "2023-02-08",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 14,
+    "description": "Expense 14: Security Services",
+    "amount": 480,
+    "expense_date": "2023-03-10",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 15,
+    "description": "Expense 15: IT Services",
+    "amount": 550,
+    "expense_date": "2023-04-12",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 16,
+    "description": "Expense 16: Legal Fees",
+    "amount": 650,
+    "expense_date": "2023-05-14",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 17,
+    "description": "Expense 17: Travel",
+    "amount": 700,
+    "expense_date": "2023-06-16",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 18,
+    "description": "Expense 18: Software Upgrade",
+    "amount": 900,
+    "expense_date": "2023-07-18",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 19,
+    "description": "Expense 19: Event Sponsorship",
+    "amount": 1000,
+    "expense_date": "2023-08-20",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 20,
+    "description": "Expense 20: Office Supplies",
+    "amount": 270,
+    "expense_date": "2023-09-22",
+    "category": "Operational"
+  }
+]

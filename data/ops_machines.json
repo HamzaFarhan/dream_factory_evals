@@ -1,0 +1,142 @@
+[
+  {
+    "machine_id": 1,
+    "machine_name": "Machine 1",
+    "location": "New York",
+    "status": "Active",
+    "installation_date": "2021-01-10"
+  },
+  {
+    "machine_id": 2,
+    "machine_name": "Machine 2",
+    "location": "Los Angeles",
+    "status": "Maintenance",
+    "installation_date": "2021-02-15"
+  },
+  {
+    "machine_id": 3,
+    "machine_name": "Machine 3",
+    "location": "Chicago",
+    "status": "Active",
+    "installation_date": "2021-03-20"
+  },
+  {
+    "machine_id": 4,
+    "machine_name": "Machine 4",
+    "location": "Houston",
+    "status": "Inactive",
+    "installation_date": "2021-04-25"
+  },
+  {
+    "machine_id": 5,
+    "machine_name": "Machine 5",
+    "location": "Phoenix",
+    "status": "Active",
+    "installation_date": "2021-05-30"
+  },
+  {
+    "machine_id": 6,
+    "machine_name": "Machine 6",
+    "location": "Philadelphia",
+    "status": "Maintenance",
+    "installation_date": "2021-06-04"
+  },
+  {
+    "machine_id": 7,
+    "machine_name": "Machine 7",
+    "location": "San Antonio",
+    "status": "Active",
+    "installation_date": "2021-07-09"
+  },
+  {
+    "machine_id": 8,
+    "machine_name": "Machine 8",
+    "location": "San Diego",
+    "status": "Active",
+    "installation_date": "2021-08-14"
+  },
+  {
+    "machine_id": 9,
+    "machine_name": "Machine 9",
+    "location": "Dallas",
+    "status": "Inactive",
+    "installation_date": "2021-09-19"
+  },
+  {
+    "machine_id": 10,
+    "machine_name": "Machine 10",
+    "location": "San Jose",
+    "status": "Active",
+    "installation_date": "2021-10-24"
+  },
+  {
+    "machine_id": 11,
+    "machine_name": "Machine 11",
+    "location": "Austin",
+    "status": "Maintenance",
+    "installation_date": "2021-11-29"
+  },
+  {
+    "machine_id": 12,
+    "machine_name": "Machine 12",
+    "location": "Jacksonville",
+    "status": "Active",
+    "installation_date": "2021-12-04"
+  },
+  {
+    "machine_id": 13,
+    "machine_name": "Machine 13",
+    "location": "Fort Worth",
+    "status": "Active",
+    "installation_date": "2022-01-08"
+  },
+  {
+    "machine_id": 14,
+    "machine_name": "Machine 14",
+    "location": "Columbus",
+    "status": "Inactive",
+    "installation_date": "2022-02-13"
+  },
+  {
+    "machine_id": 15,
+    "machine_name": "Machine 15",
+    "location": "Charlotte",
+    "status": "Active",
+    "installation_date": "2022-03-20"
+  },
+  {
+    "machine_id": 16,
+    "machine_name": "Machine 16",
+    "location": "San Francisco",
+    "status": "Maintenance",
+    "installation_date": "2022-04-25"
+  },
+  {
+    "machine_id": 17,
+    "machine_name": "Machine 17",
+    "location": "Indianapolis",
+    "status": "Active",
+    "installation_date": "2022-05-30"
+  },
+  {
+    "machine_id": 18,
+    "machine_name": "Machine 18",
+    "location": "Seattle",
+    "status": "Active",
+    "installation_date": "2022-06-04"
+  },
+  {
+    "machine_id": 19,
+    "machine_name": "Machine 19",
+    "location": "Denver",
+    "status": "Inactive",
+    "installation_date": "2022-07-09"
+  },
+  {
+    "machine_id": 20,
+    "machine_name": "Machine 20",
+    "location": "Washington",
+    "status": "Active",
+    "installation_date": "2022-08-14"
+  }
+]

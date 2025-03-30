@@ -1,0 +1,182 @@
+[
+  {
+    "employee_id": 1,
+    "first_name": "Alice",
+    "last_name": "Johnson",
+    "email": "alice.johnson@example.com",
+    "date_joined": "2022-01-15",
+    "department_id": 1,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 2,
+    "first_name": "Bob",
+    "last_name": "Smith",
+    "email": "bob.smith@example.com",
+    "date_joined": "2022-02-10",
+    "department_id": 2,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 3,
+    "first_name": "Carol",
+    "last_name": "Williams",
+    "email": "carol.williams@example.com",
+    "date_joined": "2022-03-05",
+    "department_id": 3,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 4,
+    "first_name": "David",
+    "last_name": "Brown",
+    "email": "david.brown@example.com",
+    "date_joined": "2022-04-20",
+    "department_id": 4,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 5,
+    "first_name": "Eve",
+    "last_name": "Davis",
+    "email": "eve.davis@example.com",
+    "date_joined": "2022-05-15",
+    "department_id": 5,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 6,
+    "first_name": "Frank",
+    "last_name": "Miller",
+    "email": "frank.miller@example.com",
+    "date_joined": "2022-06-10",
+    "department_id": 6,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 7,
+    "first_name": "Grace",
+    "last_name": "Wilson",
+    "email": "grace.wilson@example.com",
+    "date_joined": "2022-07-05",
+    "department_id": 7,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 8,
+    "first_name": "Henry",
+    "last_name": "Moore",
+    "email": "henry.moore@example.com",
+    "date_joined": "2022-08-20",
+    "department_id": 8,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 9,
+    "first_name": "Ivy",
+    "last_name": "Taylor",
+    "email": "ivy.taylor@example.com",
+    "date_joined": "2022-09-15",
+    "department_id": 9,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 10,
+    "first_name": "Jack",
+    "last_name": "Anderson",
+    "email": "jack.anderson@example.com",
+    "date_joined": "2022-10-10",
+    "department_id": 10,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 11,
+    "first_name": "Kelly",
+    "last_name": "Thomas",
+    "email": "kelly.thomas@example.com",
+    "date_joined": "2022-11-05",
+    "department_id": 11,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 12,
+    "first_name": "Liam",
+    "last_name": "Jackson",
+    "email": "liam.jackson@example.com",
+    "date_joined": "2022-12-20",
+    "department_id": 12,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 13,
+    "first_name": "Mia",
+    "last_name": "White",
+    "email": "mia.white@example.com",
+    "date_joined": "2023-01-15",
+    "department_id": 13,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 14,
+    "first_name": "Noah",
+    "last_name": "Harris",
+    "email": "noah.harris@example.com",
+    "date_joined": "2023-02-10",
+    "department_id": 14,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 15,
+    "first_name": "Olivia",
+    "last_name": "Martin",
+    "email": "olivia.martin@example.com",
+    "date_joined": "2023-03-05",
+    "department_id": 15,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 16,
+    "first_name": "Peter",
+    "last_name": "Thompson",
+    "email": "peter.thompson@example.com",
+    "date_joined": "2023-04-20",
+    "department_id": 16,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 17,
+    "first_name": "Quinn",
+    "last_name": "Garcia",
+    "email": "quinn.garcia@example.com",
+    "date_joined": "2023-05-15",
+    "department_id": 17,
+    "role": "Manager"
+  },
+  {
+    "employee_id": 18,
+    "first_name": "Riley",
+    "last_name": "Martinez",
+    "email": "riley.martinez@example.com",
+    "date_joined": "2023-06-10",
+    "department_id": 18,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 19,
+    "first_name": "Sophia",
+    "last_name": "Robinson",
+    "email": "sophia.robinson@example.com",
+    "date_joined": "2023-07-05",
+    "department_id": 19,
+    "role": "Staff"
+  },
+  {
+    "employee_id": 20,
+    "first_name": "Tyler",
+    "last_name": "Clark",
+    "email": "tyler.clark@example.com",
+    "date_joined": "2023-08-20",
+    "department_id": 20,
+    "role": "Manager"
+  }
+]

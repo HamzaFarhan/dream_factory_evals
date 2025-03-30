@@ -1,0 +1,162 @@
+[
+  {
+    "revenue_id": 1,
+    "product_id": 1,
+    "revenue_amount": 1050,
+    "revenue_date": "2022-03-15",
+    "quarter": 1,
+    "year": 2022
+  },
+  {
+    "revenue_id": 2,
+    "product_id": 2,
+    "revenue_amount": 1100,
+    "revenue_date": "2022-06-15",
+    "quarter": 2,
+    "year": 2022
+  },
+  {
+    "revenue_id": 3,
+    "product_id": 3,
+    "revenue_amount": 1150,
+    "revenue_date": "2022-09-15",
+    "quarter": 3,
+    "year": 2022
+  },
+  {
+    "revenue_id": 4,
+    "product_id": 4,
+    "revenue_amount": 1200,
+    "revenue_date": "2022-12-15",
+    "quarter": 4,
+    "year": 2022
+  },
+  {
+    "revenue_id": 5,
+    "product_id": 5,
+    "revenue_amount": 1250,
+    "revenue_date": "2022-03-15",
+    "quarter": 1,
+    "year": 2022
+  },
+  {
+    "revenue_id": 6,
+    "product_id": 6,
+    "revenue_amount": 1300,
+    "revenue_date": "2022-06-15",
+    "quarter": 2,
+    "year": 2022
+  },
+  {
+    "revenue_id": 7,
+    "product_id": 7,
+    "revenue_amount": 1350,
+    "revenue_date": "2022-09-15",
+    "quarter": 3,
+    "year": 2022
+  },
+  {
+    "revenue_id": 8,
+    "product_id": 8,
+    "revenue_amount": 1400,
+    "revenue_date": "2022-12-15",
+    "quarter": 4,
+    "year": 2022
+  },
+  {
+    "revenue_id": 9,
+    "product_id": 9,
+    "revenue_amount": 1450,
+    "revenue_date": "2022-03-15",
+    "quarter": 1,
+    "year": 2022
+  },
+  {
+    "revenue_id": 10,
+    "product_id": 10,
+    "revenue_amount": 1500,
+    "revenue_date": "2022-06-15",
+    "quarter": 2,
+    "year": 2022
+  },
+  {
+    "revenue_id": 11,
+    "product_id": 11,
+    "revenue_amount": 1550,
+    "revenue_date": "2022-09-15",
+    "quarter": 3,
+    "year": 2022
+  },
+  {
+    "revenue_id": 12,
+    "product_id": 12,
+    "revenue_amount": 1600,
+    "revenue_date": "2022-12-15",
+    "quarter": 4,
+    "year": 2022
+  },
+  {
+    "revenue_id": 13,
+    "product_id": 13,
+    "revenue_amount": 1650,
+    "revenue_date": "2022-03-15",
+    "quarter": 1,
+    "year": 2022
+  },
+  {
+    "revenue_id": 14,
+    "product_id": 14,
+    "revenue_amount": 1700,
+    "revenue_date": "2022-06-15",
+    "quarter": 2,
+    "year": 2022
+  },
+  {
+    "revenue_id": 15,
+    "product_id": 15,
+    "revenue_amount": 1750,
+    "revenue_date": "2022-09-15",
+    "quarter": 3,
+    "year": 2022
+  },
+  {
+    "revenue_id": 16,
+    "product_id": 16,
+    "revenue_amount": 1800,
+    "revenue_date": "2022-12-15",
+    "quarter": 4,
+    "year": 2022
+  },
+  {
+    "revenue_id": 17,
+    "product_id": 17,
+    "revenue_amount": 1850,
+    "revenue_date": "2022-03-15",
+    "quarter": 1,
+    "year": 2022
+  },
+  {
+    "revenue_id": 18,
+    "product_id": 18,
+    "revenue_amount": 1900,
+    "revenue_date": "2022-06-15",
+    "quarter": 2,
+    "year": 2022
+  },
+  {
+    "revenue_id": 19,
+    "product_id": 19,
+    "revenue_amount": 1950,
+    "revenue_date": "2022-09-15",
+    "quarter": 3,
+    "year": 2022
+  },
+  {
+    "revenue_id": 20,
+    "product_id": 20,
+    "revenue_amount": 2000,
+    "revenue_date": "2022-12-15",
+    "quarter": 4,
+    "year": 2022
+  }
+]

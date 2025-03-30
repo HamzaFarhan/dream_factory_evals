@@ -1,262 +1,407 @@
 {
-  "level_1_queries": {
-    "finance": [
-      {
-        "query_id": "FIN_Q1",
-        "question": "Can you tell me about our Enterprise Analytics Suite product? I need to know what category it falls under.",
-        "table": "FINANCE_PRODUCTS",
-        "filter_condition": "name = 'Enterprise Analytics Suite'",
-        "description": "Basic product information lookup.",
-        "expected_result_example": "{'name': 'Enterprise Analytics Suite', 'category': 'Software'}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('FINANCE_PRODUCTS') to examine the schema and available fields",
-          "Query FINANCE_PRODUCTS table filtering for name = 'Enterprise Analytics Suite'",
-          "Select the 'name' and 'category' fields"
-        ],
-        "recommended_tools": [
+  "hr": [
+    {
+      "query_id": "hr_l1_1",
+      "query": "What is the email address of Alice Johnson?",
+      "expected_response": {
+        "email": "alice.johnson@example.com"
+      },
+      "explanation": "Simple query retrieving a specific field from a single employee record.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "(first_name='Alice') AND (last_name='Johnson')"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_EMPLOYEES to find Alice Johnson and return her email address."
+    },
+    {
+      "query_id": "hr_l1_2",
+      "query": "How many departments do we have in the company?",
+      "expected_response": {
+        "department_count": 20
+      },
+      "explanation": "Basic count query on a single table with no filtering needed.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_departments"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_DEPARTMENTS and count the total number of records."
+    },
+    {
+      "query_id": "hr_l1_3",
+      "query": "List all department policies that were effective from January to June 2023.",
+      "expected_response": {
+        "policies": [
           {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
+            "policy_id": 15,
+            "title": "Logistics Policy",
+            "effective_date": "2023-03-01"
           },
           {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='FINANCE_PRODUCTS')"
+            "policy_id": 16,
+            "title": "Business Development Policy",
+            "effective_date": "2023-04-01"
           },
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_PRODUCTS', filter=\"name = 'Enterprise Analytics Suite'\", fields=['name', 'category'])"
+            "policy_id": 17,
+            "title": "Strategy Policy",
+            "effective_date": "2023-05-01"
+          },
+          {
+            "policy_id": 18,
+            "title": "Compliance Policy",
+            "effective_date": "2023-06-01"
           }
         ]
       },
-      {
-        "query_id": "FIN_Q2",
-        "question": "What was our Q1 revenue for product ID 2 this year?",
-        "table": "FINANCE_REVENUES",
-        "filter_condition": "product_id = 2 AND quarter = 1 AND year = 2025",
-        "description": "Revenue lookup for specific product and time period.",
-        "expected_result_example": "{'revenue_amount': 1750000.00}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('FINANCE_REVENUES') to examine available fields",
-          "Query FINANCE_REVENUES table filtering for product_id = 2, quarter = 1, and year = 2025",
-          "Select the 'revenue_amount' field"
-        ],
-        "recommended_tools": [
+      "explanation": "Filtering query that checks date ranges in a single table.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_policies",
+            "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-06-30')"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_POLICIES and filter for records where effective_date is between 2023-01-01 and 2023-06-30."
+    },
+    {
+      "query_id": "hr_l1_4",
+      "query": "List all employees who joined in 2023.",
+      "expected_response": {
+        "employees": [
+          { "employee_id": 13, "first_name": "Mia", "last_name": "White" },
+          { "employee_id": 14, "first_name": "Noah", "last_name": "Harris" },
+          { "employee_id": 15, "first_name": "Olivia", "last_name": "Martin" },
+          { "employee_id": 16, "first_name": "Peter", "last_name": "Thompson" },
+          { "employee_id": 17, "first_name": "Quinn", "last_name": "Garcia" },
+          { "employee_id": 18, "first_name": "Riley", "last_name": "Martinez" },
           {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
+            "employee_id": 19,
+            "first_name": "Sophia",
+            "last_name": "Robinson"
+          },
+          { "employee_id": 20, "first_name": "Tyler", "last_name": "Clark" }
+        ]
+      },
+      "explanation": "Filtering query that requires checking the date_joined field for all employees.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "date_joined LIKE '2023-%'"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_EMPLOYEES and filter for records where date_joined starts with '2023'."
+    },
+    {
+      "query_id": "hr_l1_5",
+      "query": "How many managers do we have in the company?",
+      "expected_response": {
+        "manager_count": 5
+      },
+      "explanation": "Simple count query with a filter condition on the role field.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "role='Manager'"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_EMPLOYEES and count records where role = 'Manager'."
+    }
+  ],
+  "finance": [
+    {
+      "query_id": "finance_l1_1",
+      "query": "What was the total revenue in Q4 2022?",
+      "expected_response": {
+        "total_revenue": 6000
+      },
+      "explanation": "Basic aggregation query that sums up revenue for a specific quarter and year.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "(quarter=4) AND (year=2022)"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_REVENUES with filter for quarter=4 and year=2022, then sum up all revenue_amount values."
+    },
+    {
+      "query_id": "finance_l1_2",
+      "query": "How many products are in the Electronics category?",
+      "expected_response": {
+        "product_count": 7
+      },
+      "explanation": "Basic count query that filters products by a specific category.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_products",
+            "filter": "category='Electronics'"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_PRODUCTS with filter for category='Electronics', then count the number of products returned."
+    },
+    {
+      "query_id": "finance_l1_3",
+      "query": "What is the total amount spent on Capital expenses in 2022?",
+      "expected_response": {
+        "total_amount": 2000
+      },
+      "explanation": "Filtering and aggregation query that sums expenses of a specific category within a year range.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "(category='Capital') AND (expense_date LIKE '2022-%')"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_EXPENSES with filter for category='Capital' and expense_date starting with '2022-', then sum up the amount values."
+    },
+    {
+      "query_id": "finance_l1_4",
+      "query": "What was the revenue amount for Product 10?",
+      "expected_response": {
+        "revenue_amount": 1500
+      },
+      "explanation": "Simple lookup query that retrieves financial information for a specific product.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "product_id=10"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_REVENUES with filter for product_id=10 and return the revenue_amount."
+    },
+    {
+      "query_id": "finance_l1_5",
+      "query": "What are the top 3 highest expenses in 2023?",
+      "expected_response": {
+        "expenses": [
+          {
+            "expense_id": 19,
+            "description": "Expense 19: Event Sponsorship",
+            "amount": 1000
           },
           {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='FINANCE_REVENUES')"
+            "expense_id": 18,
+            "description": "Expense 18: Software Upgrade",
+            "amount": 900
           },
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_REVENUES', filter='product_id = 2 AND quarter = 1 AND year = 2025', fields=['revenue_amount'])"
+            "expense_id": 17,
+            "description": "Expense 17: Travel",
+            "amount": 700
           }
         ]
       },
-      {
-        "query_id": "FIN_Q3",
-        "question": "How much did we spend on the leadership offsite in Miami earlier this year? When exactly was it held?",
-        "table": "FINANCE_EXPENSES",
-        "filter_condition": "description LIKE '%Offsite%Miami%' AND expense_date BETWEEN '2025-01-01' AND '2025-06-30'",
-        "description": "Expense detail lookup for a specific event.",
-        "expected_result_example": "{'description': 'Q4 Planning Offsite in Miami', 'amount': 12500.00, 'expense_date': '2025-01-15'}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('FINANCE_EXPENSES') to examine available fields",
-          "Query FINANCE_EXPENSES table filtering for description containing 'Offsite' and 'Miami', within first half of 2025",
-          "Select the 'description', 'amount', and 'expense_date' fields"
-        ],
-        "recommended_tools": [
-          {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
-          },
-          {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='FINANCE_EXPENSES')"
-          },
-          {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='FINANCE_EXPENSES', filter=\"description LIKE '%Offsite%Miami%' AND expense_date BETWEEN '2025-01-01' AND '2025-06-30'\", fields=['description', 'amount', 'expense_date'])"
+      "explanation": "Query that requires filtering, sorting, and limiting results.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "expense_date LIKE '2023-%'",
+            "order_field": "amount DESC",
+            "limit": 3
           }
-        ]
-      }
-    ],
-    "hr": [
-      {
-        "query_id": "HR_Q1",
-        "question": "I need to find an employee with the email sarah.johnson@example.com. What department are they in?",
-        "table": "HR_EMPLOYEES",
-        "filter_condition": "email = 'sarah.johnson@example.com'",
-        "description": "Employee lookup by email address.",
-        "expected_result_example": "{'first_name': 'Sarah', 'last_name': 'Johnson', 'department_id': 3}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('HR_EMPLOYEES') to examine available fields",
-          "Query HR_EMPLOYEES table filtering for email = 'sarah.johnson@example.com'",
-          "Select the employee information including 'department_id'"
-        ],
-        "recommended_tools": [
+        }
+      ],
+      "sample_solution": "Query FINANCE_EXPENSES with filter for expense_date starting with '2023-', sort by amount in descending order, and limit to 3 results."
+    }
+  ],
+  "ops": [
+    {
+      "query_id": "ops_l1_1",
+      "query": "How many machines are currently active?",
+      "expected_response": {
+        "active_machines": 11
+      },
+      "explanation": "Simple count query with status filtering.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "status='Active'"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES and count records where status='Active'."
+    },
+    {
+      "query_id": "ops_l1_2",
+      "query": "What is the current status of Machine 5?",
+      "expected_response": {
+        "machine_name": "Machine 5",
+        "status": "Active"
+      },
+      "explanation": "Basic lookup query that retrieves a specific field from a single machine record.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "machine_id=5"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES with filter for machine_id=5 and return the status field."
+    },
+    {
+      "query_id": "ops_l1_3",
+      "query": "List all machines installed in 2022.",
+      "expected_response": {
+        "machines": [
           {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
+            "machine_id": 13,
+            "machine_name": "Machine 13",
+            "location": "Fort Worth"
           },
           {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='HR_EMPLOYEES')"
+            "machine_id": 14,
+            "machine_name": "Machine 14",
+            "location": "Columbus"
           },
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_EMPLOYEES', filter=\"email = 'sarah.johnson@example.com'\", fields=['first_name', 'last_name', 'department_id'])"
+            "machine_id": 15,
+            "machine_name": "Machine 15",
+            "location": "Charlotte"
+          },
+          {
+            "machine_id": 16,
+            "machine_name": "Machine 16",
+            "location": "San Francisco"
+          },
+          {
+            "machine_id": 17,
+            "machine_name": "Machine 17",
+            "location": "Indianapolis"
+          },
+          {
+            "machine_id": 18,
+            "machine_name": "Machine 18",
+            "location": "Seattle"
+          },
+          {
+            "machine_id": 19,
+            "machine_name": "Machine 19",
+            "location": "Denver"
+          },
+          {
+            "machine_id": 20,
+            "machine_name": "Machine 20",
+            "location": "Washington"
           }
         ]
       },
-      {
-        "query_id": "HR_Q2",
-        "question": "What's the ID of the manager for our Sales department?",
-        "table": "HR_DEPARTMENTS",
-        "filter_condition": "name = 'Sales'",
-        "description": "Department management lookup.",
-        "expected_result_example": "{'name': 'Sales', 'manager_id': 205}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('HR_DEPARTMENTS') to examine available fields",
-          "Query HR_DEPARTMENTS table filtering for name = 'Sales'",
-          "Select the 'name' and 'manager_id' fields"
-        ],
-        "recommended_tools": [
+      "explanation": "Filtering query that checks date ranges in a single table.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "installation_date LIKE '2022-%'"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES and filter for records where installation_date starts with '2022-'."
+    },
+    {
+      "query_id": "ops_l1_4",
+      "query": "How many maintenance actions involved part replacements in 2023?",
+      "expected_response": {
+        "replacement_count": 2
+      },
+      "explanation": "Count query with multiple filter conditions.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_maintenance",
+            "filter": "(maintenance_action='Replaced part') AND (maintenance_date LIKE '2023-%')"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MAINTENANCE and count records where maintenance_action='Replaced part' and maintenance_date starts with '2023-'."
+    },
+    {
+      "query_id": "ops_l1_5",
+      "query": "Which machines are currently under maintenance?",
+      "expected_response": {
+        "machines": [
           {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
+            "machine_id": 2,
+            "machine_name": "Machine 2",
+            "location": "Los Angeles"
           },
           {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='HR_DEPARTMENTS')"
+            "machine_id": 6,
+            "machine_name": "Machine 6",
+            "location": "Philadelphia"
           },
           {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_DEPARTMENTS', filter=\"name = 'Sales'\", fields=['name', 'manager_id'])"
+            "machine_id": 11,
+            "machine_name": "Machine 11",
+            "location": "Austin"
+          },
+          {
+            "machine_id": 16,
+            "machine_name": "Machine 16",
+            "location": "San Francisco"
           }
         ]
       },
-      {
-        "query_id": "HR_Q3",
-        "question": "When does the new remote work policy start? What's it officially called?",
-        "table": "HR_POLICIES",
-        "filter_condition": "title LIKE '%Remote Work%'",
-        "description": "Policy information lookup.",
-        "expected_result_example": "{'title': 'Remote Work Guidelines', 'effective_date': '2025-03-01'}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('HR_POLICIES') to examine available fields",
-          "Query HR_POLICIES table filtering for title containing 'Remote Work'",
-          "Select the 'title' and 'effective_date' fields"
-        ],
-        "recommended_tools": [
-          {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
-          },
-          {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='HR_POLICIES')"
-          },
-          {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='HR_POLICIES', filter=\"title LIKE '%Remote Work%'\", fields=['title', 'effective_date'])"
+      "explanation": "Simple filter query on a single status value.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "status='Maintenance'"
           }
-        ]
-      }
-    ],
-    "operations": [
-      {
-        "query_id": "OPS_Q1",
-        "question": "Is Assembly Line 3 in Building C currently operational? I need to check its status.",
-        "table": "OPS_MACHINES",
-        "filter_condition": "machine_name = 'Assembly Line 3' AND location LIKE 'Building C%'",
-        "description": "Machine status check.",
-        "expected_result_example": "{'machine_name': 'Assembly Line 3', 'status': 'Operational', 'location': 'Building C, Floor 2'}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('OPS_MACHINES') to examine available fields",
-          "Query OPS_MACHINES table filtering for machine_name = 'Assembly Line 3' and location starting with 'Building C'",
-          "Select the 'machine_name', 'status', and 'location' fields"
-        ],
-        "recommended_tools": [
-          {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
-          },
-          {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='OPS_MACHINES')"
-          },
-          {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MACHINES', filter=\"machine_name = 'Assembly Line 3' AND location LIKE 'Building C%'\", fields=['machine_name', 'status', 'location'])"
-          }
-        ]
-      },
-      {
-        "query_id": "OPS_Q2",
-        "question": "Show me all maintenance activities done on machine ID 5 in February. Were any issues detected?",
-        "table": "OPS_MAINTENANCE",
-        "filter_condition": "machine_id = 5 AND maintenance_date BETWEEN '2025-02-01' AND '2025-02-28'",
-        "description": "Maintenance record lookup for specific machine.",
-        "expected_result_example": "{'maintenance_date': '2025-02-15', 'maintenance_action': 'HVAC Cooling System Replacement', 'anomaly_detected': false}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('OPS_MAINTENANCE') to examine available fields",
-          "Query OPS_MAINTENANCE table filtering for machine_id = 5 and February 2025 date range",
-          "Select the 'maintenance_date', 'maintenance_action', and 'anomaly_detected' fields"
-        ],
-        "recommended_tools": [
-          {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
-          },
-          {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='OPS_MAINTENANCE')"
-          },
-          {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MAINTENANCE', filter=\"machine_id = 5 AND maintenance_date BETWEEN '2025-02-01' AND '2025-02-28'\", fields=['maintenance_date', 'maintenance_action', 'anomaly_detected'])"
-          }
-        ]
-      },
-      {
-        "query_id": "OPS_Q3",
-        "question": "When was our automated packaging unit installed? Is it running properly?",
-        "table": "OPS_MACHINES",
-        "filter_condition": "machine_name LIKE '%packaging%' AND machine_name LIKE '%automat%'",
-        "description": "Equipment installation and status check.",
-        "expected_result_example": "{'machine_name': 'Automated Packaging Unit', 'installation_date': '2023-08-01', 'status': 'Operational'}",
-        "ground_truth_steps": [
-          "Use list_table_names() to discover available tables",
-          "Use get_table_schema('OPS_MACHINES') to examine available fields",
-          "Query OPS_MACHINES table filtering for machine_name containing 'packaging' and 'automat'",
-          "Select the 'machine_name', 'installation_date', and 'status' fields"
-        ],
-        "recommended_tools": [
-          {
-            "tool": "list_table_names",
-            "example": "list_table_names()"
-          },
-          {
-            "tool": "get_table_schema",
-            "example": "get_table_schema(table_name='OPS_MACHINES')"
-          },
-          {
-            "tool": "get_table_records",
-            "example": "get_table_records(table_name='OPS_MACHINES', filter=\"machine_name LIKE '%packaging%' AND machine_name LIKE '%automat%'\", fields=['machine_name', 'installation_date', 'status'])"
-          }
-        ]
-      }
-    ]
-  }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES with filter for status='Maintenance' and return the results."
+    }
+  ]
 }
