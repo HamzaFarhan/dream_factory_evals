@@ -13,7 +13,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "(first_name='Alice') AND (last_name='Johnson')"
+            "filter": "(first_name='Alice') AND (last_name='Johnson')",
+            "fields": "email"
           }
         }
       ],
@@ -43,24 +44,46 @@
       "expected_response": {
         "policies": [
           {
+            "policy_id": 13,
+            "title": "Support Policy",
+            "description": "Policy details for Support department.",
+            "effective_date": "2023-01-01",
+            "department_id": 13
+          },
+          {
+            "policy_id": 14,
+            "title": "Quality Assurance Policy",
+            "description": "Policy details for Quality Assurance department.",
+            "effective_date": "2023-02-01",
+            "department_id": 14
+          },
+          {
             "policy_id": 15,
             "title": "Logistics Policy",
-            "effective_date": "2023-03-01"
+            "description": "Policy details for Logistics department.",
+            "effective_date": "2023-03-01",
+            "department_id": 15
           },
           {
             "policy_id": 16,
             "title": "Business Development Policy",
-            "effective_date": "2023-04-01"
+            "description": "Policy details for Business Development department.",
+            "effective_date": "2023-04-01",
+            "department_id": 16
           },
           {
             "policy_id": 17,
             "title": "Strategy Policy",
-            "effective_date": "2023-05-01"
+            "description": "Policy details for Strategy department.",
+            "effective_date": "2023-05-01",
+            "department_id": 17
           },
           {
             "policy_id": 18,
             "title": "Compliance Policy",
-            "effective_date": "2023-06-01"
+            "description": "Policy details for Compliance department.",
+            "effective_date": "2023-06-01",
+            "department_id": 18
           }
         ]
       },
@@ -82,18 +105,78 @@
       "query": "List all employees who joined in 2023.",
       "expected_response": {
         "employees": [
-          { "employee_id": 13, "first_name": "Mia", "last_name": "White" },
-          { "employee_id": 14, "first_name": "Noah", "last_name": "Harris" },
-          { "employee_id": 15, "first_name": "Olivia", "last_name": "Martin" },
-          { "employee_id": 16, "first_name": "Peter", "last_name": "Thompson" },
-          { "employee_id": 17, "first_name": "Quinn", "last_name": "Garcia" },
-          { "employee_id": 18, "first_name": "Riley", "last_name": "Martinez" },
+          {
+            "employee_id": 13,
+            "first_name": "Mia",
+            "last_name": "White",
+            "email": "mia.white@example.com",
+            "date_joined": "2023-01-15",
+            "department_id": 13,
+            "role": "Staff"
+          },
+          {
+            "employee_id": 14,
+            "first_name": "Noah",
+            "last_name": "Harris",
+            "email": "noah.harris@example.com",
+            "date_joined": "2023-02-10",
+            "department_id": 14,
+            "role": "Manager"
+          },
+          {
+            "employee_id": 15,
+            "first_name": "Olivia",
+            "last_name": "Martin",
+            "email": "olivia.martin@example.com",
+            "date_joined": "2023-03-05",
+            "department_id": 15,
+            "role": "Staff"
+          },
+          {
+            "employee_id": 16,
+            "first_name": "Peter",
+            "last_name": "Thompson",
+            "email": "peter.thompson@example.com",
+            "date_joined": "2023-04-20",
+            "department_id": 16,
+            "role": "Staff"
+          },
+          {
+            "employee_id": 17,
+            "first_name": "Quinn",
+            "last_name": "Garcia",
+            "email": "quinn.garcia@example.com",
+            "date_joined": "2023-05-15",
+            "department_id": 17,
+            "role": "Manager"
+          },
+          {
+            "employee_id": 18,
+            "first_name": "Riley",
+            "last_name": "Martinez",
+            "email": "riley.martinez@example.com",
+            "date_joined": "2023-06-10",
+            "department_id": 18,
+            "role": "Staff"
+          },
           {
             "employee_id": 19,
             "first_name": "Sophia",
-            "last_name": "Robinson"
+            "last_name": "Robinson",
+            "email": "sophia.robinson@example.com",
+            "date_joined": "2023-07-05",
+            "department_id": 19,
+            "role": "Staff"
           },
-          { "employee_id": 20, "first_name": "Tyler", "last_name": "Clark" }
+          {
+            "employee_id": 20,
+            "first_name": "Tyler",
+            "last_name": "Clark",
+            "email": "tyler.clark@example.com",
+            "date_joined": "2023-08-20",
+            "department_id": 20,
+            "role": "Manager"
+          }
         ]
       },
       "explanation": "Filtering query that requires checking the date_joined field for all employees.",
@@ -103,17 +186,17 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "date_joined LIKE '2023-%'"
+            "filter": "(date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')"
           }
         }
       ],
-      "sample_solution": "Query HR_EMPLOYEES and filter for records where date_joined starts with '2023'."
+      "sample_solution": "Query HR_EMPLOYEES and filter for records where date_joined is between 2023-01-01 and 2023-12-31."
     },
     {
       "query_id": "hr_l1_5",
       "query": "How many managers do we have in the company?",
       "expected_response": {
-        "manager_count": 5
+        "manager_count": 7
       },
       "explanation": "Simple count query with a filter condition on the role field.",
       "tools_needed": ["get_table_records"],
@@ -122,7 +205,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "role='Manager'"
+            "filter": "role='Manager'",
+            "fields": "employee_id"
           }
         }
       ],
@@ -134,7 +218,7 @@
       "query_id": "finance_l1_1",
       "query": "What was the total revenue in Q4 2022?",
       "expected_response": {
-        "total_revenue": 6000
+        "total_revenue": 8000
       },
       "explanation": "Basic aggregation query that sums up revenue for a specific quarter and year.",
       "tools_needed": ["get_table_records"],
@@ -143,7 +227,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_revenues",
-            "filter": "(quarter=4) AND (year=2022)"
+            "filter": "(quarter=4) AND (year=2022)",
+            "fields": "revenue_amount"
           }
         }
       ],
@@ -162,7 +247,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_products",
-            "filter": "category='Electronics'"
+            "filter": "category='Electronics'",
+            "fields": "product_id"
           }
         }
       ],
@@ -172,7 +258,7 @@
       "query_id": "finance_l1_3",
       "query": "What is the total amount spent on Capital expenses in 2022?",
       "expected_response": {
-        "total_amount": 2000
+        "total_amount": 1700
       },
       "explanation": "Filtering and aggregation query that sums expenses of a specific category within a year range.",
       "tools_needed": ["get_table_records"],
@@ -181,11 +267,12 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_expenses",
-            "filter": "(category='Capital') AND (expense_date LIKE '2022-%')"
+            "filter": "(category='Capital') AND (expense_date >= '2022-01-01') AND (expense_date <= '2022-12-31')",
+            "fields": "amount"
           }
         }
       ],
-      "sample_solution": "Query FINANCE_EXPENSES with filter for category='Capital' and expense_date starting with '2022-', then sum up the amount values."
+      "sample_solution": "Query FINANCE_EXPENSES with filter for category='Capital' and expense_date between 2022-01-01 and 2022-12-31, then sum up the amount values."
     },
     {
       "query_id": "finance_l1_4",
@@ -200,7 +287,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_revenues",
-            "filter": "product_id=10"
+            "filter": "product_id=10",
+            "fields": "revenue_amount"
           }
         }
       ],
@@ -235,13 +323,13 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_expenses",
-            "filter": "expense_date LIKE '2023-%'",
+            "filter": "(expense_date >= '2023-01-01') AND (expense_date <= '2023-12-31')",
             "order_field": "amount DESC",
             "limit": 3
           }
         }
       ],
-      "sample_solution": "Query FINANCE_EXPENSES with filter for expense_date starting with '2023-', sort by amount in descending order, and limit to 3 results."
+      "sample_solution": "Query FINANCE_EXPENSES with filter for expense_date between 2023-01-01 and 2023-12-31, sort by amount in descending order, and limit to 3 results."
     }
   ],
   "ops": [
@@ -249,7 +337,7 @@
       "query_id": "ops_l1_1",
       "query": "How many machines are currently active?",
       "expected_response": {
-        "active_machines": 11
+        "active_machines": 12
       },
       "explanation": "Simple count query with status filtering.",
       "tools_needed": ["get_table_records"],
@@ -258,7 +346,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
-            "filter": "status='Active'"
+            "filter": "status='Active'",
+            "fields": "machine_id"
           }
         }
       ],
@@ -278,7 +367,8 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
-            "filter": "machine_id=5"
+            "filter": "machine_name='Machine 5'",
+            "fields": ["machine_name", "status"]
           }
         }
       ],
@@ -338,11 +428,11 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
-            "filter": "installation_date LIKE '2022-%'"
+            "filter": "(installation_date >= '2022-01-01') AND (installation_date <= '2022-12-31')"
           }
         }
       ],
-      "sample_solution": "Query OPS_MACHINES and filter for records where installation_date starts with '2022-'."
+      "sample_solution": "Query OPS_MACHINES and filter for records where installation_date is between 2022-01-01 and 2022-12-31."
     },
     {
       "query_id": "ops_l1_4",
@@ -357,11 +447,12 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_maintenance",
-            "filter": "(maintenance_action='Replaced part') AND (maintenance_date LIKE '2023-%')"
+            "filter": "(maintenance_action='Replaced part') AND (maintenance_date >= '2023-01-01') AND (maintenance_date <= '2023-12-31')",
+            "fields": "maintenance_id"
           }
         }
       ],
-      "sample_solution": "Query OPS_MAINTENANCE and count records where maintenance_action='Replaced part' and maintenance_date starts with '2023-'."
+      "sample_solution": "Query OPS_MAINTENANCE and count records where maintenance_action='Replaced part' and maintenance_date is between 2023-01-01 and 2023-12-31."
     },
     {
       "query_id": "ops_l1_5",
@@ -390,7 +481,7 @@
           }
         ]
       },
-      "explanation": "Simple filter query on a single status value.",
+      "explanation": "Simple filter query on a single status value, returning key identifying fields.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {

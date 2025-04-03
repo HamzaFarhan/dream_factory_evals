@@ -41,7 +41,9 @@ def table_url_with_headers(
     return dict(url=f"{base_url}/_table/{table_name}", headers={"X-DreamFactory-API-Key": dream_factory_api_key})
 
 
-def list_table_names(base_url: str | None = None, dream_factory_api_key: str | None = None) -> dict:
+def list_table_names(
+    base_url: str | None = None, dream_factory_api_key: str | None = None
+) -> dict[str, list[dict[str, str]]]:
     """List the names of all tables in the database.
 
     Returns:

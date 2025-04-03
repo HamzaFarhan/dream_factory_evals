@@ -1,0 +1,350 @@
+{
+  "hr": [
+    {
+      "query_id": "hr_l2_1",
+      "query": "What department does Alice Johnson work in?",
+      "expected_response": {
+        "employee": "Alice Johnson",
+        "department": "Sales"
+      },
+      "explanation": "Simple join between hr_employees and hr_departments to get an employee's department name.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "(first_name='Alice') AND (last_name='Johnson')",
+            "related": "hr_departments_by_department_id"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_EMPLOYEES for Alice Johnson and use the related parameter to join with HR_DEPARTMENTS to get the department name."
+    },
+    {
+      "query_id": "hr_l2_2",
+      "query": "Who is the manager of the Engineering department?",
+      "expected_response": {
+        "manager": {
+          "first_name": "Carol",
+          "last_name": "Williams",
+          "email": "carol.williams@example.com"
+        },
+        "department": "Engineering"
+      },
+      "explanation": "Join between departments and employees to find the manager of a specific department.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_departments",
+            "filter": "name='Engineering'"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "(department_id=3) AND (role='Manager')"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_DEPARTMENTS to find the Engineering department ID, then query HR_EMPLOYEES to find the employee with that department_id and role='Manager'."
+    },
+    {
+      "query_id": "hr_l2_3",
+      "query": "How many employees are in each department?",
+      "expected_response": {
+        "department_counts": [
+          { "department_name": "Sales", "employee_count": 1 },
+          { "department_name": "Marketing", "employee_count": 1 },
+          { "department_name": "Engineering", "employee_count": 1 },
+          { "department_name": "HR", "employee_count": 1 },
+          { "department_name": "Finance", "employee_count": 1 },
+          { "department_name": "Operations", "employee_count": 1 },
+          { "department_name": "Customer Service", "employee_count": 1 },
+          { "department_name": "IT", "employee_count": 1 },
+          { "department_name": "Legal", "employee_count": 1 },
+          { "department_name": "Procurement", "employee_count": 1 },
+          { "department_name": "R&D", "employee_count": 1 },
+          { "department_name": "Administration", "employee_count": 1 },
+          { "department_name": "Support", "employee_count": 1 },
+          { "department_name": "Quality Assurance", "employee_count": 1 },
+          { "department_name": "Logistics", "employee_count": 1 },
+          { "department_name": "Business Development", "employee_count": 1 },
+          { "department_name": "Strategy", "employee_count": 1 },
+          { "department_name": "Compliance", "employee_count": 1 },
+          { "department_name": "Production", "employee_count": 1 },
+          { "department_name": "Innovation", "employee_count": 1 }
+        ]
+      },
+      "explanation": "Join between departments and employees to count employees per department.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_departments",
+            "related": "hr_employees_by_department_id"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_DEPARTMENTS with related parameter for HR_EMPLOYEES and count the employees for each department."
+    },
+    {
+      "query_id": "hr_l2_4",
+      "query": "Which departments have a policy that became effective in 2023?",
+      "expected_response": {
+        "departments": [
+          {
+            "department_name": "Support",
+            "policy_title": "Support Policy",
+            "effective_date": "2023-01-01"
+          },
+          {
+            "department_name": "Quality Assurance",
+            "policy_title": "Quality Assurance Policy",
+            "effective_date": "2023-02-01"
+          },
+          {
+            "department_name": "Logistics",
+            "policy_title": "Logistics Policy",
+            "effective_date": "2023-03-01"
+          },
+          {
+            "department_name": "Business Development",
+            "policy_title": "Business Development Policy",
+            "effective_date": "2023-04-01"
+          },
+          {
+            "department_name": "Strategy",
+            "policy_title": "Strategy Policy",
+            "effective_date": "2023-05-01"
+          },
+          {
+            "department_name": "Compliance",
+            "policy_title": "Compliance Policy",
+            "effective_date": "2023-06-01"
+          },
+          {
+            "department_name": "Production",
+            "policy_title": "Production Policy",
+            "effective_date": "2023-07-01"
+          },
+          {
+            "department_name": "Innovation",
+            "policy_title": "Innovation Policy",
+            "effective_date": "2023-08-01"
+          }
+        ]
+      },
+      "explanation": "Join between departments and policies with date filtering.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_policies",
+            "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')",
+            "related": "hr_departments_by_department_id"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_POLICIES filtered by effective_date in 2023 and use related parameter to join with HR_DEPARTMENTS."
+    },
+    {
+      "query_id": "hr_l2_5",
+      "query": "List all managers along with their departments.",
+      "expected_response": {
+        "managers": [
+          {
+            "first_name": "Carol",
+            "last_name": "Williams",
+            "department": "Engineering"
+          },
+          {
+            "first_name": "Eve",
+            "last_name": "Davis",
+            "department": "Finance"
+          },
+          { "first_name": "Henry", "last_name": "Moore", "department": "IT" },
+          { "first_name": "Kelly", "last_name": "Thomas", "department": "R&D" },
+          {
+            "first_name": "Noah",
+            "last_name": "Harris",
+            "department": "Quality Assurance"
+          },
+          {
+            "first_name": "Quinn",
+            "last_name": "Garcia",
+            "department": "Strategy"
+          },
+          {
+            "first_name": "Tyler",
+            "last_name": "Clark",
+            "department": "Innovation"
+          }
+        ]
+      },
+      "explanation": "Join between employees and departments with role filtering.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "role='Manager'",
+            "related": "hr_departments_by_department_id"
+          }
+        }
+      ],
+      "sample_solution": "Query HR_EMPLOYEES filtered by role='Manager' and use related parameter to join with HR_DEPARTMENTS."
+    }
+  ],
+  "finance": [
+    {
+      "query_id": "finance_l2_1",
+      "query": "What is the revenue amount for Product 12, and what is its product category?",
+      "expected_response": {
+        "product_name": "Product 12",
+        "revenue_amount": 1600,
+        "category": "Hardware"
+      },
+      "explanation": "Simple join between finance_revenues and finance_products to get revenue and category information.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "product_id=12",
+            "fields": ["revenue_amount"],
+            "related": "finance_products_by_product_id"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_REVENUES filtered by product_id=12 and use related parameter to join with FINANCE_PRODUCTS to get the category."
+    },
+    {
+      "query_id": "finance_l2_2",
+      "query": "Compare the total revenue of Electronics products to Software products in Q2 2022.",
+      "expected_response": {
+        "electronics_revenue": 1500,
+        "software_revenue": 2800
+      },
+      "explanation": "Join between products and revenues with category filtering and aggregation.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "(quarter=2) AND (year=2022)",
+            "fields": "revenue_amount",
+            "related": "finance_products_by_product_id"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_REVENUES for Q2 2022 with related parameter for FINANCE_PRODUCTS, then group and sum revenue by category, focusing on Electronics and Software."
+    },
+    {
+      "query_id": "finance_l2_3",
+      "query": "What was the profit (revenue minus expenses) for Q3 2022?",
+      "expected_response": {
+        "total_revenue": 7750,
+        "total_expenses": 2000,
+        "profit": 5750
+      },
+      "explanation": "Joining data from two different tables (revenues and expenses) and performing a calculation.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "(quarter=3) AND (year=2022)",
+            "fields": "revenue_amount"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "(expense_date >= '2022-07-01') AND (expense_date <= '2022-09-30')",
+            "fields": "amount"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_REVENUES for Q3 2022 to get total revenue, query FINANCE_EXPENSES for Q3 2022 to get total expenses, then calculate profit as revenue minus expenses."
+    },
+    {
+      "query_id": "finance_l2_4",
+      "query": "List all Hardware products with their revenue in 2022, sorted by revenue amount.",
+      "expected_response": {
+        "hardware_revenues": [
+          {
+            "product_name": "Product 18",
+            "revenue_amount": 1900
+          },
+          {
+            "product_name": "Product 15",
+            "revenue_amount": 1750
+          },
+          {
+            "product_name": "Product 12",
+            "revenue_amount": 1600
+          },
+          {
+            "product_name": "Product 9",
+            "revenue_amount": 1450
+          },
+          {
+            "product_name": "Product 6",
+            "revenue_amount": 1300
+          },
+          {
+            "product_name": "Product 3",
+            "revenue_amount": 1150
+          }
+        ]
+      },
+      "explanation": "Join between products and revenues with category filtering and sorting.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_products",
+            "filter": "category='Hardware'",
+            "fields": ["name", "product_id"],
+            "related": "finance_revenues_by_product_id",
+            "order_field": "finance_revenues_by_product_id.revenue_amount DESC"
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_PRODUCTS filtered by category='Hardware' with related parameter for FINANCE_REVENUES, then sort by revenue_amount."
+    },
+    {
+      "query_id": "finance_l2_5",
+      "query": "Compare the expenses for Capital vs Operational categories in the first half of 2022.",
+      "expected_response": {
+        "capital_expenses": 1200,
+        "operational_expenses": 1050
+      },
+      "explanation": "Analysis query that groups expenses by category for a specific time period.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "(expense_date >= '2022-01-01') AND (expense_date <= '2022-06-30')",
+            "fields": ["amount", "category"]
+          }
+        }
+      ],
+      "sample_solution": "Query FINANCE_EXPENSES for first half of 2022, group by category, and sum the amounts for Capital and Operational categories."
+    }
+  ]
+}
