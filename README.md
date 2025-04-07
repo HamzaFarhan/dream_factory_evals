@@ -27,3 +27,5 @@ GEMINI_API_KEY=
 cd src/dream_factory_evals
 uv run df_agent.py
 ```
+
+You can also have a look and give feedback on the `query-generation.mdc` cursor rules which is basically the prompt for generating the queries.
