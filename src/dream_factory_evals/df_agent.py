@@ -101,9 +101,7 @@ class Task(BaseModel):
         return res.strip()
 
 
-def setup_task_and_agent(
-    query: Query[ResultT], user_role: Role, model: KnownModelName = "google-gla:gemini-2.0-flash"
-) -> tuple[Task, Agent]:
+def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownModelName) -> tuple[Task, Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -119,7 +117,7 @@ def setup_task_and_agent(
 
     tables_mcp_server = MCPServerStdio(
         command="uv",
-        args=["run", "/home/hamza/dev/dream_factory_evals/src/dream_factory_evals/df_mcp.py"],
+        args=["run", "df_mcp.py"],
         env={
             "DREAM_FACTORY_BASE_URL": os.environ["DREAM_FACTORY_BASE_URL"],
             "DREAM_FACTORY_API_KEY": os.environ[f"DREAM_FACTORY_{user_role.upper()}_API_KEY"],
@@ -163,3 +161,23 @@ async def task(inputs: Query, user_role: Role, model: KnownModelName) -> QueryRe
                 if agent.is_end_node(node):
                     res = node.data
         return QueryResult(result=res, tool_calls=tool_calls)
+
+
+async def main():
+    from pydantic import BaseModel
+
+    class Email(BaseModel):
+        email: str
+
+    inputs = Query(query="What is the email address of Alice Johnson?", result_type=Email)
+    user_role = Role.HR
+    model = "google-gla:gemini-2.0-flash"
+    result = await task(inputs=inputs, user_role=user_role, model=model)
+    print(f"\n---\nRESULT:\n\n{result.result}\n\n---\n")
+    print(f"TOOL CALLS:\n\n{result.tool_calls}\n---\n")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())

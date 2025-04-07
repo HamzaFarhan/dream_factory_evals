@@ -8,7 +8,7 @@ import logfire
 from pydantic_evals import Case, Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
 
-from dream_factory_evals.df_evals import Query, QueryResult, Role, ToolCall, task
+from dream_factory_evals.df_agent import Query, QueryResult, Role, ToolCall, task
 from dream_factory_evals.hr_1_return_types import (
     DepartmentCount,
     Email,
