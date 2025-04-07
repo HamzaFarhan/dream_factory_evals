@@ -3,7 +3,6 @@ description:
 globs: *py,*.ipynb
 alwaysApply: false
 ---
-
 # Python Style
 
 - Python 3.12+

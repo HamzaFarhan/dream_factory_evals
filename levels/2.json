@@ -346,5 +346,145 @@
       ],
       "sample_solution": "Query FINANCE_EXPENSES for first half of 2022, group by category, and sum the amounts for Capital and Operational categories."
     }
+  ],
+  "ops": [
+    {
+      "query_id": "ops_l2_1",
+      "query": "When was the last maintenance performed on Machine 5 and what action was taken?",
+      "expected_response": {
+        "machine_name": "Machine 5",
+        "machine_status": "Active",
+        "last_maintenance_date": "2022-05-05",
+        "maintenance_action": "Replaced part",
+        "notes": "Minor malfunction fixed."
+      },
+      "explanation": "Simple join between ops_machines and ops_maintenance to get the latest maintenance information for a specific machine.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_maintenance",
+            "filter": "machine_id=5",
+            "order_field": "maintenance_date DESC",
+            "limit": 1,
+            "related": "ops_machines_by_machine_id"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MAINTENANCE filtered by machine_id=5, ordered by maintenance_date DESC with limit 1, and use related parameter to join with OPS_MACHINES."
+    },
+    {
+      "query_id": "ops_l2_2",
+      "query": "How many machines are currently in 'Maintenance' status, and where are they located?",
+      "expected_response": {
+        "maintenance_count": 4,
+        "machines": [
+          {
+            "machine_name": "Machine 2",
+            "location": "Los Angeles"
+          },
+          {
+            "machine_name": "Machine 6",
+            "location": "Philadelphia"
+          },
+          {
+            "machine_name": "Machine 11",
+            "location": "Austin"
+          },
+          {
+            "machine_name": "Machine 16",
+            "location": "San Francisco"
+          }
+        ]
+      },
+      "explanation": "Filtering machines by status and counting them with location information.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "status='Maintenance'",
+            "fields": ["machine_name", "location"]
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES filtered by status='Maintenance' to get machine names and locations, then count the results."
+    },
+    {
+      "query_id": "ops_l2_3",
+      "query": "Compare the number of maintenance actions categorized as 'Routine check' versus 'Replaced part' in 2022.",
+      "expected_response": {
+        "routine_check_count": 6,
+        "replaced_part_count": 3
+      },
+      "explanation": "Filtering maintenance records by date range and action type, then counting each group.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_maintenance",
+            "filter": "(maintenance_date >= '2022-01-01') AND (maintenance_date <= '2022-12-31')",
+            "fields": ["maintenance_action"]
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MAINTENANCE for records in 2022, then count occurrences of each maintenance_action type, focusing on 'Routine check' and 'Replaced part'."
+    },
+    {
+      "query_id": "ops_l2_4",
+      "query": "List all machines with anomalies detected during maintenance in 2023, along with the maintenance notes.",
+      "expected_response": {
+        "machines_with_anomalies": [
+          {
+            "machine_name": "Machine 15",
+            "maintenance_date": "2023-03-25",
+            "notes": "Component replaced due to wear."
+          },
+          {
+            "machine_name": "Machine 20",
+            "maintenance_date": "2023-08-20",
+            "notes": "Replaced due to malfunction."
+          }
+        ]
+      },
+      "explanation": "Join between machines and maintenance records with filtering on date and anomaly status.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_maintenance",
+            "filter": "(maintenance_date >= '2023-01-01') AND (maintenance_date <= '2023-12-31') AND (anomaly_detected=true)",
+            "fields": ["maintenance_date", "notes", "machine_id"],
+            "related": "ops_machines_by_machine_id"
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MAINTENANCE filtered by date range in 2023 and anomaly_detected=true, with related parameter to join with OPS_MACHINES."
+    },
+    {
+      "query_id": "ops_l2_5",
+      "query": "What is the average age (in years) of machines in 'Active' status as of December 31, 2023?",
+      "expected_response": {
+        "average_age_years": 2.15,
+        "active_machine_count": 12
+      },
+      "explanation": "Filtering machines by status and calculating age based on installation date.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "(status='Active') AND (installation_date <= '2023-12-31')",
+            "fields": ["installation_date"]
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES filtered by status='Active', get installation_date for each, calculate age as of 2023-12-31, then average the ages."
+    }
   ]
 }

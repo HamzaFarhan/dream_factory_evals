@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Generating Benchmarking Dataset
+
+My AI Agent will have access to the tools in [df_mcp.py](mdc:src/dream_factory_evals/df_mcp.py). Given the [project_framework.md](mdc:project_docs/project_framework.md) and [project_milestones.md](mdc:project_docs/project_milestones.md) project documents, I want to create the dataset for benchmarking my agent.
+I want 5 queries (dataset items) for each level (1-4)
+In the data folder, I have extracted all of the data for you in jsons. This is just for you, the AI Agent will access this using the tools. But you can see all of it so that you can accurately create the dataset. You also have access to the [schema.md](mdc:data/schema.md) for reference. Very important for joins using the 'related' param. Notice that while we can use multiple tables in the 'related' param, we can only use the ones that are defined under the related key in the schema.
+Also, use proper related naming alias convention. So 'hr_departments_by_department_id' instead of 'hr_departments'.
+Add the dataset items in a file called <level>.json in the levels folder.
+Make sure to look at the project documents to see how these queries should be for each level. The documents also have some sample queries in them. For complex queries, efficient tool use is also important. The model will be penalized for using more steps than necessary. So the dataset should have the most efifcient steps. So for example, prefer using the 'related' params instead of muliple calls if you can.
+Also, since it's an AI Agent, tokens should also be used efficiently. So if only a subset of fields are required for a query, use those. No need to load the other fields.
+Be smart. Stop and think about each query.
+And they should be realistic and actually based on the data in the data folder. So that I can accurately benchamrk my AI Agent that will get these queries and use the tools in df_mcp.
+You can also look at the [df_agent.py](mdc:src/dream_factory_evals/df_agent.py) file to get an idea of how the agent is implemented.
+If queries for a field already exist at lower levels, you may look at them to make sure you don't repeat any and maybe even make a more complex version of the lower level query.

@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Verify Benchmarking Dataset
+
+Given the json data files and the tools in [df_mcp.py](mdc:src/dream_factory_evals/df_mcp.py), verify the queries and expected responses. This is a dataset that will be used to benchmark an AI Agent. So it should be accurate.

@@ -3,7 +3,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from dream_factory_evals.df_mcp import get_params, get_table_records, get_table_records_by_ids
+from dream_factory_evals.df_mcp import (
+    get_params,
+    get_table_records,
+    get_table_records_by_ids,
+    get_table_schema,
+    list_table_names,
+)
 
 BASE_URL = os.environ["DREAM_FACTORY_BASE_URL"]
 HEADERS = {
@@ -267,3 +273,111 @@ def test_hr_employees_ordering(order_field, expected_ids):
         assert len(result["resource"]) == 5
         result_ids = [emp["employee_id"] for emp in result["resource"]]
         assert result_ids == expected_ids
+
+
+# Test list_table_names
+def test_list_table_names(mock_httpx_get):
+    expected_tables = {
+        "resource": [
+            {"name": "hr_departments"},
+            {"name": "hr_employees"},
+            {"name": "hr_policies"},
+            {"name": "finance_products"},
+            {"name": "finance_revenues"},
+            {"name": "finance_expenses"},
+            {"name": "ops_machines"},
+            {"name": "ops_maintenance"},
+        ]
+    }
+
+    mock_response = MagicMock()
+    mock_response.json.return_value = expected_tables
+    mock_httpx_get.return_value = mock_response
+
+    result = list_table_names()
+
+    mock_httpx_get.assert_called_once_with(
+        url=f"{BASE_URL}/_table",
+        headers=HEADERS,
+    )
+
+    assert result == expected_tables
+    assert len(result["resource"]) == 8
+    assert result["resource"][0]["name"] == "hr_departments"
+
+
+# Test get_table_schema
+def test_get_table_schema(mock_httpx_get):
+    expected_schema = {
+        "name": "hr_employees",
+        "label": "Hr Employees",
+        "plural": "Hr Employees",
+        "primary_key": "employee_id",
+        "name_field": None,
+        "field": [
+            {
+                "name": "employee_id",
+                "label": "Employee Id",
+                "type": "integer",
+                "db_type": "integer",
+                "length": None,
+                "precision": 10,
+                "scale": 0,
+                "default": None,
+                "required": True,
+                "allow_null": False,
+                "fixed_length": False,
+                "supports_multibyte": False,
+                "auto_increment": True,
+                "is_primary_key": True,
+                "is_unique": True,
+                "is_index": True,
+                "is_foreign_key": False,
+                "ref_table": None,
+                "ref_field": None,
+                "validation": None,
+                "value": [],
+            },
+            {
+                "name": "first_name",
+                "label": "First Name",
+                "type": "string",
+                "db_type": "string",
+                "length": 255,
+                "precision": None,
+                "scale": None,
+                "default": None,
+                "required": True,
+                "allow_null": False,
+                "fixed_length": False,
+                "supports_multibyte": True,
+                "auto_increment": False,
+                "is_primary_key": False,
+                "is_unique": False,
+                "is_index": False,
+                "is_foreign_key": False,
+                "ref_table": None,
+                "ref_field": None,
+                "validation": None,
+                "value": [],
+            },
+        ],
+    }
+
+    mock_response = MagicMock()
+    mock_response.json.return_value = expected_schema
+    mock_httpx_get.return_value = mock_response
+
+    result = get_table_schema(table_name="hr_employees")
+
+    mock_httpx_get.assert_called_once_with(
+        url=f"{BASE_URL}/_schema/hr_employees",
+        headers=HEADERS,
+    )
+
+    assert result == expected_schema
+    assert result["name"] == "hr_employees"
+    assert result["primary_key"] == "employee_id"
+    assert len(result["field"]) == 2
+    assert result["field"][0]["name"] == "employee_id"
+    assert result["field"][1]["name"] == "first_name"

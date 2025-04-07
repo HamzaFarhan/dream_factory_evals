@@ -120,6 +120,8 @@ def get_table_records(
         - 'STARTS WITH': Same as LIKE 'value%'
         - 'ENDS WITH': Same as LIKE '%value'
 
+        REMINDER: When using an operator, you must include the parentheses.
+
         Examples:
         - (first_name='John') AND (last_name='Smith')
         - (first_name='John') OR (first_name='Jane')
