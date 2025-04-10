@@ -11,9 +11,9 @@ In the data folder, I have extracted all of the data for you in jsons. This is j
 hr can only access hr tables, finance can only access finance tables, and ops can only access ops tables.
 Also, use proper related naming alias convention. So 'hr_departments_by_department_id' instead of 'hr_departments'.
 Add the dataset items in a file called <level>.json in the levels folder.
-Make sure to look at the project documents to see how these queries should be for each level. The documents also have some sample queries in them. For complex queries, efficient tool use is also important. The model will be penalized for using more steps than necessary. So the dataset should have the most efifcient steps. So for example, prefer using the 'related' params instead of muliple calls if you can.
+Make sure to look at the project documents to see how these queries should be for each level. The documents also have some sample queries in them. For complex queries, efficient tool use is also important. The model will be penalized for using more steps than necessary. So the dataset should have the most efficient steps. So for example, prefer using the 'related' params instead of multiple calls if you can.
 Also, since it's an AI Agent, tokens should also be used efficiently. So if only a subset of fields are required for a query, use those. No need to load the other fields.
 Be smart. Stop and think about each query.
-And they should be realistic and actually based on the data in the data folder. So that I can accurately benchamrk my AI Agent that will get these queries and use the tools in df_mcp.
+And they should be realistic and actually based on the data in the data folder. So that I can accurately benchmark my AI Agent that will get these queries and use the tools in df_mcp.
 You can also look at the [df_agent.py](mdc:src/dream_factory_evals/df_agent.py) file to get an idea of how the agent is implemented.
 If queries for a field already exist at lower levels, you may look at them to make sure you don't repeat any and maybe even make a more complex version of the lower level query.
