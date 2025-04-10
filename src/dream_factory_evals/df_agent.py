@@ -158,9 +158,7 @@ async def task(inputs: Query, user_role: Role, model: KnownModelName) -> QueryRe
                     for part in node.model_response.parts:
                         if isinstance(part, ToolCallPart):
                             tool_calls.append(ToolCall(tool=part.tool_name, params=part.args_as_dict()))
-                if agent.is_end_node(node):
-                    res = node.data
-        return QueryResult(result=res, tool_calls=tool_calls)
+        return QueryResult(result=agent_run.result, tool_calls=tool_calls)
 
 
 async def main():

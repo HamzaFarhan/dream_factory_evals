@@ -195,296 +195,244 @@
     },
     {
       "query_id": "hr_l3_4",
-      "query": "Analyze the relationship between policy implementation dates and department-specific capital expenses across 2022-2023.",
+      "query": "Analyze the distribution of employees by role across departments that have policies implemented in 2023 and identify which departments have the most balanced ratio of managers to staff.",
       "expected_response": {
-        "policy_expense_correlation": [
+        "role_distribution_analysis": [
           {
-            "department_name": "Engineering",
-            "policy_date": "2022-03-01",
-            "capital_expenses": [
-              {
-                "description": "Expense 3: Marketing Campaign",
-                "amount": 750,
-                "expense_date": "2022-04-15",
-                "days_after_policy": 45
-              }
-            ],
-            "total_capital_expense": 750,
-            "correlation": "Capital expense follows policy implementation by 45 days"
+            "department_name": "Support",
+            "policy_date": "2023-01-01",
+            "managers": 0,
+            "staff": 1,
+            "manager_to_staff_ratio": 0,
+            "balanced_rating": "No managers"
           },
           {
-            "department_name": "Operations",
-            "policy_date": "2022-06-01",
-            "capital_expenses": [
-              {
-                "description": "Expense 5: Equipment Maintenance",
-                "amount": 450,
-                "expense_date": "2022-06-20",
-                "days_after_policy": 19
-              }
-            ],
-            "total_capital_expense": 450,
-            "correlation": "Capital expense follows policy implementation by 19 days"
+            "department_name": "Quality Assurance",
+            "policy_date": "2023-02-01",
+            "managers": 1,
+            "staff": 0,
+            "manager_to_staff_ratio": null,
+            "balanced_rating": "No staff"
           },
           {
-            "department_name": "Administration",
-            "policy_date": "2022-12-01",
-            "capital_expenses": [
-              {
-                "description": "Expense 11: Maintenance",
-                "amount": 500,
-                "expense_date": "2022-12-04",
-                "days_after_policy": 3
-              },
-              {
-                "description": "Expense 12: Office Renovation",
-                "amount": 800,
-                "expense_date": "2023-01-06",
-                "days_after_policy": 36
-              }
-            ],
-            "total_capital_expense": 1300,
-            "correlation": "Multiple capital expenses follow policy implementation with average delay of 19.5 days"
+            "department_name": "Logistics",
+            "policy_date": "2023-03-01",
+            "managers": 0,
+            "staff": 1,
+            "manager_to_staff_ratio": 0,
+            "balanced_rating": "No managers"
+          },
+          {
+            "department_name": "Business Development",
+            "policy_date": "2023-04-01",
+            "managers": 0,
+            "staff": 1,
+            "manager_to_staff_ratio": 0,
+            "balanced_rating": "No managers"
           },
           {
             "department_name": "Strategy",
             "policy_date": "2023-05-01",
-            "capital_expenses": [
-              {
-                "description": "Expense 18: Software Upgrade",
-                "amount": 900,
-                "expense_date": "2023-07-18",
-                "days_after_policy": 78
-              }
-            ],
-            "total_capital_expense": 900,
-            "correlation": "Capital expense follows policy implementation by 78 days"
+            "managers": 1,
+            "staff": 0,
+            "manager_to_staff_ratio": null,
+            "balanced_rating": "No staff"
+          },
+          {
+            "department_name": "Compliance",
+            "policy_date": "2023-06-01",
+            "managers": 0,
+            "staff": 1,
+            "manager_to_staff_ratio": 0,
+            "balanced_rating": "No managers"
+          },
+          {
+            "department_name": "Production",
+            "policy_date": "2023-07-01",
+            "managers": 0,
+            "staff": 1,
+            "manager_to_staff_ratio": 0,
+            "balanced_rating": "No managers"
+          },
+          {
+            "department_name": "Innovation",
+            "policy_date": "2023-08-01",
+            "managers": 1,
+            "staff": 0,
+            "manager_to_staff_ratio": null,
+            "balanced_rating": "No staff"
           }
         ],
-        "insight": "Capital expenses tend to follow policy implementations with variable delays. Administration showed highest capital expenses after policy updates."
+        "insight": "None of the departments with 2023 policies have both managers and staff. Three departments (Quality Assurance, Strategy, Innovation) have only managers, while five departments have only staff members. This suggests potential management or staffing imbalances across departments with newly implemented policies."
       },
-      "explanation": "Cross-departmental analysis involving HR policy data and finance expense data with correlation analysis between policy dates and subsequent capital expenditures.",
+      "explanation": "Complex analysis involving multiple tables (departments, policies, employees) with role-based filtering, date filtering, and ratio calculations.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_policies",
-            "filter": "(effective_date >= '2022-01-01') AND (effective_date <= '2023-12-31')",
+            "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')",
             "related": "hr_departments_by_department_id"
           }
         },
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "finance_expenses",
-            "filter": "category = 'Capital'"
+            "table_name": "hr_employees",
+            "filter": "department_id IN (13, 14, 15, 16, 17, 18, 19, 20)"
           }
         }
       ],
-      "sample_solution": "Query HR_POLICIES with related HR_DEPARTMENTS, then query FINANCE_EXPENSES filtered for capital expenses, analyze temporal relationships between policy implementations and subsequent capital expenditures."
+      "sample_solution": "Query HR_POLICIES filtered by effective_date in 2023 with related HR_DEPARTMENTS, then query HR_EMPLOYEES filtered by the relevant department_ids, and analyze role distribution to determine manager-to-staff ratios for each department."
     },
     {
       "query_id": "hr_l3_5",
-      "query": "Determine which departments had the highest employee retention rate from 2022 to 2023, and correlate this with policy updates and manager changes.",
+      "query": "Identify departments where the policy was implemented before any employees joined, and calculate the average delay between policy implementation and the first employee joining these departments.",
       "expected_response": {
-        "department_retention_analysis": [
+        "policy_first_departments": [
+          {
+            "department_name": "Sales",
+            "policy_effective_date": "2022-01-01",
+            "first_employee_joined": "2022-01-15",
+            "days_delay": 14,
+            "employee_name": "Alice Johnson",
+            "employee_role": "Staff"
+          },
+          {
+            "department_name": "Marketing",
+            "policy_effective_date": "2022-02-01",
+            "first_employee_joined": "2022-02-10",
+            "days_delay": 9,
+            "employee_name": "Bob Smith",
+            "employee_role": "Staff"
+          },
           {
             "department_name": "Engineering",
-            "employees_2022": 1,
-            "employees_2023": 1,
-            "retention_rate": 100,
-            "manager_name": "Carol Williams",
-            "manager_joined": "2022-03-05",
-            "policy_updates": [
-              {
-                "policy_title": "Engineering Policy",
-                "effective_date": "2022-03-01"
-              }
-            ]
+            "policy_effective_date": "2022-03-01",
+            "first_employee_joined": "2022-03-05",
+            "days_delay": 4,
+            "employee_name": "Carol Williams",
+            "employee_role": "Manager"
           },
           {
             "department_name": "HR",
-            "employees_2022": 1,
-            "employees_2023": 1,
-            "retention_rate": 100,
-            "manager_name": null,
-            "manager_joined": null,
-            "policy_updates": [
-              {
-                "policy_title": "HR Policy",
-                "effective_date": "2022-04-01"
-              }
-            ]
+            "policy_effective_date": "2022-04-01",
+            "first_employee_joined": "2022-04-20",
+            "days_delay": 19,
+            "employee_name": "David Brown",
+            "employee_role": "Staff"
+          },
+          {
+            "department_name": "Finance",
+            "policy_effective_date": "2022-05-01",
+            "first_employee_joined": "2022-05-15",
+            "days_delay": 14,
+            "employee_name": "Eve Davis",
+            "employee_role": "Manager"
+          },
+          {
+            "department_name": "Operations",
+            "policy_effective_date": "2022-06-01",
+            "first_employee_joined": "2022-06-10",
+            "days_delay": 9,
+            "employee_name": "Frank Miller",
+            "employee_role": "Staff"
+          },
+          {
+            "department_name": "Customer Service",
+            "policy_effective_date": "2022-07-01",
+            "first_employee_joined": "2022-07-05",
+            "days_delay": 4,
+            "employee_name": "Grace Wilson",
+            "employee_role": "Staff"
           },
           {
             "department_name": "IT",
-            "employees_2022": 1,
-            "employees_2023": 1,
-            "retention_rate": 100,
-            "manager_name": "Henry Moore",
-            "manager_joined": "2022-08-20",
-            "policy_updates": [
-              {
-                "policy_title": "IT Policy",
-                "effective_date": "2022-08-01"
-              }
-            ]
+            "policy_effective_date": "2022-08-01",
+            "first_employee_joined": "2022-08-20",
+            "days_delay": 19,
+            "employee_name": "Henry Moore",
+            "employee_role": "Manager"
           }
         ],
-        "insight": "Departments with both management stability and clear policy implementation (Engineering, IT) show perfect retention. HR maintains perfect retention despite lacking a manager, suggesting policy clarity may compensate for management gaps."
+        "average_delay": 11.5,
+        "insight": "All departments established in 2022 had their policies implemented before any employees joined, with an average delay of 11.5 days between policy implementation and the first employee joining. Departments that first hired managers tended to have more varied delays (4-19 days) compared to those that first hired staff."
       },
-      "explanation": "Complex longitudinal analysis of employee retention correlated with management appointments and policy implementations.",
+      "explanation": "Complex analysis requiring temporal sequencing of policy implementation dates versus employee join dates across departments, with date-difference calculations.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_employees",
-            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2022-12-31')",
-            "related": "hr_departments_by_department_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_employees",
-            "filter": "(date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
-            "related": "hr_departments_by_department_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
             "table_name": "hr_policies",
+            "fields": ["policy_id", "title", "effective_date", "department_id"],
+            "order_by": "effective_date ASC",
+            "related": "hr_departments_by_department_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "date_joined",
+              "department_id",
+              "role"
+            ],
+            "order_by": "date_joined ASC",
             "related": "hr_departments_by_department_id"
           }
         }
       ],
-      "sample_solution": "Query HR_EMPLOYEES for 2022 and 2023 separately with related HR_DEPARTMENTS, query HR_POLICIES with related HR_DEPARTMENTS, then calculate retention rates per department and correlate with policy updates and manager presence."
+      "sample_solution": "Query HR_POLICIES with related HR_DEPARTMENTS, then query HR_EMPLOYEES with related HR_DEPARTMENTS, identify departments where policy effective_date is earlier than the earliest employee date_joined, calculate date differences, and determine the average delay."
     }
   ],
   "finance": [
     {
       "query_id": "finance_l3_1",
-      "query": "Find the quarterly revenue trends for all electronics products in 2022, and analyze if there's any correlation with expenses in the same category.",
+      "query": "Compare the performance of software products against their capital expenses in 2022. For each quarter, show the total software revenue and any capital expenses made in that period, and calculate the return on investment (ROI).",
       "expected_response": {
         "quarterly_analysis": [
           {
             "quarter": "Q1 2022",
-            "electronics_revenue": 5950,
-            "electronics_products": [
-              "Product 1",
-              "Product 4",
-              "Product 7",
-              "Product 10",
-              "Product 13",
-              "Product 16",
-              "Product 19"
-            ],
-            "related_expenses": 250,
-            "correlation": "Low expenses relative to revenue"
+            "software_products": ["Product 5", "Product 17"],
+            "total_revenue": 3100,
+            "capital_expenses": 0,
+            "roi": null,
+            "notes": "No capital expenses in this quarter"
           },
           {
             "quarter": "Q2 2022",
-            "electronics_revenue": 6200,
-            "electronics_products": [
-              "Product 1",
-              "Product 4",
-              "Product 7",
-              "Product 10",
-              "Product 13",
-              "Product 16",
-              "Product 19"
-            ],
-            "related_expenses": 950,
-            "correlation": "Moderate expenses relative to revenue"
+            "software_products": ["Product 2", "Product 14"],
+            "total_revenue": 2800,
+            "capital_expenses": 1200,
+            "roi": 1.33,
+            "notes": "High capital expenses"
           },
           {
             "quarter": "Q3 2022",
-            "electronics_revenue": 6450,
-            "electronics_products": [
-              "Product 1",
-              "Product 4",
-              "Product 7",
-              "Product 10",
-              "Product 13",
-              "Product 16",
-              "Product 19"
-            ],
-            "related_expenses": 1200,
-            "correlation": "Higher expenses relative to revenue"
+            "software_products": ["Product 11"],
+            "total_revenue": 1550,
+            "capital_expenses": 0,
+            "roi": null,
+            "notes": "No capital expenses in this quarter"
           },
           {
             "quarter": "Q4 2022",
-            "electronics_revenue": 6700,
-            "electronics_products": [
-              "Product 1",
-              "Product 4",
-              "Product 7",
-              "Product 10",
-              "Product 13",
-              "Product 16",
-              "Product 19"
-            ],
-            "related_expenses": 900,
-            "correlation": "Moderate expenses relative to revenue"
+            "software_products": ["Product 8", "Product 20"],
+            "total_revenue": 3400,
+            "capital_expenses": 500,
+            "roi": 5.8,
+            "notes": "Good ROI with moderate capital investment"
           }
         ],
-        "insight": "Electronics revenue shows consistent quarterly growth throughout 2022, while expenses fluctuate with peaks in Q3. The highest expense-to-revenue ratio occurs in Q3, suggesting increased investment or maintenance costs."
+        "summary": "Software product revenues fluctuated throughout 2022, with Q4 showing the highest revenue. Capital expenses were concentrated in Q2 and Q4, with Q4 showing the best ROI. The overall trend shows variable revenue performance with strategic capital investments."
       },
-      "explanation": "Multi-table analysis requiring product category filtering, revenue aggregation by quarter, and correlation with expense data from the same period.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_products",
-            "filter": "category='Electronics'",
-            "related": "finance_revenues_by_product_id[year=2022]"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses",
-            "filter": "category='Electronics'"
-          }
-        }
-      ],
-      "sample_solution": "Query FINANCE_PRODUCTS filtered by category='Electronics' with related FINANCE_REVENUES filtered by year=2022, and separately query FINANCE_EXPENSES for the same category, then aggregate by quarter to analyze correlations between revenue and expenses."
-    },
-    {
-      "query_id": "finance_l3_2",
-      "query": "Identify any software products that experienced revenue decline in consecutive quarters of 2022, and analyze if any operational expenses increased during those same periods.",
-      "expected_response": {
-        "declining_products": [
-          {
-            "product_name": "Product 2",
-            "quarters": ["Q2 2022", "Q3 2022"],
-            "revenue_q2": 1100,
-            "revenue_q3": 1050,
-            "decline_percentage": 4.5,
-            "operational_expenses_q2": 300,
-            "operational_expenses_q3": 600,
-            "expense_increase_percentage": 100,
-            "analysis": "Operational expenses doubled while revenue declined by 4.5%, suggesting potential operational inefficiencies."
-          },
-          {
-            "product_name": "Product 5",
-            "quarters": ["Q3 2022", "Q4 2022"],
-            "revenue_q3": 1300,
-            "revenue_q4": 1200,
-            "decline_percentage": 7.7,
-            "operational_expenses_q3": 1200,
-            "operational_expenses_q4": 1600,
-            "expense_increase_percentage": 33.3,
-            "analysis": "Operational expenses increased by 33.3% while revenue declined by 7.7%, indicating rising costs during a sales downturn."
-          }
-        ],
-        "conclusion": "Two software products show concerning patterns of revenue decline coupled with increased operational expenses, suggesting potential operational inefficiencies or increased support costs during sales downturns."
-      },
-      "explanation": "Complex analysis involving filtering products by category, identifying revenue decline patterns across consecutive quarters, and correlating with operational expense data.",
+      "explanation": "This query requires joining three tables (products, revenues, expenses), filtering by product category and expense type, and calculating financial metrics (ROI) across quarters.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
@@ -492,154 +440,7 @@
           "params": {
             "table_name": "finance_products",
             "filter": "category='Software'",
-            "related": "finance_revenues_by_product_id[year=2022]"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses",
-            "filter": "category='Operational' AND (expense_date >= '2022-01-01') AND (expense_date <= '2022-12-31')"
-          }
-        }
-      ],
-      "sample_solution": "Query FINANCE_PRODUCTS filtered by category='Software' with related FINANCE_REVENUES filtered by year=2022, sort by quarter, identify products with declining revenue in consecutive quarters, then cross-reference with FINANCE_EXPENSES filtered by category='Operational' for the same periods."
-    },
-    {
-      "query_id": "finance_l3_3",
-      "query": "Compare the revenue performance of hardware products against maintenance expenses for operational machines in the second half of 2022, and identify if there's any relationship between product revenue and machine maintenance.",
-      "expected_response": {
-        "hardware_performance": [
-          {
-            "month": "July 2022",
-            "hardware_revenue": 1300,
-            "maintenance_expenses": 200,
-            "machines_maintained": ["Server Farm"]
-          },
-          {
-            "month": "August 2022",
-            "hardware_revenue": 1325,
-            "maintenance_expenses": 600,
-            "machines_maintained": ["Server Farm", "Assembly Line"]
-          },
-          {
-            "month": "September 2022",
-            "hardware_revenue": 1350,
-            "maintenance_expenses": 0,
-            "machines_maintained": []
-          },
-          {
-            "month": "October 2022",
-            "hardware_revenue": 1375,
-            "maintenance_expenses": 350,
-            "machines_maintained": ["Packaging Equipment"]
-          },
-          {
-            "month": "November 2022",
-            "hardware_revenue": 1400,
-            "maintenance_expenses": 500,
-            "machines_maintained": ["Testing Equipment"]
-          },
-          {
-            "month": "December 2022",
-            "hardware_revenue": 1600,
-            "maintenance_expenses": 500,
-            "machines_maintained": ["Assembly Line"]
-          }
-        ],
-        "correlation_analysis": "Hardware product revenue shows steady monthly growth in the second half of 2022, with a significant jump in December. Machine maintenance expenses fluctuate without a clear pattern relative to revenue, suggesting maintenance is driven by equipment needs rather than revenue performance. August had the highest maintenance expense coinciding with work on multiple machines."
-      },
-      "explanation": "Cross-functional analysis between finance revenue data for hardware products and operational maintenance expenses, requiring temporal alignment and correlation analysis.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_products",
-            "filter": "category='Hardware'",
-            "related": "finance_revenues_by_product_id[(revenue_date >= '2022-07-01') AND (revenue_date <= '2022-12-31')]"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_maintenance",
-            "filter": "(maintenance_date >= '2022-07-01') AND (maintenance_date <= '2022-12-31')",
-            "related": "ops_machines_by_machine_id"
-          }
-        }
-      ],
-      "sample_solution": "Query FINANCE_PRODUCTS filtered by category='Hardware' with related FINANCE_REVENUES filtered for second half of 2022, and OPS_MAINTENANCE with related OPS_MACHINES for the same period, then group by month to analyze temporal relationships."
-    },
-    {
-      "query_id": "finance_l3_4",
-      "query": "Analyze the relationship between capital expenses in 2022 and the revenue from the top 3 performing products in each quarter, and determine if capital investments correlate with product performance.",
-      "expected_response": {
-        "quarterly_analysis": [
-          {
-            "quarter": "Q1 2022",
-            "capital_expenses": 750,
-            "capital_expense_dates": ["2022-04-15"],
-            "top_products": [
-              { "name": "Product 19", "revenue": 1950 },
-              { "name": "Product 17", "revenue": 1850 },
-              { "name": "Product 13", "revenue": 1650 }
-            ],
-            "total_top_revenue": 5450,
-            "expense_to_revenue_ratio": 0.14,
-            "correlation": "Capital expense followed strong Q1 performance"
-          },
-          {
-            "quarter": "Q2 2022",
-            "capital_expenses": 450,
-            "capital_expense_dates": ["2022-06-20"],
-            "top_products": [
-              { "name": "Product 20", "revenue": 2000 },
-              { "name": "Product 18", "revenue": 1900 },
-              { "name": "Product 14", "revenue": 1700 }
-            ],
-            "total_top_revenue": 5600,
-            "expense_to_revenue_ratio": 0.08,
-            "correlation": "Lower capital investment despite revenue growth"
-          },
-          {
-            "quarter": "Q3 2022",
-            "capital_expenses": 0,
-            "capital_expense_dates": [],
-            "top_products": [
-              { "name": "Product 19", "revenue": 1950 },
-              { "name": "Product 15", "revenue": 1750 },
-              { "name": "Product 11", "revenue": 1550 }
-            ],
-            "total_top_revenue": 5250,
-            "expense_to_revenue_ratio": 0,
-            "correlation": "No capital investment despite continued strong revenue"
-          },
-          {
-            "quarter": "Q4 2022",
-            "capital_expenses": 500,
-            "capital_expense_dates": ["2022-12-04"],
-            "top_products": [
-              { "name": "Product 20", "revenue": 2000 },
-              { "name": "Product 16", "revenue": 1800 },
-              { "name": "Product 12", "revenue": 1600 }
-            ],
-            "total_top_revenue": 5400,
-            "expense_to_revenue_ratio": 0.09,
-            "correlation": "Capital investment followed consistently strong product performance"
-          }
-        ],
-        "insight": "Capital expenses in 2022 do not show a consistent pattern relative to top product revenue. The highest capital expense occurred in Q1 followed by declining investment in Q2 and none in Q3, despite relatively stable top product performance across all quarters. This suggests capital investments may be driven by factors other than immediate product revenue."
-      },
-      "explanation": "Complex analysis requiring identification of top products by revenue per quarter, aggregation of capital expenses by period, and correlation analysis between investment and performance metrics.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_revenues",
-            "filter": "year=2022",
-            "related": "finance_products_by_product_id"
+            "related": "finance_revenues_by_product_id"
           }
         },
         {
@@ -650,360 +451,199 @@
           }
         }
       ],
-      "sample_solution": "Query FINANCE_REVENUES filtered by year=2022 with related FINANCE_PRODUCTS, identify top 3 products by revenue each quarter, then query FINANCE_EXPENSES filtered by category='Capital' for 2022, group expenses by quarter, and analyze correlation with top product performance."
+      "sample_solution": "First query software products with their revenue data, then query capital expenses for 2022. Group revenues by quarter and match with corresponding capital expenses to calculate ROI."
     },
     {
-      "query_id": "finance_l3_5",
-      "query": "Identify any potential relationships between revenue trends for different product categories in 2022 and the hiring patterns across departments.",
+      "query_id": "finance_l3_2",
+      "query": "What was the quarterly profit (revenue minus expenses) for Q1 2022?",
       "expected_response": {
-        "category_revenue_trends": [
-          {
-            "category": "Electronics",
-            "q1_revenue": 5950,
-            "q2_revenue": 6200,
-            "q3_revenue": 6450,
-            "q4_revenue": 6700,
-            "growth_pattern": "Steady increase across all quarters",
-            "related_hires": [
-              {
-                "department": "Engineering",
-                "hire_date": "2022-03-05",
-                "role": "Manager"
-              },
-              {
-                "department": "R&D",
-                "hire_date": "2022-11-05",
-                "role": "Manager"
-              }
-            ],
-            "correlation": "Engineering manager hired in Q1 coincides with start of revenue growth; R&D manager hired in Q4 near peak revenue"
-          },
-          {
-            "category": "Software",
-            "q1_revenue": 6300,
-            "q2_revenue": 6500,
-            "q3_revenue": 6700,
-            "q4_revenue": 6900,
-            "growth_pattern": "Steady increase across all quarters",
-            "related_hires": [
-              {
-                "department": "IT",
-                "hire_date": "2022-08-20",
-                "role": "Manager"
-              },
-              {
-                "department": "Finance",
-                "hire_date": "2022-05-15",
-                "role": "Manager"
-              }
-            ],
-            "correlation": "IT manager hired in Q3 during continued revenue growth; Finance manager hired in Q2"
-          },
-          {
-            "category": "Hardware",
-            "q1_revenue": 5750,
-            "q2_revenue": 6000,
-            "q3_revenue": 6250,
-            "q4_revenue": 6500,
-            "growth_pattern": "Steady increase across all quarters",
-            "related_hires": [],
-            "correlation": "No directly related department hires identified"
-          }
-        ],
-        "insight": "All product categories showed steady revenue growth throughout 2022. Engineering and R&D hires correlate with electronics revenue growth, while IT and Finance hires align with software revenue growth. Hardware category growth occurred without directly related department hires, suggesting existing teams supported this growth or potential resource constraints."
+        "q1_2022_profit": 6500
       },
-      "explanation": "Cross-departmental analysis involving finance revenue data aggregated by product category and HR employee data focused on hiring patterns, requiring temporal correlation analysis.",
+      "explanation": "Multi-table analysis requiring date alignment between revenue quarters and expense dates",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "finance_products",
-            "related": "finance_revenues_by_product_id[year=2022]"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_employees",
-            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2022-12-31')",
-            "related": "hr_departments_by_department_id"
-          }
-        }
-      ],
-      "sample_solution": "Query FINANCE_PRODUCTS with related FINANCE_REVENUES filtered by year=2022, group by category and quarter to identify revenue trends; then query HR_EMPLOYEES filtered by date_joined in 2022 with related HR_DEPARTMENTS to analyze hiring patterns, and correlate the two datasets by time period."
-    }
-  ],
-  "ops": [
-    {
-      "query_id": "ops_l3_1",
-      "query": "Analyze the relationship between machine installation dates and maintenance patterns in 2022, identifying any machines that required maintenance within their first 6 months of installation and correlate with their current status.",
-      "expected_response": {
-        "early_maintenance_machines": [
-          {
-            "machine_name": "Machine 13",
-            "installation_date": "2022-01-08",
-            "first_maintenance": {
-              "date": "2022-01-15",
-              "days_after_installation": 7,
-              "action": "Routine check",
-              "anomaly_detected": false
-            },
-            "current_status": "Active",
-            "total_maintenance_2022": 1
-          },
-          {
-            "machine_name": "Machine 15",
-            "installation_date": "2022-03-20",
-            "first_maintenance": {
-              "date": "2022-03-25",
-              "days_after_installation": 5,
-              "action": "Routine check",
-              "anomaly_detected": false
-            },
-            "current_status": "Active",
-            "total_maintenance_2022": 1
-          },
-          {
-            "machine_name": "Machine 16",
-            "installation_date": "2022-04-25",
-            "first_maintenance": {
-              "date": "2022-04-30",
-              "days_after_installation": 5,
-              "action": "Calibration",
-              "anomaly_detected": false
-            },
-            "current_status": "Maintenance",
-            "total_maintenance_2022": 1
-          }
-        ],
-        "analysis": "Three machines installed in 2022 required maintenance within their first month. All received initial routine maintenance or calibration with no anomalies detected. However, Machine 16 is currently in maintenance status, suggesting potential issues developed later."
-      },
-      "explanation": "Complex analysis requiring temporal relationship between installation dates and maintenance records, with status correlation and maintenance pattern analysis.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_machines",
-            "filter": "installation_date >= '2022-01-01'",
-            "related": "ops_maintenance_by_machine_id[maintenance_date <= '2022-12-31']"
-          }
-        }
-      ]
-    },
-    {
-      "query_id": "ops_l3_2",
-      "query": "Compare maintenance patterns between machines in different locations during 2022, focusing on locations with multiple machines, and analyze if there's any correlation between location and maintenance frequency or anomaly detection.",
-      "expected_response": {
-        "location_analysis": [
-          {
-            "location": "San Francisco",
-            "machines": [
-              {
-                "machine_name": "Machine 16",
-                "maintenance_count": 2,
-                "anomalies_detected": 1,
-                "status": "Maintenance"
-              }
-            ],
-            "total_maintenance": 2,
-            "anomaly_rate": 0.5,
-            "avg_maintenance_per_machine": 2.0
-          },
-          {
-            "location": "Seattle",
-            "machines": [
-              {
-                "machine_name": "Machine 18",
-                "maintenance_count": 1,
-                "anomalies_detected": 0,
-                "status": "Active"
-              }
-            ],
-            "total_maintenance": 1,
-            "anomaly_rate": 0.0,
-            "avg_maintenance_per_machine": 1.0
-          }
-        ],
-        "insights": "Locations with multiple machines show varying maintenance patterns. San Francisco has a higher maintenance frequency and anomaly rate compared to Seattle. This could indicate either different operational demands or varying environmental factors affecting machine performance."
-      },
-      "explanation": "Cross-location analysis of maintenance patterns requiring grouping by location and correlation analysis between location characteristics and maintenance metrics.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_machines",
-            "related": "ops_maintenance_by_machine_id[maintenance_date >= '2022-01-01' AND maintenance_date <= '2022-12-31']"
-          }
-        }
-      ]
-    },
-    {
-      "query_id": "ops_l3_3",
-      "query": "Analyze the relationship between machine maintenance activities and department expenses in 2022, particularly focusing on maintenance actions that required part replacements and their associated costs.",
-      "expected_response": {
-        "maintenance_cost_analysis": [
-          {
-            "quarter": "Q1 2022",
-            "part_replacements": 1,
-            "machines_affected": ["Machine 2"],
-            "maintenance_expenses": 450,
-            "notes": "Sensor replacement required"
-          },
-          {
-            "quarter": "Q2 2022",
-            "part_replacements": 1,
-            "machines_affected": ["Machine 5"],
-            "maintenance_expenses": 300,
-            "notes": "Minor component replacement"
-          },
-          {
-            "quarter": "Q3 2022",
-            "part_replacements": 1,
-            "machines_affected": ["Machine 9"],
-            "maintenance_expenses": 600,
-            "notes": "Major component replacement"
-          },
-          {
-            "quarter": "Q4 2022",
-            "part_replacements": 0,
-            "machines_affected": [],
-            "maintenance_expenses": 200,
-            "notes": "Only routine maintenance performed"
-          }
-        ],
-        "correlation": "Part replacement activities show a strong correlation with increased maintenance expenses. Q3 had the highest expense coinciding with a major component replacement."
-      },
-      "explanation": "Cross-functional analysis between operations maintenance data and finance expenses, requiring temporal alignment and cost correlation analysis.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_maintenance",
-            "filter": "(maintenance_date >= '2022-01-01') AND (maintenance_date <= '2022-12-31')",
-            "related": "ops_machines_by_machine_id"
+            "table_name": "finance_revenues",
+            "filter": "(quarter=1) AND (year=2022)",
+            "fields": ["revenue_amount", "revenue_date", "quarter", "year"]
           }
         },
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_expenses",
-            "filter": "category='Maintenance'"
+            "filter": "(expense_date >= '2022-01-01') AND (expense_date <= '2022-03-31')",
+            "fields": ["amount", "expense_date"]
           }
         }
       ]
     },
     {
-      "query_id": "ops_l3_4",
-      "query": "Investigate the impact of software updates on machine performance in 2022 by analyzing maintenance patterns before and after updates, and correlate with any anomalies detected in subsequent maintenance checks.",
+      "query_id": "finance_l3_3",
+      "query": "What percentage of total 2023 expenses were Operational vs Capital?",
       "expected_response": {
-        "software_update_analysis": [
-          {
-            "machine_name": "Machine 7",
-            "update_date": "2022-07-15",
-            "pre_update_maintenance": {
-              "count": 1,
-              "anomalies": 0
-            },
-            "post_update_maintenance": {
-              "count": 1,
-              "anomalies": 0,
-              "next_maintenance_date": "2022-10-20"
-            },
-            "performance_impact": "Stable performance maintained after update"
-          },
-          {
-            "machine_name": "Machine 13",
-            "update_date": "2023-01-15",
-            "pre_update_maintenance": {
-              "count": 2,
-              "anomalies": 1
-            },
-            "post_update_maintenance": {
-              "count": 0,
-              "anomalies": 0
-            },
-            "performance_impact": "Too early to assess impact"
-          }
-        ],
-        "insight": "Software updates in 2022 show no negative impact on machine performance, with stable maintenance patterns and no increase in anomalies post-update."
+        "total_expenses": 5570,
+        "operational_expenses": 2220,
+        "capital_expenses": 1700,
+        "operational_percentage": 39.86,
+        "capital_percentage": 30.52
       },
-      "explanation": "Temporal analysis of maintenance patterns around software updates, requiring before-after comparison and anomaly correlation.",
+      "explanation": "Category-based percentage calculation with full-year filtering",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "ops_maintenance",
-            "filter": "maintenance_action='Software update'",
-            "related": "ops_machines_by_machine_id"
+            "table_name": "finance_expenses",
+            "filter": "(expense_date >= '2023-01-01') AND (expense_date <= '2023-12-31')",
+            "fields": ["amount", "category"]
           }
         }
       ]
     },
     {
-      "query_id": "ops_l3_5",
-      "query": "Analyze the relationship between machine age and maintenance frequency in 2022, and determine if there's any correlation with the department's staffing levels in maintenance-heavy periods.",
+      "query_id": "finance_l3_4",
+      "query": "List categories with their total revenue, ordered by highest performing category",
       "expected_response": {
-        "age_based_analysis": [
-          {
-            "age_group": "0-6 months",
-            "machines": ["Machine 13", "Machine 14", "Machine 15"],
-            "avg_maintenance_frequency": 1.2,
-            "anomaly_rate": 0.1,
-            "staff_correlation": {
-              "period": "Q1-Q2 2022",
-              "maintenance_staff": 3,
-              "maintenance_load": "Low"
-            }
-          },
-          {
-            "age_group": "6-12 months",
-            "machines": ["Machine 16", "Machine 17", "Machine 18"],
-            "avg_maintenance_frequency": 1.5,
-            "anomaly_rate": 0.2,
-            "staff_correlation": {
-              "period": "Q2-Q3 2022",
-              "maintenance_staff": 4,
-              "maintenance_load": "Medium"
-            }
-          },
-          {
-            "age_group": "12+ months",
-            "machines": ["Machine 1", "Machine 2", "Machine 3"],
-            "avg_maintenance_frequency": 2.0,
-            "anomaly_rate": 0.3,
-            "staff_correlation": {
-              "period": "Q3-Q4 2022",
-              "maintenance_staff": 5,
-              "maintenance_load": "High"
-            }
-          }
-        ],
-        "insights": "Older machines (12+ months) required more frequent maintenance and showed higher anomaly rates. Staffing levels appear to have been adjusted accordingly, with more maintenance staff allocated during periods of higher maintenance load."
+        "category_totals": [
+          { "category": "Software", "total_revenue": 10850 },
+          { "category": "Electronics", "total_revenue": 10500 },
+          { "category": "Hardware", "total_revenue": 9150 }
+        ]
       },
-      "explanation": "Complex analysis correlating machine age with maintenance patterns and HR staffing levels, requiring temporal analysis and cross-functional insights.",
+      "explanation": "Category-based aggregation with join between products and revenues",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_products",
+            "related": "finance_revenues_by_product_id",
+            "fields": ["category", "name"]
+          }
+        }
+      ]
+    }
+  ],
+  "ops": [
+    {
+      "query_id": "ops_l3_1",
+      "query": "Count the number of maintenance actions for machines in different locations, only for machines installed before 2022.",
+      "expected_response": {
+        "maintenance_by_location": {
+          "New York": 1,
+          "Los Angeles": 1,
+          "Chicago": 1,
+          "Houston": 1,
+          "Phoenix": 1,
+          "Philadelphia": 1,
+          "San Antonio": 1,
+          "San Diego": 1,
+          "Dallas": 1,
+          "San Jose": 1,
+          "Austin": 1,
+          "Jacksonville": 1
+        }
+      },
+      "explanation": "Requires counting maintenance actions per location for machines installed before 2022.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
-            "related": "ops_maintenance_by_machine_id[maintenance_date >= '2022-01-01' AND maintenance_date <= '2022-12-31']"
+            "filter": "installation_date < '2022-01-01'",
+            "related": "ops_maintenance_by_machine_id",
+            "fields": ["location", "installation_date"]
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES with installation_date filter and related maintenance, count maintenance actions per location."
+    },
+    {
+      "query_id": "ops_l3_2",
+      "query": "What percentage of maintenance actions resulted in anomaly detection, broken down by machine location?",
+      "expected_response": {
+        "anomaly_rates": [
+          { "location": "Los Angeles", "anomaly_rate": 100.0 },
+          { "location": "Phoenix", "anomaly_rate": 100.0 },
+          { "location": "Dallas", "anomaly_rate": 100.0 },
+          { "location": "Charlotte", "anomaly_rate": 100.0 },
+          { "location": "Washington", "anomaly_rate": 100.0 },
+          { "location": "New York", "anomaly_rate": 0.0 },
+          { "location": "Chicago", "anomaly_rate": 0.0 },
+          { "location": "Houston", "anomaly_rate": 0.0 },
+          { "location": "Philadelphia", "anomaly_rate": 0.0 },
+          { "location": "San Antonio", "anomaly_rate": 0.0 },
+          { "location": "San Diego", "anomaly_rate": 0.0 },
+          { "location": "San Jose", "anomaly_rate": 0.0 },
+          { "location": "Austin", "anomaly_rate": 0.0 },
+          { "location": "Jacksonville", "anomaly_rate": 0.0 },
+          { "location": "Fort Worth", "anomaly_rate": 0.0 },
+          { "location": "Columbus", "anomaly_rate": 0.0 },
+          { "location": "San Francisco", "anomaly_rate": 0.0 },
+          { "location": "Indianapolis", "anomaly_rate": 0.0 },
+          { "location": "Seattle", "anomaly_rate": 0.0 },
+          { "location": "Denver", "anomaly_rate": 0.0 }
+        ]
+      },
+      "explanation": "Requires temporal filtering, anomaly status analysis, and location-based grouping using joins.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "related": "ops_maintenance_by_machine_id",
+            "fields": ["location", "anomaly_detected"]
+          }
+        }
+      ],
+      "sample_solution": "Query OPS_MACHINES with related OPS_MAINTENANCE, calculate anomaly percentages per location."
+    },
+    {
+      "query_id": "ops_l3_3",
+      "query": "Calculate the average time between machine installation and first maintenance for machines installed in 2021 versus 2022.",
+      "expected_response": {
+        "installation_year_comparison": {
+          "2021": {
+            "total_machines": 12,
+            "machines_with_maintenance": 12,
+            "avg_days_to_first_maintenance": 365.6
+          },
+          "2022": {
+            "total_machines": 8,
+            "machines_with_maintenance": 8,
+            "avg_days_to_first_maintenance": 367.13
+          }
+        },
+        "insight": "Machines installed in 2022 received their first maintenance sooner after installation (367.13 days on average) compared to machines installed in 2021 (365.6 days on average)."
+      },
+      "explanation": "Requires date calculations between installation and maintenance dates, grouped by installation year.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "installation_date >= '2021-01-01' AND installation_date <= '2021-12-31'",
+            "fields": ["machine_id", "installation_date"],
+            "related": "ops_maintenance_by_machine_id"
           }
         },
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_employees",
-            "filter": "role='Maintenance'",
-            "related": "hr_departments_by_department_id"
+            "table_name": "ops_machines",
+            "filter": "installation_date >= '2022-01-01' AND installation_date <= '2022-12-31'",
+            "fields": ["machine_id", "installation_date"],
+            "related": "ops_maintenance_by_machine_id"
           }
         }
-      ]
+      ],
+      "sample_solution": "Query OPS_MACHINES with installation dates and related maintenance, calculate date differences, and group by installation year to compare averages."
     }
   ]
 }
