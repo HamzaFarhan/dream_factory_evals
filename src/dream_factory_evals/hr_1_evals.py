@@ -294,10 +294,8 @@ hr_dataset = Dataset[Query, QueryResult](
     evaluators=[EvaluateResult(), EvaluateToolCalls()],
 )
 
-MODEL = "openai:gpt-4o-mini"
-USER_ROLE = Role.HR
+model = "openai:gpt-4o-mini"
+user_role = Role.HR
+name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
 
-
-report = hr_dataset.evaluate_sync(
-    task=partial(task, user_role=USER_ROLE, model=MODEL), name=f"{MODEL.upper()}-{USER_ROLE.value.upper()}-LEVEL-1"
-)
+report = hr_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
