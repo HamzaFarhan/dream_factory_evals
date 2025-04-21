@@ -18,7 +18,6 @@ dependencies = [
     "polars>=1.26.0",
     "pyarrow>=19.0.1",
     "pydantic-ai>=0.0.50.dev3",
-    "pytest>=8.3.5",
     "python-dotenv>=1.1.0",
 ]
 
@@ -34,3 +33,8 @@ exclude = ["**/", "!src/"]
 
 [tool.uv.sources]
 pydantic-ai = {git = "https://github.com/pydantic/pydantic-ai.git", branch = "main"}
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]

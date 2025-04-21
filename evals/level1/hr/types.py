@@ -1,6 +1,8 @@
-from datetime import date
+from typing import Annotated
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+date = Annotated[str, Field(description="format: YYYY-MM-DD")]
 
 
 class Email(BaseModel):

@@ -1,15 +1,23 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import date
+import argparse
+from datetime import date as date_
 from functools import partial
 
 import logfire
 from pydantic_evals import Case, Dataset
-from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
 
-from dream_factory_evals.df_agent import Query, QueryResult, Role, ToolCall, task
-from dream_factory_evals.hr_1_return_types import (
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    Role,
+    ToolCall,
+    task,
+)
+
+from .types import (
     DepartmentCount,
     Email,
     Employee,
@@ -53,35 +61,39 @@ HR_RESULT_TYPES = (
 )
 
 
-@dataclass
-class EvaluateResult(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
-        if ctx.expected_output is None:
-            return True
-        return ctx.output.result == ctx.expected_output.result
+def date(year: int, month: int, day: int) -> str:
+    return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-@dataclass
-class EvaluateToolCalls(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> EvaluationReason:
-        if ctx.expected_output is None:
-            return EvaluationReason(value=True)
-        if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
-            return EvaluationReason(
-                value=False,
-                reason=f"Too many tool calls: {len(ctx.output.tool_calls)} > {len(ctx.expected_output.tool_calls)}",
-            )
-        reason = ""
-        tool_num = 1
-        for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-            if output_tool_call.tool != expected_tool_call.tool:
-                reason += f"Tool call mismatch: {output_tool_call.tool} != {expected_tool_call.tool} at tool number: {tool_num}\n"
-            if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
-                reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
-            tool_num += 1
-        if reason:
-            return EvaluationReason(value=False, reason=reason)
-        return EvaluationReason(value=True)
+# @dataclass
+# class EvaluateResult(Evaluator[Query, QueryResult]):
+#     def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
+#         if ctx.expected_output is None:
+#             return True
+#         return ctx.output.result == ctx.expected_output.result
+
+
+# @dataclass
+# class EvaluateToolCalls(Evaluator[Query, QueryResult]):
+#     def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> EvaluationReason:
+#         if ctx.expected_output is None:
+#             return EvaluationReason(value=True)
+#         if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
+#             return EvaluationReason(
+#                 value=False,
+#                 reason=f"Too many tool calls: {len(ctx.output.tool_calls)} > {len(ctx.expected_output.tool_calls)}",
+#             )
+#         reason = ""
+#         tool_num = 1
+#         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
+#             if output_tool_call.tool != expected_tool_call.tool:
+#                 reason += f"Tool call mismatch: {output_tool_call.tool} != {expected_tool_call.tool} at tool number: {tool_num}\n"
+#             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
+#                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
+#             tool_num += 1
+#         if reason:
+#             return EvaluationReason(value=False, reason=reason)
+#         return EvaluationReason(value=True)
 
 
 hr_dataset = Dataset[Query, QueryResult](
@@ -294,8 +306,28 @@ hr_dataset = Dataset[Query, QueryResult](
     evaluators=[EvaluateResult(), EvaluateToolCalls()],
 )
 
-model = "openai:gpt-4o-mini"
-user_role = Role.HR
-name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
 
-report = hr_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
+def main():
+    parser = argparse.ArgumentParser(description="Run HR evaluations")
+    parser.add_argument(
+        "--model",
+        type=str,
+        required=True,
+        help="Model name to evaluate. Examples:\n"
+        "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
+        "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
+        "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'",
+    )
+    args = parser.parse_args()
+
+    model = args.model
+    user_role = Role.HR
+    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
+
+    report = hr_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
+    print(f"Evaluation report for {args.model}:")
+    print(report)
+
+
+if __name__ == "__main__":
+    main()
