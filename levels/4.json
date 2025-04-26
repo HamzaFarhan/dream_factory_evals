@@ -2,1060 +2,524 @@
   "hr": [
     {
       "query_id": "hr_l4_1",
-      "query": "Analyze the cross-departmental impact of policy implementations by comparing when department policies were implemented with employee hiring patterns, and identify which departments might need policy refreshes based on high staff turnover and outdated policies.",
+      "query": "As an HR strategist, for every department that introduced a new policy in 2023, analyse hiring momentum by: (a) counting staff and managers hired within 90 days after each policy's effective date, (b) computing the staff-to-manager ratio, and (c) recommending which departments must prioritise recruiting managers",
       "expected_response": {
-        "department_analysis": [
+        "department_hiring_insights": [
           {
-            "department_name": "Sales",
-            "policy_age_months": 24,
-            "employee_count": 1,
-            "new_hires_last_year": 0,
-            "needs_refresh": true,
-            "reason": "Policy is over 2 years old with minimal staff growth"
+            "department": "Support",
+            "staff_hired": 1,
+            "managers_hired": 0,
+            "ratio": "∞",
+            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
           },
           {
-            "department_name": "Marketing",
-            "policy_age_months": 23,
-            "employee_count": 1,
-            "new_hires_last_year": 0,
-            "needs_refresh": true,
-            "reason": "Policy is almost 2 years old with minimal staff growth"
+            "department": "Quality Assurance",
+            "staff_hired": 0,
+            "managers_hired": 1,
+            "ratio": 0,
+            "recommendation": "Balanced – no immediate action required."
           },
           {
-            "department_name": "Innovation",
-            "policy_age_months": 5,
-            "employee_count": 1,
-            "new_hires_last_year": 1,
-            "needs_refresh": false,
-            "reason": "Recent policy with active hiring"
+            "department": "Logistics",
+            "staff_hired": 1,
+            "managers_hired": 0,
+            "ratio": "∞",
+            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
+          },
+          {
+            "department": "Business Development",
+            "staff_hired": 1,
+            "managers_hired": 0,
+            "ratio": "∞",
+            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
+          },
+          {
+            "department": "Strategy",
+            "staff_hired": 0,
+            "managers_hired": 1,
+            "ratio": 0,
+            "recommendation": "Balanced – no immediate action required."
+          },
+          {
+            "department": "Compliance",
+            "staff_hired": 1,
+            "managers_hired": 0,
+            "ratio": "∞",
+            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
+          },
+          {
+            "department": "Production",
+            "staff_hired": 1,
+            "managers_hired": 0,
+            "ratio": "∞",
+            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
+          },
+          {
+            "department": "Innovation",
+            "staff_hired": 0,
+            "managers_hired": 1,
+            "ratio": 0,
+            "recommendation": "Balanced – no immediate action required."
           }
-        ],
-        "insights": "Departments with policies older than 18 months and no recent hiring activity should prioritize policy updates. Sales and Marketing departments require immediate policy refreshes to align with current business practices."
+        ]
       },
-      "explanation": "Complex analytical reasoning query that requires joining HR departments, employees, and policies tables, calculating time-based metrics, and generating strategic recommendations based on multiple factors.",
+      "explanation": "Requires multi‑hop reasoning across three HR tables: first locate 2023 policies, then join employees by department & join date window, finally derive ratios and narrative recommendations.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_departments",
-            "related": "hr_employees_by_department_id"
+            "table_name": "hr_policies",
+            "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')"
           }
         },
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_departments",
-            "related": "hr_policies_by_department_id"
+            "table_name": "hr_employees",
+            "filter": "(date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
+            "related": "hr_departments_by_department_id",
+            "fields": ["date_joined", "role"]
           }
         }
       ],
-      "sample_solution": "Join HR departments with employees and policies, calculate policy age in months, count employees per department, identify recent hires, then analyze which departments need policy refreshes based on policy age and staffing patterns."
+      "sample_solution": "Fetch 2023 HR_POLICIES, for each department pull HR_EMPLOYEES joined via related option, filter to 90‑day window, compute staff/managers counts, derive ratio"
     },
     {
       "query_id": "hr_l4_2",
-      "query": "Evaluate department leadership effectiveness by comparing departments with managers to those without, analyzing employee distribution patterns, policy effectiveness timing, and provide recommendations for departments that should prioritize manager appointments.",
+      "query": "As an HR analyst, evaluate policy effectiveness: For departments with policies effective in 2022, calculate (1) the median days between policy effective date and the first employee hire after that date, (2) classify departments where this lag exceeded 13 days, and (3) propose one onboarding improvement for each slow‑to‑hire department.",
       "expected_response": {
-        "leadership_analysis": [
+        "lag_analysis": [
           {
-            "department_name": "Engineering",
-            "has_manager": true,
-            "employee_count": 1,
-            "policy_age_months": 22,
-            "manager_tenure_months": 22
+            "department": "Sales",
+            "median_lag_days": 14,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
           },
           {
-            "department_name": "Sales",
-            "has_manager": false,
-            "employee_count": 1,
-            "policy_age_months": 24,
-            "manager_tenure_months": null
-          }
-        ],
-        "priority_appointments": [
-          {
-            "department_name": "Sales",
-            "priority": "High",
-            "reasoning": "Department has employees but no leadership and an outdated policy"
+            "department": "Marketing",
+            "median_lag_days": 9,
+            "classification": "On-track",
+            "recommendation": "—"
           },
           {
-            "department_name": "Marketing",
-            "priority": "High",
-            "reasoning": "Department has employees but no leadership and an outdated policy"
+            "department": "Engineering",
+            "median_lag_days": 4,
+            "classification": "On-track",
+            "recommendation": "—"
+          },
+          {
+            "department": "HR",
+            "median_lag_days": 19,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
+          },
+          {
+            "department": "Finance",
+            "median_lag_days": 14,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
+          },
+          {
+            "department": "Operations",
+            "median_lag_days": 9,
+            "classification": "On-track",
+            "recommendation": "—"
+          },
+          {
+            "department": "Customer Service",
+            "median_lag_days": 4,
+            "classification": "On-track",
+            "recommendation": "—"
+          },
+          {
+            "department": "IT",
+            "median_lag_days": 19,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
+          },
+          {
+            "department": "Legal",
+            "median_lag_days": 14,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
+          },
+          {
+            "department": "Procurement",
+            "median_lag_days": 9,
+            "classification": "On-track",
+            "recommendation": "—"
+          },
+          {
+            "department": "R&D",
+            "median_lag_days": 4,
+            "classification": "On-track",
+            "recommendation": "—"
+          },
+          {
+            "department": "Administration",
+            "median_lag_days": 19,
+            "classification": "Delayed",
+            "recommendation": "Reduce lag in first hiring after policy"
           }
         ],
-        "recommendations": "Prioritize manager appointments for Sales and Marketing departments as they have staff but lack leadership oversight. Consider policy updates alongside new leadership to refresh departmental direction."
+        "summary": "6 of 12 departments exceeded the 13-day threshold."
       },
-      "explanation": "Complex analytical query requiring multi-table joins, comparison analysis between departments, identification of patterns, and strategic recommendations based on multiple factors.",
+      "explanation": "Combines policy dates with first‑hire timing per department (employees), needs department metadata for naming; involves grouping and median calculation – analytical reasoning beyond simple joins.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_departments",
-            "related": "hr_employees_by_department_id"
+            "table_name": "hr_policies",
+            "filter": "(effective_date >= '2022-01-01') AND (effective_date <= '2022-12-31')",
+            "related": "hr_departments_by_department_id"
           }
         },
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_departments",
-            "related": "hr_policies_by_department_id"
+            "table_name": "hr_employees",
+            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2023-12-31')",
+            "fields": ["date_joined", "role", "department_id"]
           }
         }
       ],
-      "sample_solution": "Join HR departments with employees (filtered by role) and policies, compare departments with vs without managers, analyze policy timing and employee distribution, then provide strategic recommendations for leadership appointments."
+      "sample_solution": "Get 2022 HR_POLICIES; for each department look up first post‑policy HR_EMPLOYEES record, compute lag, flag >=14 days, attach recommendation."
     },
     {
       "query_id": "hr_l4_3",
-      "query": "Identify potential compliance risks across departments by analyzing the intersection of department policies, employee onboarding dates, and management structure, while highlighting departments with outdated policies, manager vacancies, and recent hires as high-risk areas.",
+      "query": "As HR leadership, compare retention of 2022 versus 2023 hire cohorts. Using today’s date, compute the average tenure (in days) of employees hired in each year, produce an insight narrative on retention trends, and recommend two concrete initiatives to improve 2023 cohort retention.",
       "expected_response": {
-        "compliance_risk_assessment": [
-          {
-            "department_name": "Sales",
-            "risk_level": "High",
-            "policy_age_months": 24,
-            "has_manager": false,
-            "recent_hires": 0,
-            "risk_factors": [
-              "No manager oversight",
-              "Outdated policy (2+ years old)"
-            ]
-          },
-          {
-            "department_name": "Marketing",
-            "risk_level": "High",
-            "policy_age_months": 23,
-            "has_manager": false,
-            "recent_hires": 0,
-            "risk_factors": [
-              "No manager oversight",
-              "Outdated policy (nearly 2 years old)"
-            ]
-          },
-          {
-            "department_name": "Compliance",
-            "risk_level": "Medium",
-            "policy_age_months": 7,
-            "has_manager": false,
-            "recent_hires": 1,
-            "risk_factors": [
-              "No manager oversight in compliance-critical department",
-              "Recent hire without direct supervision"
-            ]
-          }
-        ],
-        "recommended_actions": "Immediate policy updates for Sales and Marketing departments, prioritize manager appointments for all high-risk departments, and conduct compliance audits for departments with recent hires but outdated policies or missing leadership."
-      },
-      "explanation": "Advanced analytical query requiring multi-table analysis, risk assessment based on multiple factors, identification of compliance vulnerabilities, and strategic recommendations.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_departments",
-            "related": "hr_employees_by_department_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_departments",
-            "related": "hr_policies_by_department_id"
-          }
-        }
-      ],
-      "sample_solution": "Join HR departments with employees and policies, calculate policy age, identify departments without managers, count recent hires, then assess compliance risk levels based on combined factors and provide recommendations."
-    },
-    {
-      "query_id": "hr_l4_4",
-      "query": "Perform a comprehensive workforce planning analysis by examining department structures, employee distributions, policy implementations, and departmental leadership gaps, then recommend an optimal strategy for balancing the organization's workforce across departments while ensuring proper policy governance.",
-      "expected_response": {
-        "current_state": {
-          "total_employees": 20,
-          "departments_with_managers": 7,
-          "departments_without_employees": 0,
-          "departments_needing_policy_updates": 10
-        },
-        "department_distribution": [
-          {
-            "department_category": "Core Operations",
-            "departments": ["Sales", "Marketing", "Engineering", "Finance"],
-            "employee_percentage": 20,
-            "manager_coverage": "50%",
-            "policy_health": "Poor (75% outdated)"
-          },
-          {
-            "department_category": "Support Functions",
-            "departments": ["HR", "IT", "Legal", "Compliance"],
-            "employee_percentage": 20,
-            "manager_coverage": "50%",
-            "policy_health": "Mixed (50% updated)"
-          },
-          {
-            "department_category": "Strategic Units",
-            "departments": [
-              "R&D",
-              "Innovation",
-              "Strategy",
-              "Business Development"
-            ],
-            "employee_percentage": 20,
-            "manager_coverage": "75%",
-            "policy_health": "Good (75% updated)"
-          }
-        ],
-        "rebalancing_recommendations": "Prioritize manager appointments for core operations departments. Institute quarterly policy reviews for all departments with policies older than 18 months. Consider consolidating smaller departments with overlapping functions to optimize leadership and governance."
-      },
-      "explanation": "Highly complex analytical query requiring multi-table joins, categorization of departments, percentage calculations, assessment of organizational structure, and strategic workforce planning recommendations.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_departments",
-            "related": "hr_employees_by_department_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_departments",
-            "related": "hr_policies_by_department_id"
-          }
-        }
-      ],
-      "sample_solution": "Query all HR tables with relationships, categorize departments, calculate distribution metrics, analyze management coverage and policy health, then provide comprehensive workforce planning recommendations."
-    },
-    {
-      "query_id": "hr_l4_5",
-      "query": "Conduct a multi-dimensional analysis of organizational health by correlating employee tenure, policy effectiveness, and management structure across all departments, while identifying patterns in the data that could indicate potential employee retention issues, compliance vulnerabilities, or leadership gaps that require immediate attention.",
-      "expected_response": {
-        "organizational_health_indicators": {
-          "overall_health_score": "68/100",
-          "critical_areas": ["Leadership Coverage", "Policy Freshness"],
-          "strengths": [
-            "Employee Tenure Distribution",
-            "Strategic Department Staffing"
+        "retention_analysis": {
+          "average_tenure_days_2022": 1150,
+          "average_tenure_days_2023": 600,
+          "insight": "2022 hires have stayed on average 550 days longer than the 2023 cohort, indicating early churn risk among recent hires.",
+          "recommendations": [
+            "Implement mentorship programme pairing 2023 hires with 2022 veterans.",
+            "Conduct stay‑interviews with 2023 staff to identify pain points."
           ]
-        },
-        "department_health_analysis": [
-          {
-            "department_name": "Engineering",
-            "health_score": 82,
-            "strengths": [
-              "Experienced manager (1+ year tenure)",
-              "Appropriate staff-to-manager ratio"
-            ],
-            "vulnerabilities": ["Outdated policy (22 months old)"],
-            "recommended_focus": "Policy update"
-          },
-          {
-            "department_name": "Sales",
-            "health_score": 45,
-            "strengths": ["Established employee base"],
-            "vulnerabilities": [
-              "No manager oversight",
-              "Significantly outdated policy (24 months)"
-            ],
-            "recommended_focus": "Leadership appointment and policy refresh"
-          }
-        ],
-        "correlation_insights": "Departments with managers show 35% higher health scores than those without. Policy age has an inverse relationship with department health scores, with each additional month of policy age decreasing the score by approximately 1.2 points. Departments with both manager vacancies and outdated policies show the highest risk for compliance and retention issues."
+        }
       },
-      "explanation": "Extremely complex analytical query requiring multi-table integration, statistical correlation analysis, pattern identification, scoring methodology, and strategic insights across multiple organizational dimensions.",
+      "explanation": "Requires calculating tenure by subtracting date_joined from current date for two distinct cohorts, generating comparative metrics and actionable recommendations – multi‑step reasoning across employees & departments data.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "hr_departments",
-            "related": "hr_employees_by_department_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_departments",
-            "related": "hr_policies_by_department_id"
+            "table_name": "hr_employees",
+            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2023-12-31')",
+            "fields": "employee_id,first_name,last_name,date_joined"
           }
         }
       ],
-      "sample_solution": "Join all HR tables, calculate health metrics including policy age, management coverage, and employee distribution, develop a scoring system, identify statistical correlations between factors, and provide multi-dimensional analysis of organizational health with strategic recommendations."
+      "sample_solution": "Fetch HR_EMPLOYEES for 2022‑23, group by hire year, compute days since join to 2025‑04‑23, compare averages, craft insights and recommendations."
     }
   ],
   "finance": [
     {
       "query_id": "finance_l4_1",
-      "query": "Analyze product performance efficiency by comparing revenue generation against expense allocation across categories, factoring in year-over-year trends, and identify which product categories demonstrate the strongest financial resilience with recommendations for resource reallocation.",
+      "query": "As a Finance director, for each product category in fiscal year 2022, calculate total revenue. Rank the categories, highlight the top two for investment focus, and provide two actionable recommendations based on your findings.",
       "expected_response": {
-        "category_performance": [
+        "category_analysis": [
           {
             "category": "Software",
-            "total_revenue": 7350,
-            "related_expenses": 2450,
-            "profit_margin": 66.7,
-            "yoy_trend": "+10.5%",
-            "resilience_score": 8.2
-          },
-          {
-            "category": "Hardware",
-            "total_revenue": 7050,
-            "related_expenses": 2700,
-            "profit_margin": 61.7,
-            "yoy_trend": "+8.2%",
-            "resilience_score": 7.5
+            "revenue": 10850
           },
           {
             "category": "Electronics",
-            "total_revenue": 6650,
-            "related_expenses": 2750,
-            "profit_margin": 58.6,
-            "yoy_trend": "+7.8%",
-            "resilience_score": 7.1
+            "revenue": 10500
+          },
+          {
+            "category": "Hardware",
+            "revenue": 9150
           }
         ],
-        "reallocation_recommendations": "Increase investment in Software product lines by 15% drawn from Electronics division. Software demonstrates the highest profit margin with strongest year-over-year growth and operational efficiency. Maintain current Hardware investment levels while implementing cost-control measures to improve margins.",
-        "strategic_insights": "Software products show superior financial resilience due to lower operational costs, higher margins, and consistent growth patterns. Consider developing hybrid Software/Hardware offerings to leverage strengths of both categories."
+        "top_categories": ["Software", "Electronics"],
+        "recommendations": [
+          "Increase marketing budget for Software to capitalise on its high margin.",
+          "Negotiate supplier costs for Electronics to further improve margin."
+        ]
       },
-      "explanation": "Complex analytical query requiring product-revenue integration, expense allocation analysis, trend calculation, and strategic resource allocation recommendations based on multi-dimensional financial metrics.",
+      "explanation": "Requires aggregating revenue data across two finance tables, ranking results, and crafting strategic recommendations.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "finance_products"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
             "table_name": "finance_revenues",
+            "filter": "(revenue_date >= '2022-01-01') AND (revenue_date <= '2022-12-31')",
             "related": "finance_products_by_product_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses"
           }
         }
       ],
-      "sample_solution": "Retrieve and analyze all finance data across products, revenues and expenses. Calculate category-level metrics including total revenue, associated expenses, profit margins, and year-over-year trends. Develop a resilience scoring system based on multiple financial indicators, then provide strategic recommendations for optimal resource allocation."
+      "sample_solution": "Fetch FINANCE_REVENUES for 2022 with related parameter for FINANCE_PRODUCTS, then group and sum revenue by category, focusing on Electronics and Software."
     },
     {
       "query_id": "finance_l4_2",
-      "query": "Conduct a comprehensive cash flow analysis by examining quarterly revenue patterns against expense timing, identify seasonal fluctuations across product categories, and develop a strategic financial planning framework that optimizes liquidity while accounting for operational expenses and investment opportunities.",
+      "query": "As a Finance analyst, evaluate quarterly cash‑flow for 2022: combine total revenues, capital expenses, and operational expenses per quarter, detect any quarters with negative net cash flow, summarise the trend, and propose a corrective action.",
       "expected_response": {
         "quarterly_cash_flow": [
           {
             "quarter": "Q1 2022",
-            "total_revenue": 6250,
-            "total_expenses": 1500,
-            "net_cash_flow": 4750,
-            "category_breakdown": {
-              "Electronics": 2700,
-              "Software": 1950,
-              "Hardware": 1600
-            }
+            "total_revenue": 7250,
+            "capital_expenses": 0,
+            "operational_expenses": 750,
+            "net_cash_flow": 6500
           },
           {
             "quarter": "Q2 2022",
-            "total_revenue": 6500,
-            "total_expenses": 2150,
-            "net_cash_flow": 4350,
-            "category_breakdown": {
-              "Electronics": 2800,
-              "Software": 2000,
-              "Hardware": 1700
-            }
+            "total_revenue": 7500,
+            "capital_expenses": 1200,
+            "operational_expenses": 300,
+            "net_cash_flow": 6000
           },
           {
             "quarter": "Q3 2022",
-            "total_revenue": 6750,
-            "total_expenses": 2150,
-            "net_cash_flow": 4600,
-            "category_breakdown": {
-              "Electronics": 2900,
-              "Software": 2050,
-              "Hardware": 1800
-            }
+            "total_revenue": 7750,
+            "capital_expenses": 0,
+            "operational_expenses": 1400,
+            "net_cash_flow": 6350
           },
           {
             "quarter": "Q4 2022",
-            "total_revenue": 7000,
-            "total_expenses": 3400,
-            "net_cash_flow": 3600,
-            "category_breakdown": {
-              "Electronics": 3000,
-              "Software": 2100,
-              "Hardware": 1900
-            }
+            "total_revenue": 8000,
+            "capital_expenses": 500,
+            "operational_expenses": 750,
+            "net_cash_flow": 6750
           }
         ],
-        "seasonal_insights": "Q4 shows 25% higher expenses but only 4% higher revenue compared to Q3, creating cash flow pressure at year-end. Software products demonstrate the most consistent revenue stream with minimal seasonal variation (±3%), while Electronics shows the highest seasonal volatility (±12%).",
-        "financial_planning_framework": "Implement staggered expense scheduling with 40% of discretionary spending allocated to Q1-Q2 when cash flow ratios are most favorable. Reserve 15% of Q1-Q3 excess cash flow as buffer for Q4 expense spike. Prioritize Software product investments for stable year-round income, while timing Electronics product launches to capitalize on Q2-Q3 seasonal strength."
+        "negative_cash_flow_quarters": [],
+        "insight": "Net cash flow remained positive in all quarters.",
+        "recommendation": "No immediate action required."
       },
-      "explanation": "Highly complex financial analysis requiring multi-table integration, time-series analysis, seasonal pattern identification, and development of a structured financial planning strategy based on cash flow optimization.",
+      "explanation": "Integrates revenues and two categories of expenses across quarters, performs arithmetic to derive net cash flow, flags negative periods, and generates strategic guidance.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_revenues",
-            "related": "finance_products_by_product_id"
+            "filter": "(year=2022)",
+            "fields": ["revenue_amount", "quarter"]
           }
         },
         {
           "tool": "get_table_records",
           "params": {
-            "table_name": "finance_expenses"
+            "table_name": "finance_expenses",
+            "filter": "(expense_date >= '2022-01-01') AND (expense_date <= '2022-12-31')",
+            "fields": ["amount", "category", "expense_date"]
           }
         }
       ],
-      "sample_solution": "Query and join all finance tables, calculate quarterly revenue and expense totals, break down revenue by product category per quarter, identify seasonal patterns, calculate net cash flow metrics, and develop a comprehensive financial planning framework that addresses timing of expenses, revenue seasonality, and optimal cash flow management."
-    },
-    {
-      "query_id": "finance_l4_3",
-      "query": "Evaluate the financial impact of transitioning from Capital to Operational expense models by analyzing historical expense allocations, revenue generation patterns, and product category performance, then develop a strategy for optimizing expense categorization to maximize tax efficiency and operational flexibility.",
-      "expected_response": {
-        "expense_allocation_analysis": {
-          "current_state": {
-            "Operational": {
-              "percentage": 60,
-              "amount": 4830,
-              "timing_pattern": "Consistent monthly distribution"
-            },
-            "Capital": {
-              "percentage": 30,
-              "amount": 2450,
-              "timing_pattern": "Quarterly heavy (Q1: 15%, Q2: 20%, Q3: 25%, Q4: 40%)"
-            },
-            "Misc": {
-              "percentage": 10,
-              "amount": 820,
-              "timing_pattern": "Random distribution"
-            }
-          },
-          "category_impact": [
-            {
-              "product_category": "Software",
-              "revenue": 7350,
-              "current_expense_model": "70% Operational, 20% Capital, 10% Misc",
-              "proposed_model": "85% Operational, 10% Capital, 5% Misc",
-              "financial_impact": "+12% short-term cash flow, -5% long-term tax benefit"
-            },
-            {
-              "product_category": "Hardware",
-              "revenue": 7050,
-              "current_expense_model": "40% Operational, 55% Capital, 5% Misc",
-              "proposed_model": "50% Operational, 45% Capital, 5% Misc",
-              "financial_impact": "+8% short-term cash flow, -10% long-term tax benefit"
-            },
-            {
-              "product_category": "Electronics",
-              "revenue": 6650,
-              "current_expense_model": "50% Operational, 30% Capital, 20% Misc",
-              "proposed_model": "65% Operational, 25% Capital, 10% Misc",
-              "financial_impact": "+10% short-term cash flow, -7% long-term tax benefit"
-            }
-          ]
-        },
-        "transition_strategy": "Implement a phased transition over 3 quarters, starting with Software products where operational model alignment is strongest. Maintain higher capital allocation for Hardware products where physical equipment justifies capitalization. Create detailed expense reclassification guidelines to ensure consistent application across departments.",
-        "financial_projections": "First-year impact: +9.5% operational flexibility, -7.2% tax benefit, net financial improvement of approximately 2.3%. Three-year projection shows cumulative benefit of 7.8% through improved allocation efficiency and alignment with product-specific business cycles."
-      },
-      "explanation": "Advanced financial modeling query requiring expense categorization analysis, revenue-expense relationship assessment, tax efficiency considerations, and development of a strategic transition framework with multi-year financial projections.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_revenues",
-            "related": "finance_products_by_product_id"
-          }
-        }
-      ],
-      "sample_solution": "Analyze expense data by category, map relationships between product categories and expense types, calculate revenue-expense ratios for each product line, model the financial impact of expense reclassification, and develop a comprehensive transition strategy with detailed financial projections."
-    },
-    {
-      "query_id": "finance_l4_4",
-      "query": "Develop a predictive financial model that integrates product lifecycle stages with revenue trends and expense patterns, identifies correlations between product categories and profitability over time, and recommends optimal timing for new product investments based on cash flow forecasting.",
-      "expected_response": {
-        "lifecycle_profitability_model": {
-          "Software": {
-            "average_lifecycle": "24 months",
-            "peak_revenue_point": "Month 14-16",
-            "revenue_curve": "Steady growth (months 1-14), plateau (months 14-20), gradual decline (months 20-24)",
-            "expense_pattern": "Front-loaded (65% in first 8 months)",
-            "profitability_intersection": "Month 9",
-            "optimal_reinvestment_window": "Months 16-18"
-          },
-          "Hardware": {
-            "average_lifecycle": "30 months",
-            "peak_revenue_point": "Month 12-15",
-            "revenue_curve": "Rapid growth (months 1-12), extended plateau (months 12-22), steep decline (months 22-30)",
-            "expense_pattern": "Balanced (40% development, 40% production, 20% maintenance)",
-            "profitability_intersection": "Month 11",
-            "optimal_reinvestment_window": "Months 18-22"
-          },
-          "Electronics": {
-            "average_lifecycle": "18 months",
-            "peak_revenue_point": "Month 8-10",
-            "revenue_curve": "Steep growth (months 1-8), short plateau (months 8-12), rapid decline (months 12-18)",
-            "expense_pattern": "Production-heavy (70% in production phase)",
-            "profitability_intersection": "Month 7",
-            "optimal_reinvestment_window": "Months 10-12"
-          }
-        },
-        "cash_flow_forecast": {
-          "Q1 2023": {
-            "projected_revenue": 7350,
-            "projected_expenses": 3100,
-            "net_cash_flow": 4250,
-            "reinvestment_capacity": 2125
-          },
-          "Q2 2023": {
-            "projected_revenue": 7650,
-            "projected_expenses": 3300,
-            "net_cash_flow": 4350,
-            "reinvestment_capacity": 2175
-          },
-          "Q3 2023": {
-            "projected_revenue": 7950,
-            "projected_expenses": 3500,
-            "net_cash_flow": 4450,
-            "reinvestment_capacity": 2225
-          },
-          "Q4 2023": {
-            "projected_revenue": 8250,
-            "projected_expenses": 4000,
-            "net_cash_flow": 4250,
-            "reinvestment_capacity": 2125
-          }
-        },
-        "investment_recommendations": "Prioritize new Software product development in Q1 2023 to capitalize on favorable expense-to-revenue timing and coincide product maturity with Q4 2023 revenue opportunities. Stagger Hardware investments across Q2-Q3 2023 to balance development costs while ensuring new product releases align with projected Q1 2024 market growth. Limit Electronics investments to essential updates in existing product lines until Q3 2023 when reinvestment capacity increases."
-      },
-      "explanation": "Sophisticated financial modeling query requiring predictive analysis, product lifecycle mapping, cash flow forecasting, and strategic investment timing recommendations based on multi-dimensional data analysis.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_products"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_revenues",
-            "related": "finance_products_by_product_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses"
-          }
-        }
-      ],
-      "sample_solution": "Analyze historical product data to identify lifecycle patterns, map revenue curves for each product category, correlate expense timing with revenue generation, develop a predictive model for future quarters, calculate reinvestment capacity, and provide strategic recommendations for optimal investment timing based on integrated financial analysis."
-    },
-    {
-      "query_id": "finance_l4_5",
-      "query": "Perform a comprehensive financial risk assessment by evaluating revenue volatility across product categories, expense predictability, seasonal cash flow variations, and potential market disruptions, then develop a resilience strategy that optimizes the product portfolio and expense structure to minimize financial vulnerabilities.",
-      "expected_response": {
-        "risk_profile_assessment": {
-          "revenue_volatility": {
-            "overall_score": "Medium-High (0.68)",
-            "category_breakdown": {
-              "Software": "Low (0.34)",
-              "Hardware": "Medium (0.52)",
-              "Electronics": "High (0.87)"
-            },
-            "key_factors": "Electronics revenue shows 23% quarterly variation; Software demonstrates most consistent revenue stream with only 8% variation"
-          },
-          "expense_predictability": {
-            "overall_score": "Medium (0.54)",
-            "category_breakdown": {
-              "Operational": "High (0.82)",
-              "Capital": "Medium (0.56)",
-              "Misc": "Low (0.23)"
-            },
-            "key_factors": "Operational expenses follow predictable patterns with monthly consistency; Capital expenses show quarterly fluctuations; Misc expenses demonstrate unpredictable timing"
-          },
-          "cash_flow_stability": {
-            "overall_score": "Medium (0.61)",
-            "quarterly_breakdown": {
-              "Q1": "High (0.79)",
-              "Q2": "Medium-High (0.71)",
-              "Q3": "Medium (0.64)",
-              "Q4": "Low (0.31)"
-            },
-            "key_factors": "Q4 experiences significant expense pressure with 35% higher outflows than quarterly average; Q1 shows strongest cash flow position"
-          }
-        },
-        "vulnerability_assessment": {
-          "high_risk_areas": [
-            "Electronics product revenue stream (high volatility)",
-            "Q4 cash flow position (expense concentration)",
-            "Misc expense category (unpredictability)"
-          ],
-          "moderate_risk_areas": [
-            "Hardware revenue trajectory (increasing volatility trend)",
-            "Capital expense timing (seasonal clustering)",
-            "Q3 cash position (declining stability metric)"
-          ],
-          "low_risk_areas": [
-            "Software revenue stream (consistent performance)",
-            "Operational expense management (predictable pattern)",
-            "Q1-Q2 cash position (strong reserves)"
-          ]
-        },
-        "resilience_strategy": "Implement a three-tiered approach: 1) Portfolio Rebalancing - Increase Software product allocation by 15% to stabilize revenue streams; 2) Expense Restructuring - Convert 20% of Q4 Capital expenses to more evenly distributed operational model; 3) Cash Flow Management - Establish dedicated reserve fund (12% of annual revenue) with quarterly replenishment to buffer against seasonal variations. Additionally, develop contingency plans for Electronics product lines including diversified market channel strategy and streamlined cost structure to rapidly respond to market fluctuations."
-      },
-      "explanation": "Comprehensive financial risk analysis requiring volatility assessment, pattern recognition across multiple dimensions, vulnerability identification, and development of a multi-faceted resilience strategy addressing portfolio composition, expense structure, and cash flow management.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_products"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_revenues",
-            "related": "finance_products_by_product_id"
-          }
-        },
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_expenses"
-          }
-        }
-      ],
-      "sample_solution": "Analyze all finance data to calculate volatility metrics for revenue streams by product category, assess expense predictability across expense types and time periods, evaluate cash flow stability by quarter, identify specific vulnerability points, and develop a comprehensive resilience strategy addressing portfolio composition, expense restructuring, and cash flow management."
+      "sample_solution": "Aggregate 2022 FINANCE_REVENUES by quarter, split FINANCE_EXPENSES into capital/operational per quarter, compute net cash flow, highlight negatives, craft recommendation."
     }
   ],
   "ops": [
     {
       "query_id": "ops_l4_1",
-      "query": "Perform a comprehensive machine reliability analysis that identifies correlations between maintenance frequency, anomaly detection patterns, and machine downtime, then develop a predictive maintenance framework that optimizes resource allocation based on installation age, maintenance history, and operational status across locations.",
+      "query": "As an Operations reliability engineer, build a risk profile for each machine installed in 2021: (a) count maintenance actions, (b) count anomalies, (c) derive a risk tier (High if anomalies ≥2 or maintenance ≥3, Medium if anomalies=1 or maintenance=2, else Low) and (d) recommend one mitigation for High‑risk machines.",
       "expected_response": {
-        "reliability_assessment": {
-          "high_reliability_cluster": [
+        "machine_risk_profile": [
+          [
             {
-              "machine_id": 8,
-              "machine_name": "Machine 8",
-              "location": "San Diego",
-              "installation_age_months": 19,
-              "maintenance_frequency": "Low",
-              "anomaly_rate": "0%",
+              "machine_name": "Machine 1",
+              "machine_id": 1,
               "status": "Active",
-              "reliability_score": 9.2
+              "installation_date": "2021-01-10",
+              "maintenance_actions": 1,
+              "anomalies": 0
             },
             {
-              "machine_id": 12,
-              "machine_name": "Machine 12",
-              "location": "Jacksonville",
-              "installation_age_months": 16,
-              "maintenance_frequency": "Low",
-              "anomaly_rate": "0%",
-              "status": "Active",
-              "reliability_score": 8.9
-            }
-          ],
-          "medium_reliability_cluster": [
-            {
-              "machine_id": 6,
-              "machine_name": "Machine 6",
-              "location": "Philadelphia",
-              "installation_age_months": 23,
-              "maintenance_frequency": "Medium",
-              "anomaly_rate": "0%",
-              "status": "Maintenance",
-              "reliability_score": 7.1
-            },
-            {
-              "machine_id": 11,
-              "machine_name": "Machine 11",
-              "location": "Austin",
-              "installation_age_months": 17,
-              "maintenance_frequency": "Medium",
-              "anomaly_rate": "0%",
-              "status": "Maintenance",
-              "reliability_score": 6.8
-            }
-          ],
-          "low_reliability_cluster": [
-            {
-              "machine_id": 2,
               "machine_name": "Machine 2",
-              "location": "Los Angeles",
-              "installation_age_months": 26,
-              "maintenance_frequency": "High",
-              "anomaly_rate": "100%",
+              "machine_id": 2,
               "status": "Maintenance",
-              "reliability_score": 4.3
+              "installation_date": "2021-02-15",
+              "maintenance_actions": 1,
+              "anomalies": 1
             },
             {
-              "machine_id": 9,
-              "machine_name": "Machine 9",
-              "location": "Dallas",
-              "installation_age_months": 19,
-              "maintenance_frequency": "High",
-              "anomaly_rate": "100%",
+              "machine_name": "Machine 3",
+              "machine_id": 3,
+              "status": "Active",
+              "installation_date": "2021-03-20",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 4",
+              "machine_id": 4,
               "status": "Inactive",
-              "reliability_score": 3.2
+              "installation_date": "2021-04-25",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 5",
+              "machine_id": 5,
+              "status": "Active",
+              "installation_date": "2021-05-30",
+              "maintenance_actions": 1,
+              "anomalies": 1
+            },
+            {
+              "machine_name": "Machine 6",
+              "machine_id": 6,
+              "status": "Maintenance",
+              "installation_date": "2021-06-04",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 7",
+              "machine_id": 7,
+              "status": "Active",
+              "installation_date": "2021-07-09",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 8",
+              "machine_id": 8,
+              "status": "Active",
+              "installation_date": "2021-08-14",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 9",
+              "machine_id": 9,
+              "status": "Inactive",
+              "installation_date": "2021-09-19",
+              "maintenance_actions": 1,
+              "anomalies": 1
+            },
+            {
+              "machine_name": "Machine 10",
+              "machine_id": 10,
+              "status": "Active",
+              "installation_date": "2021-10-24",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 11",
+              "machine_id": 11,
+              "status": "Maintenance",
+              "installation_date": "2021-11-29",
+              "maintenance_actions": 1,
+              "anomalies": 0
+            },
+            {
+              "machine_name": "Machine 12",
+              "machine_id": 12,
+              "status": "Active",
+              "installation_date": "2021-12-04",
+              "maintenance_actions": 1,
+              "anomalies": 0
             }
           ]
-        },
-        "correlation_insights": "Machines with installation age over 24 months show 85% higher anomaly rates compared to newer machines. Locations with multiple machines exhibit 30% lower maintenance frequencies across their fleet. Machines that undergo routine maintenance every 3-4 months have 60% fewer anomalies than those with irregular maintenance schedules.",
-        "predictive_framework": {
-          "resource_allocation": "Prioritize preventative maintenance for machines in the 20-24 month age range to prevent transition to low reliability cluster. Allocate 60% of maintenance resources to machines with previous anomalies, focusing on Los Angeles and Dallas locations where anomaly clustering is evident.",
-          "maintenance_scheduling": "Implement staggered routine checks at 90-day intervals for high-reliability machines, 60-day intervals for medium-reliability cluster, and 30-day intensive monitoring for low-reliability machines.",
-          "replacement_planning": "Schedule replacement evaluations for machines with reliability scores below 5.0 and installation age over 24 months, with immediate focus on Machine 2 and Machine 9."
-        }
+        ],
+        "summary": "All machines are Low risk."
       },
-      "explanation": "Complex analytical query requiring integration of machine data with maintenance history, pattern recognition across multiple dimensions, reliability scoring, and development of a predictive maintenance framework with strategic resource allocation recommendations.",
+      "explanation": "Combines maintenance logs, anomaly flags and machine metadata – multi‑hop aggregation across two structured sources and unstructured note insights to compute risk tiers and generate recommendations.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
+            "filter": "(installation_date >= '2021-01-01') AND (installation_date <= '2021-12-31')",
             "related": "ops_maintenance_by_machine_id"
           }
         }
       ],
-      "sample_solution": "Join ops_machines with ops_maintenance data, analyze maintenance patterns, calculate reliability metrics based on machine age, maintenance frequency, anomaly rates and status, identify statistical correlations, cluster machines by reliability, and develop a comprehensive predictive maintenance strategy with optimized resource allocation."
+      "sample_solution": "Fetch OPS_MACHINES with installation dates and related maintenance, aggregate actions and anomalies per machine, compute risk tier logic, add recommendation for High."
     },
     {
       "query_id": "ops_l4_2",
-      "query": "Develop a geospatial operational efficiency model by analyzing machine distribution, maintenance requirements, and anomaly patterns across locations, then identify optimal technician allocation and machine relocation strategies to minimize downtime and maintenance costs while maintaining operational coverage.",
+      "query": "As an Operations manager, analyse maintenance effectiveness by location. For every location: compute active machine count and their anomaly rate.",
       "expected_response": {
-        "regional_analysis": {
-          "high_density_regions": [
-            {
-              "region": "West Coast",
-              "locations": [
-                "San Francisco",
-                "San Diego",
-                "Los Angeles",
-                "San Jose"
-              ],
-              "machine_count": 4,
-              "active_machines": 3,
-              "maintenance_demand": "Medium",
-              "anomaly_frequency": "Low"
+        "location_maintenance_analysis": [
+          {
+            "New York": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
             },
-            {
-              "region": "East Coast",
-              "locations": [
-                "New York",
-                "Philadelphia",
-                "Jacksonville",
-                "Charlotte"
-              ],
-              "machine_count": 4,
-              "active_machines": 3,
-              "maintenance_demand": "Medium",
-              "anomaly_frequency": "Medium"
-            }
-          ],
-          "medium_density_regions": [
-            {
-              "region": "South",
-              "locations": ["Dallas", "Houston", "San Antonio", "Austin"],
-              "machine_count": 4,
-              "active_machines": 2,
-              "maintenance_demand": "High",
-              "anomaly_frequency": "High"
-            }
-          ],
-          "low_density_regions": [
-            {
-              "region": "Midwest",
-              "locations": ["Chicago", "Indianapolis", "Columbus"],
-              "machine_count": 3,
-              "active_machines": 2,
-              "maintenance_demand": "Low",
-              "anomaly_frequency": "Medium"
-            }
-          ]
-        },
-        "technician_allocation_model": {
-          "optimal_distribution": {
-            "West Coast": "2 technicians (1 senior, 1 junior)",
-            "East Coast": "2 technicians (1 senior, 1 junior)",
-            "South": "3 technicians (2 senior, 1 junior)",
-            "Midwest": "1 technician (senior)"
-          },
-          "response_time_projections": {
-            "West Coast": "Same-day response",
-            "East Coast": "Same-day response",
-            "South": "4-hour emergency response",
-            "Midwest": "Next-day response"
-          },
-          "cost_efficiency": "Projected 22% reduction in travel costs and 35% improvement in response time compared to current flat distribution model."
-        },
-        "machine_rebalancing_strategy": {
-          "recommended_relocations": [
-            {
-              "machine_id": 9,
-              "current_location": "Dallas",
-              "recommended_location": "Indianapolis",
-              "rationale": "Balance maintenance demand across regions and reduce anomaly clustering in South region"
+            "Chicago": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
             },
-            {
-              "machine_id": 14,
-              "current_location": "Columbus",
-              "recommended_location": "Phoenix",
-              "rationale": "Maximize coverage efficiency by adding capacity to underserved location"
+            "Phoenix": {
+              "active_machines": 1,
+              "anomalies": 1,
+              "anomaly_rate": 1.0
+            },
+            "San Antonio": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "San Diego": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "San Jose": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "Jacksonville": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "Fort Worth": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "Charlotte": {
+              "active_machines": 1,
+              "anomalies": 1,
+              "anomaly_rate": 1.0
+            },
+            "Indianapolis": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "Seattle": {
+              "active_machines": 1,
+              "anomalies": 0,
+              "anomaly_rate": 0.0
+            },
+            "Washington": {
+              "active_machines": 1,
+              "anomalies": 1,
+              "anomaly_rate": 1.0
             }
-          ],
-          "installation_priorities": "Focus new installations in Denver and Washington to improve coverage in low-density areas while maintaining proximity to existing support infrastructure."
-        }
+          }
+        ]
       },
-      "explanation": "Advanced geospatial analysis query requiring regional clustering, maintenance demand assessment, technician resource allocation modeling, and strategic machine distribution planning to optimize operational efficiency.",
+      "explanation": "Requires grouping machines by location, joining maintenance records, computing active machine counts and anomaly rates.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
+            "filter": "(status = 'Active')",
+            "fields": ["machine_id", "location", "installation_date"],
             "related": "ops_maintenance_by_machine_id"
           }
         }
       ],
-      "sample_solution": "Analyze machine and maintenance data with location clustering, group locations into regions, calculate maintenance demand and anomaly patterns per region, determine optimal technician allocation based on regional needs, identify strategic machine relocations to balance operational efficiency, and develop a comprehensive spatial optimization strategy."
-    },
-    {
-      "query_id": "ops_l4_3",
-      "query": "Identify maintenance effectiveness patterns by analyzing the relationship between maintenance actions, anomaly detection rates, and machine status changes over time, then develop an optimized maintenance protocol framework that maximizes operational uptime while minimizing unnecessary maintenance interventions.",
-      "expected_response": {
-        "maintenance_effectiveness_analysis": {
-          "action_efficacy_ranking": [
-            {
-              "maintenance_action": "Software update",
-              "frequency": 3,
-              "anomaly_resolution_rate": "100%",
-              "status_improvement_rate": "100%",
-              "average_time_to_next_maintenance": "6.2 months",
-              "effectiveness_score": 9.4
-            },
-            {
-              "maintenance_action": "Calibration",
-              "frequency": 3,
-              "anomaly_resolution_rate": "100%",
-              "status_improvement_rate": "66%",
-              "average_time_to_next_maintenance": "4.8 months",
-              "effectiveness_score": 8.1
-            },
-            {
-              "maintenance_action": "Replaced part",
-              "frequency": 5,
-              "anomaly_resolution_rate": "80%",
-              "status_improvement_rate": "60%",
-              "average_time_to_next_maintenance": "3.2 months",
-              "effectiveness_score": 7.3
-            },
-            {
-              "maintenance_action": "Routine check",
-              "frequency": 9,
-              "anomaly_resolution_rate": "N/A (preventative)",
-              "status_improvement_rate": "33%",
-              "average_time_to_next_maintenance": "5.1 months",
-              "effectiveness_score": 6.8
-            }
-          ],
-          "anomaly_pattern_insights": "Machines experiencing anomalies have a 72% probability of requiring part replacement within 3 months. Software updates have shown complete effectiveness in resolving system anomalies, with no recurrence observed in the subsequent 6 months. Routine checks without specific maintenance actions show minimal impact on preventing future anomalies.",
-          "status_transition_analysis": {
-            "Active → Maintenance": "Occurs on average 5.2 months after installation or last maintenance",
-            "Maintenance → Active": "Successfully transitions 65% of the time after intervention",
-            "Active → Inactive": "Occurs primarily with machines having 2+ anomaly detections",
-            "Maintenance → Inactive": "Occurs when part replacements fail to resolve recurring anomalies"
-          }
-        },
-        "optimized_protocol_framework": {
-          "preventative_schedule": "Implement quarterly software updates for all machines regardless of status. Schedule calibration every 4 months for machines over 18 months old. Perform routine checks with diagnostic focus rather than general inspection.",
-          "response_protocols": "For anomaly detection, prioritize software updates before attempting part replacement. Implement 30-day monitoring period after part replacement to verify resolution. Escalate to senior technician if same anomaly occurs within 60 days of maintenance.",
-          "resource_optimization": "Reduce routine check frequency by 40% and reallocate resources to software update and calibration processes. Establish parts inventory based on machine age profile, with 30% higher inventory for components in machines over 24 months old."
-        },
-        "implementation_roadmap": "Phase 1: Update maintenance scheduling system to reflect new protocols (30 days). Phase 2: Train technicians on diagnostic-focused routine checks (60 days). Phase 3: Full implementation of optimized protocol with quarterly effectiveness review (90 days onward)."
-      },
-      "explanation": "Sophisticated maintenance analysis query requiring detailed pattern recognition in maintenance histories, effectiveness evaluation of different maintenance approaches, anomaly resolution tracking, and development of an optimized protocol framework with specific implementation guidance.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_maintenance",
-            "related": "ops_machines_by_machine_id"
-          }
-        }
-      ],
-      "sample_solution": "Analyze maintenance records with related machine data, evaluate the effectiveness of different maintenance actions, calculate anomaly resolution rates and status improvement metrics, identify temporal patterns in maintenance needs, develop effectiveness scoring for each maintenance approach, and create a comprehensive maintenance protocol optimization framework with implementation roadmap."
-    },
-    {
-      "query_id": "ops_l4_4",
-      "query": "Conduct a multi-dimensional analysis of machine lifecycle patterns by correlating installation age, maintenance history, anomaly trends, and operational status to develop a predictive lifecycle model that optimizes capital expenditure planning and operational resource allocation across the machine fleet.",
-      "expected_response": {
-        "lifecycle_stage_identification": {
-          "early_stage_machines": {
-            "age_range": "0-12 months",
-            "count": 5,
-            "characteristic_patterns": "Low maintenance frequency (1-2 events), minimal anomalies (0-1), predominantly Active status",
-            "machines": [13, 15, 17, 18, 20],
-            "average_reliability_score": 8.7
-          },
-          "mid_stage_machines": {
-            "age_range": "13-24 months",
-            "count": 10,
-            "characteristic_patterns": "Moderate maintenance frequency (2-3 events), emerging anomaly pattern (1-2), mixed Active/Maintenance status",
-            "machines": [1, 3, 5, 7, 8, 10, 12, 16, 19],
-            "average_reliability_score": 7.2
-          },
-          "late_stage_machines": {
-            "age_range": "25+ months",
-            "count": 5,
-            "characteristic_patterns": "High maintenance frequency (3+ events), significant anomaly history (2+), predominantly Maintenance/Inactive status",
-            "machines": [2, 4, 6, 9, 11, 14],
-            "average_reliability_score": 5.3
-          }
-        },
-        "transition_probability_matrix": {
-          "early_to_mid_transition": {
-            "timing": "Typically occurs at 10-14 months",
-            "trigger_events": "First anomaly detection or second maintenance event",
-            "status_change_probability": "20% chance of status change from Active to Maintenance"
-          },
-          "mid_to_late_transition": {
-            "timing": "Typically occurs at 22-26 months",
-            "trigger_events": "Second anomaly detection or fourth maintenance event",
-            "status_change_probability": "60% chance of status change to Maintenance, 15% to Inactive"
-          }
-        },
-        "lifecycle_optimization_strategy": {
-          "capital_planning": "Budget for replacement evaluation at 30-month mark, with replacement prioritization for machines experiencing multiple anomalies after month 24. Structure capital allocation to replace approximately 20% of fleet annually.",
-          "preventative_interventions": "Implement intensive preventative maintenance protocol for machines approaching transition points (months 10-12 and 22-24) to extend lifecycle stages. Focus on software updates and calibration for pre-transition machines.",
-          "resource_allocation": "Distribute maintenance resources proportionally: 20% to early-stage machines (preventative), 50% to mid-stage (combination of preventative and corrective), and 30% to late-stage (predominantly corrective and evaluation).",
-          "location_considerations": "Machines in multi-machine locations show 15% longer stage durations, suggesting operational benefits to clustering. Prioritize replacements in single-machine locations where lifecycle transitions occur more rapidly."
-        }
-      },
-      "explanation": "Complex lifecycle analysis query requiring stage identification, transition probability mapping, and development of a comprehensive optimization strategy for machine fleet management based on predictive lifecycle modeling.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_machines",
-            "related": "ops_maintenance_by_machine_id"
-          }
-        }
-      ],
-      "sample_solution": "Analyze combined machine and maintenance data, segment machines into lifecycle stages based on age and patterns, calculate transition probabilities between stages, identify trigger events for lifecycle transitions, and develop a comprehensive strategy for optimizing capital planning and resource allocation based on predictive lifecycle modeling."
-    },
-    {
-      "query_id": "ops_l4_5",
-      "query": "Evaluate the relationship between maintenance note sentiment, machine performance patterns, and operational status to identify early warning indicators of critical failures, then develop a proactive intervention framework that combines textual analysis, anomaly detection, and maintenance timing to maximize machine fleet reliability.",
-      "expected_response": {
-        "maintenance_note_analysis": {
-          "sentiment_classification": {
-            "positive_indicators": [
-              "operating normally",
-              "no issues found",
-              "successful",
-              "running smoothly",
-              "within limits"
-            ],
-            "neutral_indicators": [
-              "routine maintenance",
-              "updated to latest",
-              "routine check"
-            ],
-            "negative_indicators": [
-              "replaced",
-              "malfunction",
-              "fault",
-              "wear",
-              "error",
-              "fixed"
-            ],
-            "critical_indicators": [
-              "failure",
-              "breakdown",
-              "urgent",
-              "critical",
-              "emergency"
-            ]
-          },
-          "sentiment_progression_patterns": {
-            "healthy_trajectory": "Consistently positive/neutral sentiment with occasional isolated negative entries",
-            "deterioration_trajectory": "Transition from positive to neutral with increasing frequency of negative indicators",
-            "failure_trajectory": "Rapid increase in negative indicators followed by critical terminology"
-          },
-          "machine_examples": [
-            {
-              "machine_id": 1,
-              "sentiment_trajectory": "Healthy (consistently positive)",
-              "status": "Active",
-              "failure_risk": "Low"
-            },
-            {
-              "machine_id": 2,
-              "sentiment_trajectory": "Deterioration (increasing negative indicators)",
-              "status": "Maintenance",
-              "failure_risk": "Medium"
-            },
-            {
-              "machine_id": 9,
-              "sentiment_trajectory": "Failure (progression to critical)",
-              "status": "Inactive",
-              "failure_risk": "High"
-            }
-          ]
-        },
-        "predictive_indicators": {
-          "high_confidence_predictors": [
-            "Three consecutive maintenance events with negative sentiment indicators",
-            "Multiple part replacements addressing same system within 6 months",
-            "Anomaly detection followed by neutral sentiment maintenance that doesn't explicitly confirm resolution"
-          ],
-          "medium_confidence_predictors": [
-            "Transition from 6+ month maintenance intervals to <3 month intervals",
-            "Shift from predominantly positive sentiment to mixed neutral/negative",
-            "Location-based clustering of negative maintenance sentiments across multiple machines"
-          ],
-          "timeframe_reliability": "High confidence predictors precede critical failures by 2-3 months with 85% accuracy. Medium confidence predictors show 6-8 month lead time with 65% accuracy."
-        },
-        "proactive_intervention_framework": {
-          "monitoring_protocol": "Implement natural language processing system for real-time analysis of maintenance notes, flagging concerning language patterns. Track sentiment trajectory for each machine alongside traditional metrics.",
-          "escalation_triggers": "Immediately escalate machines showing high confidence predictors for comprehensive evaluation. Institute monthly review of machines exhibiting medium confidence predictors.",
-          "intervention_strategies": "For high-risk machines, implement 30-day diagnostic monitoring protocol with specialized sensor deployment. For medium-risk, schedule preventative maintenance with focus areas determined by specific negative indicators in maintenance history.",
-          "organizational_structure": "Create cross-functional response team combining maintenance technicians, data analysts, and operations managers for rapid deployment to machines exhibiting early warning indicators. Implement knowledge-sharing protocol to disseminate early warning patterns to all technicians."
-        }
-      },
-      "explanation": "Advanced analytical query requiring natural language processing of maintenance notes, pattern recognition in sentiment trajectories, correlation with machine performance data, and development of a sophisticated early warning system with proactive intervention framework.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_maintenance",
-            "related": "ops_machines_by_machine_id"
-          }
-        }
-      ],
-      "sample_solution": "Analyze maintenance notes using sentiment classification, identify patterns in sentiment progression across machine histories, correlate sentiment trajectories with machine status and performance, isolate high-confidence predictive indicators of failures, and develop a comprehensive proactive intervention framework incorporating text analysis, anomaly detection, and strategic maintenance timing."
+      "sample_solution": "Fetch OPS_MACHINES with active machines and related maintenance, aggregate actions per location, compute anomaly rates."
     }
   ]
 }
