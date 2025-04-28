@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import argparse
-from functools import partial
 
 import logfire
+from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -13,10 +13,17 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     Role,
     ToolCall,
-    task,
+    evaluate,
 )
 
-from .types import Expense, Expenses, ProductCount, RevenueAmount, TotalAmount, TotalRevenue
+from .output_types import (
+    Expense,
+    Expenses,
+    ProductCount,
+    RevenueAmount,
+    TotalAmount,
+    TotalRevenue,
+)
 
 _ = logfire.configure()
 
@@ -27,7 +34,7 @@ finance_dataset = Dataset[Query, QueryResult](
     cases=[
         Case(
             name="finance_l1_q1",
-            inputs=Query(query="What was the total revenue in Q4 2022?", result_type=TotalRevenue),
+            inputs=Query(query="What was the total revenue in Q4 2022?", output_type=TotalRevenue),
             expected_output=QueryResult(
                 result=TotalRevenue(total_revenue=8000),
                 tool_calls=[
@@ -44,7 +51,7 @@ finance_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="finance_l1_q2",
-            inputs=Query(query="How many products are in the Electronics category?", result_type=ProductCount),
+            inputs=Query(query="How many products are in the Electronics category?", output_type=ProductCount),
             expected_output=QueryResult(
                 result=ProductCount(product_count=7),
                 tool_calls=[
@@ -62,7 +69,7 @@ finance_dataset = Dataset[Query, QueryResult](
         Case(
             name="finance_l1_q3",
             inputs=Query(
-                query="What is the total amount spent on Capital expenses in 2022?", result_type=TotalAmount
+                query="What is the total amount spent on Capital expenses in 2022?", output_type=TotalAmount
             ),
             expected_output=QueryResult(
                 result=TotalAmount(total_amount=1700),
@@ -80,7 +87,7 @@ finance_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="finance_l1_q4",
-            inputs=Query(query="What was the revenue amount for Product 10?", result_type=RevenueAmount),
+            inputs=Query(query="What was the revenue amount for Product 10?", output_type=RevenueAmount),
             expected_output=QueryResult(
                 result=RevenueAmount(revenue_amount=1500),
                 tool_calls=[
@@ -97,7 +104,7 @@ finance_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="finance_l1_q5",
-            inputs=Query(query="What are the top 3 highest expenses in 2023?", result_type=Expenses),
+            inputs=Query(query="What are the top 3 highest expenses in 2023?", output_type=Expenses),
             expected_output=QueryResult(
                 result=Expenses(
                     expenses=[
@@ -149,14 +156,10 @@ def main():
     )
     args = parser.parse_args()
 
-    model = args.model
-    user_role = Role.FINANCE
-    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
-
-    report = finance_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
-    print(f"Evaluation report for {args.model}:")
-    print(report)
+    evaluate(model=args.model, dataset=finance_dataset, user_role=Role.FINANCE, level=1)
 
 
 if __name__ == "__main__":
-    main()
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "google-gla:gemini-2.0-flash"]
+    for model in models:
+        evaluate(model=model, dataset=finance_dataset, user_role=Role.FINANCE, level=1)

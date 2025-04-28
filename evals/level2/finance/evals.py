@@ -40,7 +40,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l2_1",
             inputs=Query(
                 query="What is the revenue amount for Product 12, and what is its product category?",
-                result_type=ProductRevenueInfo,
+                output_type=ProductRevenueInfo,
             ),
             expected_output=QueryResult(
                 result=ProductRevenueInfo(product_name="Product 12", revenue_amount=1600, category="Hardware"),
@@ -61,7 +61,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l2_2",
             inputs=Query(
                 query="Compare the total revenue of Electronics products to Software products in Q2 2022.",
-                result_type=CategoryRevenueComparison,
+                output_type=CategoryRevenueComparison,
             ),
             expected_output=QueryResult(
                 result=CategoryRevenueComparison(electronics_revenue=1500, software_revenue=2800),
@@ -81,7 +81,7 @@ finance_dataset = Dataset[Query, QueryResult](
         Case(
             name="finance_l2_3",
             inputs=Query(
-                query="What was the profit (revenue minus expenses) for Q3 2022?", result_type=ProfitInfo
+                query="What was the profit (revenue minus expenses) for Q3 2022?", output_type=ProfitInfo
             ),
             expected_output=QueryResult(
                 result=ProfitInfo(total_revenue=7750, total_expenses=2000, profit=5750),
@@ -109,7 +109,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l2_4",
             inputs=Query(
                 query="List all Hardware products with their revenue in 2022, sorted by revenue amount.",
-                result_type=HardwareRevenues,
+                output_type=HardwareRevenues,
             ),
             expected_output=QueryResult(
                 result=HardwareRevenues(
@@ -140,7 +140,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l2_5",
             inputs=Query(
                 query="Compare the expenses for Capital vs Operational categories in the first half of 2022.",
-                result_type=ExpenseComparison,
+                output_type=ExpenseComparison,
             ),
             expected_output=QueryResult(
                 result=ExpenseComparison(capital_expenses=1200, operational_expenses=1050),

@@ -38,7 +38,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l3_1",
             inputs=Query(
                 query="Compare the performance of software products against their capital expenses in 2022. For each quarter, show the total software revenue and any capital expenses made in that period, and calculate the return on investment (ROI).",
-                result_type=QuarterlyAnalysis,
+                output_type=QuarterlyAnalysis,
             ),
             expected_output=QueryResult(
                 result=QuarterlyAnalysis(
@@ -101,7 +101,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l3_2",
             inputs=Query(
                 query="What was the quarterly profit (revenue minus expenses) for Q1 2022?",
-                result_type=Q1Profit,
+                output_type=Q1Profit,
             ),
             expected_output=QueryResult(
                 result=Q1Profit(q1_2022_profit=6500),
@@ -129,7 +129,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l3_3",
             inputs=Query(
                 query="What percentage of total 2023 expenses were Operational vs Capital?",
-                result_type=ExpensePercentage,
+                output_type=ExpensePercentage,
             ),
             expected_output=QueryResult(
                 result=ExpensePercentage(
@@ -155,7 +155,7 @@ finance_dataset = Dataset[Query, QueryResult](
             name="finance_l3_4",
             inputs=Query(
                 query="List categories with their total revenue, ordered by highest performing category",
-                result_type=CategoryTotals,
+                output_type=CategoryTotals,
             ),
             expected_output=QueryResult(
                 result=CategoryTotals(

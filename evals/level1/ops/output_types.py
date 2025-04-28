@@ -2,8 +2,6 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 
-# Use str for any date fields, otherwise keep native types
-
 date = Annotated[str, Field(description="format: YYYY-MM-DD")]
 
 

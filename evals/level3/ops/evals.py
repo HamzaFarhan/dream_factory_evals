@@ -37,7 +37,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l3_1",
             inputs=Query(
                 query="Count the number of maintenance actions for machines in different locations, only for machines installed before 2022.",
-                result_type=MaintenanceByLocation,
+                output_type=MaintenanceByLocation,
             ),
             expected_output=QueryResult(
                 result=MaintenanceByLocation(
@@ -73,7 +73,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l3_2",
             inputs=Query(
                 query="What percentage of maintenance actions resulted in anomaly detection, broken down by machine location?",
-                result_type=AnomalyRates,
+                output_type=AnomalyRates,
             ),
             expected_output=QueryResult(
                 result=AnomalyRates(
@@ -116,7 +116,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l3_3",
             inputs=Query(
                 query="Calculate the average time between machine installation and first maintenance for machines installed in 2021 versus 2022.",
-                result_type=InstallationYearComparison,
+                output_type=InstallationYearComparison,
             ),
             expected_output=QueryResult(
                 result=InstallationYearComparison(

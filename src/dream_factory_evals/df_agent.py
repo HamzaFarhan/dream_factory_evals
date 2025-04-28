@@ -1,19 +1,26 @@
 import os
 from dataclasses import dataclass
 from enum import StrEnum
+from functools import partial
 from typing import Any, TypeVar
 
 from dotenv import load_dotenv
+from loguru import logger
 from pydantic import BaseModel
 from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ToolCallPart
 from pydantic_ai.models import KnownModelName
+from pydantic_evals import Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
+from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_fixed
 
 from dream_factory_evals.df_mcp import list_table_names
 
 load_dotenv()
+
+MAX_TOOL_CALLS = 50
+STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
 
 
 class ToolCall(BaseModel):
@@ -38,7 +45,7 @@ ResultT = TypeVar("ResultT")
 @dataclass
 class Query[ResultT]:
     query: str
-    result_type: type[ResultT]
+    output_type: type[ResultT]
     result_schema: str = ""
 
     @property
@@ -117,7 +124,7 @@ def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownMod
 
     tables_mcp_server = MCPServerStdio(
         command="uv",
-        args=["run", "df_mcp.py"],
+        args=["run", "src/dream_factory_evals/df_mcp.py"],
         env={
             "DREAM_FACTORY_BASE_URL": os.environ["DREAM_FACTORY_BASE_URL"],
             "DREAM_FACTORY_API_KEY": os.environ[f"DREAM_FACTORY_{user_role.upper()}_API_KEY"],
@@ -148,17 +155,75 @@ def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownMod
     return task, agent
 
 
-async def task(inputs: Query, user_role: Role, model: KnownModelName) -> QueryResult:
+async def task(
+    inputs: Query,
+    user_role: Role,
+    model: KnownModelName,
+    max_tool_calls: int = MAX_TOOL_CALLS,
+) -> QueryResult:
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
     tool_calls = []
-    async with agent.run_mcp_servers():
-        async with agent.iter(user_prompt=task.prompt, result_type=inputs.result_type) as agent_run:
-            async for node in agent_run:
-                if agent.is_call_tools_node(node):
-                    for part in node.model_response.parts:
-                        if isinstance(part, ToolCallPart):
-                            tool_calls.append(ToolCall(tool=part.tool_name, params=part.args_as_dict()))
-        return QueryResult(result=agent_run.result, tool_calls=tool_calls)
+    try:
+        async for attempt in AsyncRetrying(wait=wait_fixed(1), stop=stop_after_attempt(3)):
+            with attempt:
+                async with agent.run_mcp_servers():
+                    num_tool_calls = 0
+                    async with agent.iter(user_prompt=task.prompt, output_type=inputs.output_type) as agent_run:
+                        async for node in agent_run:
+                            if agent.is_call_tools_node(node):
+                                for part in node.model_response.parts:
+                                    if isinstance(part, ToolCallPart) and part.tool_name not in [
+                                        "get_table_schema",
+                                        "final_result",
+                                    ]:
+                                        if num_tool_calls < max_tool_calls:
+                                            tool_calls.append(
+                                                ToolCall(tool=part.tool_name, params=part.args_as_dict())
+                                            )
+                                            num_tool_calls += 1
+                                        else:
+                                            logger.warning(
+                                                f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
+                                            )
+                                            return QueryResult(result=None, tool_calls=tool_calls)
+
+                    res = agent_run.result.output if agent_run.result is not None else None
+                    return QueryResult(result=res, tool_calls=tool_calls)
+    except RetryError as e:
+        logger.exception(e)
+    return QueryResult(result=None, tool_calls=tool_calls)
+
+
+def evaluate(
+    model: KnownModelName,
+    dataset: Dataset[Query, QueryResult],
+    user_role: Role,
+    level: int,
+    max_tool_calls: int = MAX_TOOL_CALLS,
+):
+    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
+
+    report = dataset.evaluate_sync(
+        task=partial(task, user_role=user_role, model=model, max_tool_calls=max_tool_calls), name=name
+    )
+    report.print(
+        include_input=True,
+        include_output=True,
+        include_expected_output=True,
+        include_durations=True,
+        include_total_duration=True,
+        include_averages=True,
+    )
+
+
+def are_strings_similar(str1: str, str2: str, model: KnownModelName = STRINGS_SIMILARITY_MODEL) -> bool:
+    strings_similarity_agent = Agent(model=model, name="strings_similarity_agent", output_type=bool)
+    prompt = (
+        "The wording/structure/grammar may be different, but are these 2 strings saying the same thing?\n"
+        f"String 1: {str1}\n"
+        f"String 2: {str2}\n"
+    )
+    return strings_similarity_agent.run_sync(prompt).output
 
 
 async def main():
@@ -167,7 +232,7 @@ async def main():
     class Email(BaseModel):
         email: str
 
-    inputs = Query(query="What is the email address of Alice Johnson?", result_type=Email)
+    inputs = Query(query="What is the email address of Alice Johnson?", output_type=Email)
     user_role = Role.HR
     model = "google-gla:gemini-2.0-flash"
     result = await task(inputs=inputs, user_role=user_role, model=model)

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import argparse
 from datetime import date as date_
-from functools import partial
 
 import logfire
+from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -14,10 +14,10 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     Role,
     ToolCall,
-    task,
+    evaluate,
 )
 
-from .types import (
+from .output_types import (
     DepartmentCount,
     Email,
     Employee,
@@ -100,7 +100,7 @@ hr_dataset = Dataset[Query, QueryResult](
     cases=[
         Case(
             name="hr_l1_q1",
-            inputs=Query(query="What is the email address of Alice Johnson?", result_type=Email),
+            inputs=Query(query="What is the email address of Alice Johnson?", output_type=Email),
             expected_output=QueryResult(
                 result=Email(email="alice.johnson@example.com"),
                 tool_calls=[
@@ -117,7 +117,7 @@ hr_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="hr_l1_q2",
-            inputs=Query(query="How many departments do we have in the company?", result_type=DepartmentCount),
+            inputs=Query(query="How many departments do we have in the company?", output_type=DepartmentCount),
             expected_output=QueryResult(
                 result=DepartmentCount(department_count=20),
                 tool_calls=[
@@ -134,7 +134,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l1_q3",
             inputs=Query(
                 query="List all department policies that were effective from January to June 2023.",
-                result_type=Policies,
+                output_type=Policies,
             ),
             expected_output=QueryResult(
                 result=Policies(
@@ -196,7 +196,7 @@ hr_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="hr_l1_q4",
-            inputs=Query(query="List all employees who joined in 2023.", result_type=Employees),
+            inputs=Query(query="List all employees who joined in 2023.", output_type=Employees),
             expected_output=QueryResult(
                 result=Employees(
                     employees=[
@@ -287,7 +287,7 @@ hr_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="hr_l1_q5",
-            inputs=Query(query="How many managers do we have in the company?", result_type=ManagerCount),
+            inputs=Query(query="How many managers do we have in the company?", output_type=ManagerCount),
             expected_output=QueryResult(
                 result=ManagerCount(manager_count=7),
                 tool_calls=[
@@ -320,14 +320,10 @@ def main():
     )
     args = parser.parse_args()
 
-    model = args.model
-    user_role = Role.HR
-    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
-
-    report = hr_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
-    print(f"Evaluation report for {args.model}:")
-    print(report)
+    evaluate(model=args.model, dataset=hr_dataset, user_role=Role.HR, level=1)
 
 
 if __name__ == "__main__":
-    main()
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
+    for model in models:
+        evaluate(model=model, dataset=hr_dataset, user_role=Role.HR, level=1)

@@ -45,7 +45,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l2_1",
             inputs=Query(
                 query="When was the last maintenance performed on Machine 5 and what action was taken?",
-                result_type=MachineMaintenanceInfo,
+                output_type=MachineMaintenanceInfo,
             ),
             expected_output=QueryResult(
                 result=MachineMaintenanceInfo(
@@ -73,7 +73,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l2_2",
             inputs=Query(
                 query="How many machines are currently in 'Maintenance' status, and where are they located?",
-                result_type=MaintenanceStatusInfo,
+                output_type=MaintenanceStatusInfo,
             ),
             expected_output=QueryResult(
                 result=MaintenanceStatusInfo(
@@ -101,7 +101,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l2_3",
             inputs=Query(
                 query="Compare the number of maintenance actions categorized as 'Routine check' versus 'Replaced part' in 2022.",
-                result_type=MaintenanceActionCount,
+                output_type=MaintenanceActionCount,
             ),
             expected_output=QueryResult(
                 result=MaintenanceActionCount(
@@ -124,7 +124,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l2_4",
             inputs=Query(
                 query="List all machines with anomalies detected during maintenance in 2023, along with the maintenance notes.",
-                result_type=MachinesWithAnomalies,
+                output_type=MachinesWithAnomalies,
             ),
             expected_output=QueryResult(
                 result=MachinesWithAnomalies(
@@ -158,7 +158,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l2_5",
             inputs=Query(
                 query="What is the average age (in years) of machines in 'Active' status as of December 31, 2023?",
-                result_type=MachineAgeInfo,
+                output_type=MachineAgeInfo,
             ),
             expected_output=QueryResult(
                 result=MachineAgeInfo(

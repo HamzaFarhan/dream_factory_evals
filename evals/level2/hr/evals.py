@@ -41,7 +41,7 @@ hr_dataset = Dataset[Query, QueryResult](
     cases=[
         Case(
             name="hr_l2_1",
-            inputs=Query(query="What department does Alice Johnson work in?", result_type=EmployeeDepartment),
+            inputs=Query(query="What department does Alice Johnson work in?", output_type=EmployeeDepartment),
             expected_output=QueryResult(
                 result=EmployeeDepartment(employee="Alice Johnson", department="Sales"),
                 tool_calls=[
@@ -58,7 +58,7 @@ hr_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="hr_l2_2",
-            inputs=Query(query="Who is the manager of the Engineering department?", result_type=DepartmentManager),
+            inputs=Query(query="Who is the manager of the Engineering department?", output_type=DepartmentManager),
             expected_output=QueryResult(
                 result=DepartmentManager(
                     first_name="Carol",
@@ -86,7 +86,7 @@ hr_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="hr_l2_3",
-            inputs=Query(query="How many employees are in each department?", result_type=DepartmentCounts),
+            inputs=Query(query="How many employees are in each department?", output_type=DepartmentCounts),
             expected_output=QueryResult(
                 result=DepartmentCounts(
                     department_counts=[
@@ -127,7 +127,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l2_4",
             inputs=Query(
                 query="Which departments have a policy that became effective in 2023?",
-                result_type=DepartmentsWithPolicy,
+                output_type=DepartmentsWithPolicy,
             ),
             expected_output=QueryResult(
                 result=DepartmentsWithPolicy(
@@ -189,7 +189,7 @@ hr_dataset = Dataset[Query, QueryResult](
         Case(
             name="hr_l2_5",
             inputs=Query(
-                query="List all managers along with their departments.", result_type=ManagersWithDepartments
+                query="List all managers along with their departments.", output_type=ManagersWithDepartments
             ),
             expected_output=QueryResult(
                 result=ManagersWithDepartments(

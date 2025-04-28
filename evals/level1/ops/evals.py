@@ -10,7 +10,7 @@ from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorCont
 
 from dream_factory_evals.df_agent import Query, QueryResult, Role, ToolCall, task
 
-from .types import (
+from .output_types import (
     ActiveMachines,
     Machine,
     Machines,
@@ -58,7 +58,7 @@ ops_dataset = Dataset[Query, QueryResult](
     cases=[
         Case(
             name="ops_l1_q1",
-            inputs=Query(query="How many machines are currently active?", result_type=ActiveMachines),
+            inputs=Query(query="How many machines are currently active?", output_type=ActiveMachines),
             expected_output=QueryResult(
                 result=ActiveMachines(active_machines=12),
                 tool_calls=[
@@ -75,7 +75,7 @@ ops_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="ops_l1_q2",
-            inputs=Query(query="What is the current status of Machine 5?", result_type=MachineStatus),
+            inputs=Query(query="What is the current status of Machine 5?", output_type=MachineStatus),
             expected_output=QueryResult(
                 result=MachineStatus(machine_name="Machine 5", status="Active"),
                 tool_calls=[
@@ -92,7 +92,7 @@ ops_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="ops_l1_q3",
-            inputs=Query(query="List all machines installed in 2022.", result_type=Machines),
+            inputs=Query(query="List all machines installed in 2022.", output_type=Machines),
             expected_output=QueryResult(
                 result=Machines(
                     machines=[
@@ -121,7 +121,7 @@ ops_dataset = Dataset[Query, QueryResult](
             name="ops_l1_q4",
             inputs=Query(
                 query="How many maintenance actions involved part replacements in 2023?",
-                result_type=ReplacementCount,
+                output_type=ReplacementCount,
             ),
             expected_output=QueryResult(
                 result=ReplacementCount(replacement_count=2),
@@ -139,7 +139,7 @@ ops_dataset = Dataset[Query, QueryResult](
         ),
         Case(
             name="ops_l1_q5",
-            inputs=Query(query="Which machines are currently under maintenance?", result_type=Machines),
+            inputs=Query(query="Which machines are currently under maintenance?", output_type=Machines),
             expected_output=QueryResult(
                 result=Machines(
                     machines=[

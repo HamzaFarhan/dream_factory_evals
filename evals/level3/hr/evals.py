@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import argparse
 from datetime import date as date_
-from functools import partial
 
+import logfire
+from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -13,7 +14,7 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     Role,
     ToolCall,
-    task,
+    evaluate,
 )
 
 from .types import (
@@ -28,6 +29,8 @@ from .types import (
     RoleDistributionAnalysisItem,
     StaffInfo,
 )
+
+_ = logfire.configure()
 
 
 def date(year: int, month: int, day: int) -> str:
@@ -48,7 +51,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l3_1",
             inputs=Query(
                 query="Find all staff members who joined in 2023 and group them by department, along with their respective department policies.",
-                result_type=DepartmentStaffPolicies,
+                output_type=DepartmentStaffPolicies,
             ),
             expected_output=QueryResult(
                 result=DepartmentStaffPolicies(
@@ -138,7 +141,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l3_2",
             inputs=Query(
                 query="Identify departments that have policies effective in the first half of 2023 but don't have any employees who joined in the same period.",
-                result_type=DepartmentsWithGap,
+                output_type=DepartmentsWithGap,
             ),
             expected_output=QueryResult(
                 result=DepartmentsWithGap(departments_with_gap=[]),
@@ -164,7 +167,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l3_3",
             inputs=Query(
                 query="Calculate the average time between policy implementation and manager appointments for each department in 2022-2023.",
-                result_type=DepartmentTimingAnalysis,
+                output_type=DepartmentTimingAnalysis,
             ),
             expected_output=QueryResult(
                 result=DepartmentTimingAnalysis(
@@ -245,7 +248,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l3_4",
             inputs=Query(
                 query="Analyze the distribution of employees by role across departments that have policies implemented in 2023 and identify which departments have the most balanced ratio of managers to staff.",
-                result_type=RoleDistributionAnalysis,
+                output_type=RoleDistributionAnalysis,
             ),
             expected_output=QueryResult(
                 result=RoleDistributionAnalysis(
@@ -340,7 +343,7 @@ hr_dataset = Dataset[Query, QueryResult](
             name="hr_l3_5",
             inputs=Query(
                 query="Identify departments where the policy was implemented before any employees joined, and calculate the average delay between policy implementation and the first employee joining these departments.",
-                result_type=PolicyFirstDepartments,
+                output_type=PolicyFirstDepartments,
             ),
             expected_output=QueryResult(
                 result=PolicyFirstDepartments(
@@ -447,15 +450,23 @@ hr_dataset = Dataset[Query, QueryResult](
 )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True)
+def main():
+    parser = argparse.ArgumentParser(description="Run HR evaluations")
+    parser.add_argument(
+        "--model",
+        type=str,
+        required=True,
+        help="Model name to evaluate. Examples:\n"
+        "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
+        "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
+        "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'",
+    )
     args = parser.parse_args()
-    user_role = Role.HR
-    name = f"level3_hr_{args.model}"
-    report = hr_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=args.model), name=name)
-    print(report)
+
+    evaluate(model=args.model, dataset=hr_dataset, user_role=Role.HR, level=3)
 
 
 if __name__ == "__main__":
-    main()
+    models: list[KnownModelName] = ["openai:gpt-4.1-mini"]
+    for model in models:
+        evaluate(model=model, dataset=hr_dataset, user_role=Role.HR, level=3)
