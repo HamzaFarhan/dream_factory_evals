@@ -1,0 +1,730 @@
+[
+  {
+    "revenue_id": 1,
+    "product_id": 1,
+    "revenue_amount": 1831.73,
+    "revenue_date": "2023-07-26",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 2,
+    "product_id": 1,
+    "revenue_amount": 2243.14,
+    "revenue_date": "2025-04-17",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "revenue_id": 3,
+    "product_id": 1,
+    "revenue_amount": 4894.97,
+    "revenue_date": "2024-11-21",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 4,
+    "product_id": 1,
+    "revenue_amount": 8807.62,
+    "revenue_date": "2024-01-07",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 5,
+    "product_id": 1,
+    "revenue_amount": 1216.16,
+    "revenue_date": "2024-03-07",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 6,
+    "product_id": 1,
+    "revenue_amount": 8176.21,
+    "revenue_date": "2024-01-24",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 7,
+    "product_id": 2,
+    "revenue_amount": 980.59,
+    "revenue_date": "2024-05-02",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 8,
+    "product_id": 2,
+    "revenue_amount": 9993.18,
+    "revenue_date": "2024-01-03",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 9,
+    "product_id": 2,
+    "revenue_amount": 8442.26,
+    "revenue_date": "2025-01-09",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 10,
+    "product_id": 3,
+    "revenue_amount": 9300.49,
+    "revenue_date": "2024-12-20",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 11,
+    "product_id": 3,
+    "revenue_amount": 8562.61,
+    "revenue_date": "2023-07-15",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 12,
+    "product_id": 3,
+    "revenue_amount": 2079.96,
+    "revenue_date": "2025-03-31",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 13,
+    "product_id": 4,
+    "revenue_amount": 5072.9,
+    "revenue_date": "2024-08-05",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 14,
+    "product_id": 4,
+    "revenue_amount": 8714.18,
+    "revenue_date": "2024-12-24",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 15,
+    "product_id": 4,
+    "revenue_amount": 9073.21,
+    "revenue_date": "2024-09-27",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 16,
+    "product_id": 4,
+    "revenue_amount": 2064.05,
+    "revenue_date": "2024-03-12",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 17,
+    "product_id": 4,
+    "revenue_amount": 520.48,
+    "revenue_date": "2024-10-16",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 18,
+    "product_id": 4,
+    "revenue_amount": 4209.01,
+    "revenue_date": "2025-04-03",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "revenue_id": 19,
+    "product_id": 5,
+    "revenue_amount": 3209.87,
+    "revenue_date": "2023-11-12",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 20,
+    "product_id": 5,
+    "revenue_amount": 7117.62,
+    "revenue_date": "2024-12-09",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 21,
+    "product_id": 5,
+    "revenue_amount": 7439.8,
+    "revenue_date": "2024-05-26",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 22,
+    "product_id": 5,
+    "revenue_amount": 7941.93,
+    "revenue_date": "2024-04-16",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 23,
+    "product_id": 5,
+    "revenue_amount": 6787.78,
+    "revenue_date": "2024-03-12",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 24,
+    "product_id": 5,
+    "revenue_amount": 5123.38,
+    "revenue_date": "2024-10-14",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 25,
+    "product_id": 6,
+    "revenue_amount": 3318.72,
+    "revenue_date": "2023-11-11",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 26,
+    "product_id": 6,
+    "revenue_amount": 9702.74,
+    "revenue_date": "2025-01-10",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 27,
+    "product_id": 6,
+    "revenue_amount": 6002.21,
+    "revenue_date": "2024-12-26",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 28,
+    "product_id": 6,
+    "revenue_amount": 5650.85,
+    "revenue_date": "2023-07-01",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 29,
+    "product_id": 7,
+    "revenue_amount": 1043.07,
+    "revenue_date": "2025-02-01",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 30,
+    "product_id": 7,
+    "revenue_amount": 6049.69,
+    "revenue_date": "2023-10-24",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 31,
+    "product_id": 7,
+    "revenue_amount": 5277.08,
+    "revenue_date": "2024-04-02",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 32,
+    "product_id": 7,
+    "revenue_amount": 8600.84,
+    "revenue_date": "2024-07-18",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 33,
+    "product_id": 7,
+    "revenue_amount": 1995.61,
+    "revenue_date": "2024-01-31",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 34,
+    "product_id": 8,
+    "revenue_amount": 8587.75,
+    "revenue_date": "2023-05-19",
+    "quarter": 2,
+    "year": 2023
+  },
+  {
+    "revenue_id": 35,
+    "product_id": 8,
+    "revenue_amount": 1150.95,
+    "revenue_date": "2025-01-10",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 36,
+    "product_id": 8,
+    "revenue_amount": 1145.63,
+    "revenue_date": "2023-09-08",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 37,
+    "product_id": 9,
+    "revenue_amount": 4335.87,
+    "revenue_date": "2023-10-01",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 38,
+    "product_id": 9,
+    "revenue_amount": 9445.16,
+    "revenue_date": "2024-12-02",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 39,
+    "product_id": 9,
+    "revenue_amount": 5911.92,
+    "revenue_date": "2024-01-02",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 40,
+    "product_id": 9,
+    "revenue_amount": 5999.73,
+    "revenue_date": "2025-01-31",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 41,
+    "product_id": 10,
+    "revenue_amount": 6384.12,
+    "revenue_date": "2024-09-22",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 42,
+    "product_id": 10,
+    "revenue_amount": 4482.64,
+    "revenue_date": "2023-11-16",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 43,
+    "product_id": 10,
+    "revenue_amount": 6044.89,
+    "revenue_date": "2023-05-06",
+    "quarter": 2,
+    "year": 2023
+  },
+  {
+    "revenue_id": 44,
+    "product_id": 11,
+    "revenue_amount": 9379.71,
+    "revenue_date": "2025-03-22",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 45,
+    "product_id": 11,
+    "revenue_amount": 2440.46,
+    "revenue_date": "2023-06-30",
+    "quarter": 2,
+    "year": 2023
+  },
+  {
+    "revenue_id": 46,
+    "product_id": 11,
+    "revenue_amount": 7303.82,
+    "revenue_date": "2024-10-06",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 47,
+    "product_id": 11,
+    "revenue_amount": 2767.52,
+    "revenue_date": "2024-04-20",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 48,
+    "product_id": 11,
+    "revenue_amount": 4259.97,
+    "revenue_date": "2024-11-03",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 49,
+    "product_id": 12,
+    "revenue_amount": 4843.63,
+    "revenue_date": "2024-09-14",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 50,
+    "product_id": 12,
+    "revenue_amount": 9325.67,
+    "revenue_date": "2024-08-13",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 51,
+    "product_id": 12,
+    "revenue_amount": 9389.48,
+    "revenue_date": "2024-04-21",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 52,
+    "product_id": 12,
+    "revenue_amount": 588.5,
+    "revenue_date": "2024-11-28",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 53,
+    "product_id": 12,
+    "revenue_amount": 6401.01,
+    "revenue_date": "2023-07-06",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 54,
+    "product_id": 13,
+    "revenue_amount": 1195.98,
+    "revenue_date": "2023-10-07",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 55,
+    "product_id": 13,
+    "revenue_amount": 2524.97,
+    "revenue_date": "2024-09-15",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 56,
+    "product_id": 13,
+    "revenue_amount": 3019.4,
+    "revenue_date": "2023-12-08",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 57,
+    "product_id": 14,
+    "revenue_amount": 8868.21,
+    "revenue_date": "2024-06-27",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 58,
+    "product_id": 14,
+    "revenue_amount": 8853.07,
+    "revenue_date": "2024-04-08",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 59,
+    "product_id": 14,
+    "revenue_amount": 4010.51,
+    "revenue_date": "2024-05-21",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 60,
+    "product_id": 14,
+    "revenue_amount": 1998.59,
+    "revenue_date": "2024-03-05",
+    "quarter": 1,
+    "year": 2024
+  },
+  {
+    "revenue_id": 61,
+    "product_id": 14,
+    "revenue_amount": 8420.58,
+    "revenue_date": "2024-10-25",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 62,
+    "product_id": 15,
+    "revenue_amount": 6310.94,
+    "revenue_date": "2023-12-26",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 63,
+    "product_id": 15,
+    "revenue_amount": 9878.71,
+    "revenue_date": "2024-09-23",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 64,
+    "product_id": 15,
+    "revenue_amount": 6712.78,
+    "revenue_date": "2023-11-13",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 65,
+    "product_id": 15,
+    "revenue_amount": 574.32,
+    "revenue_date": "2023-10-29",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 66,
+    "product_id": 15,
+    "revenue_amount": 8262.49,
+    "revenue_date": "2023-07-26",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 67,
+    "product_id": 16,
+    "revenue_amount": 9351.68,
+    "revenue_date": "2023-09-16",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 68,
+    "product_id": 16,
+    "revenue_amount": 1484.07,
+    "revenue_date": "2023-07-25",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 69,
+    "product_id": 16,
+    "revenue_amount": 8842.21,
+    "revenue_date": "2024-05-24",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 70,
+    "product_id": 16,
+    "revenue_amount": 3012.43,
+    "revenue_date": "2024-11-06",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 71,
+    "product_id": 16,
+    "revenue_amount": 8952.27,
+    "revenue_date": "2023-09-11",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 72,
+    "product_id": 17,
+    "revenue_amount": 3087.31,
+    "revenue_date": "2023-10-04",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 73,
+    "product_id": 17,
+    "revenue_amount": 6245.88,
+    "revenue_date": "2024-04-16",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 74,
+    "product_id": 17,
+    "revenue_amount": 7317.32,
+    "revenue_date": "2024-10-09",
+    "quarter": 4,
+    "year": 2024
+  },
+  {
+    "revenue_id": 75,
+    "product_id": 17,
+    "revenue_amount": 2434.17,
+    "revenue_date": "2025-04-11",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "revenue_id": 76,
+    "product_id": 18,
+    "revenue_amount": 5301.39,
+    "revenue_date": "2024-05-16",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 77,
+    "product_id": 18,
+    "revenue_amount": 2885.65,
+    "revenue_date": "2023-11-21",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 78,
+    "product_id": 18,
+    "revenue_amount": 9127.51,
+    "revenue_date": "2023-07-11",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 79,
+    "product_id": 18,
+    "revenue_amount": 982.59,
+    "revenue_date": "2023-09-17",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 80,
+    "product_id": 18,
+    "revenue_amount": 6525.7,
+    "revenue_date": "2023-10-12",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 81,
+    "product_id": 19,
+    "revenue_amount": 918.82,
+    "revenue_date": "2023-09-07",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 82,
+    "product_id": 19,
+    "revenue_amount": 3668.79,
+    "revenue_date": "2023-05-09",
+    "quarter": 2,
+    "year": 2023
+  },
+  {
+    "revenue_id": 83,
+    "product_id": 19,
+    "revenue_amount": 1742.79,
+    "revenue_date": "2024-05-23",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 84,
+    "product_id": 19,
+    "revenue_amount": 9808.08,
+    "revenue_date": "2023-11-15",
+    "quarter": 4,
+    "year": 2023
+  },
+  {
+    "revenue_id": 85,
+    "product_id": 19,
+    "revenue_amount": 2035.03,
+    "revenue_date": "2025-04-10",
+    "quarter": 2,
+    "year": 2025
+  },
+  {
+    "revenue_id": 86,
+    "product_id": 20,
+    "revenue_amount": 5740.96,
+    "revenue_date": "2024-06-06",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 87,
+    "product_id": 20,
+    "revenue_amount": 4563.03,
+    "revenue_date": "2024-09-19",
+    "quarter": 3,
+    "year": 2024
+  },
+  {
+    "revenue_id": 88,
+    "product_id": 20,
+    "revenue_amount": 591.86,
+    "revenue_date": "2023-07-30",
+    "quarter": 3,
+    "year": 2023
+  },
+  {
+    "revenue_id": 89,
+    "product_id": 20,
+    "revenue_amount": 1214.82,
+    "revenue_date": "2025-01-22",
+    "quarter": 1,
+    "year": 2025
+  },
+  {
+    "revenue_id": 90,
+    "product_id": 20,
+    "revenue_amount": 8889.51,
+    "revenue_date": "2024-04-21",
+    "quarter": 2,
+    "year": 2024
+  },
+  {
+    "revenue_id": 91,
+    "product_id": 20,
+    "revenue_amount": 9087.32,
+    "revenue_date": "2025-01-25",
+    "quarter": 1,
+    "year": 2025
+  }
+]

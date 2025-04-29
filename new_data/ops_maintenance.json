@@ -1,0 +1,3042 @@
+[
+  {
+    "maintenance_id": 1,
+    "machine_id": 1,
+    "maintenance_date": "2022-07-07",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 2,
+    "machine_id": 1,
+    "maintenance_date": "2023-08-28",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 3,
+    "machine_id": 1,
+    "maintenance_date": "2024-03-26",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 4,
+    "machine_id": 1,
+    "maintenance_date": "2023-10-09",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 5,
+    "machine_id": 1,
+    "maintenance_date": "2023-02-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 6,
+    "machine_id": 2,
+    "maintenance_date": "2023-12-08",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 7,
+    "machine_id": 2,
+    "maintenance_date": "2025-04-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 8,
+    "machine_id": 2,
+    "maintenance_date": "2024-04-14",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 9,
+    "machine_id": 2,
+    "maintenance_date": "2024-02-23",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 10,
+    "machine_id": 2,
+    "maintenance_date": "2024-05-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 11,
+    "machine_id": 3,
+    "maintenance_date": "2025-01-09",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 12,
+    "machine_id": 3,
+    "maintenance_date": "2024-10-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 13,
+    "machine_id": 3,
+    "maintenance_date": "2023-11-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 14,
+    "machine_id": 4,
+    "maintenance_date": "2023-09-09",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 15,
+    "machine_id": 4,
+    "maintenance_date": "2023-09-22",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 16,
+    "machine_id": 4,
+    "maintenance_date": "2024-12-17",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 17,
+    "machine_id": 4,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 18,
+    "machine_id": 4,
+    "maintenance_date": "2025-01-09",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 19,
+    "machine_id": 5,
+    "maintenance_date": "2025-01-24",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 20,
+    "machine_id": 5,
+    "maintenance_date": "2024-12-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 21,
+    "machine_id": 5,
+    "maintenance_date": "2025-01-25",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 22,
+    "machine_id": 5,
+    "maintenance_date": "2025-04-15",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 23,
+    "machine_id": 6,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 24,
+    "machine_id": 6,
+    "maintenance_date": "2025-04-22",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 25,
+    "machine_id": 7,
+    "maintenance_date": "2024-12-03",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 26,
+    "machine_id": 7,
+    "maintenance_date": "2022-09-01",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 27,
+    "machine_id": 8,
+    "maintenance_date": "2024-07-11",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 28,
+    "machine_id": 8,
+    "maintenance_date": "2024-05-23",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 29,
+    "machine_id": 9,
+    "maintenance_date": "2024-12-31",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 30,
+    "machine_id": 9,
+    "maintenance_date": "2025-04-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 31,
+    "machine_id": 9,
+    "maintenance_date": "2025-04-08",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 32,
+    "machine_id": 10,
+    "maintenance_date": "2024-10-21",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 33,
+    "machine_id": 10,
+    "maintenance_date": "2024-08-18",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 34,
+    "machine_id": 10,
+    "maintenance_date": "2025-03-12",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 35,
+    "machine_id": 10,
+    "maintenance_date": "2024-05-21",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 36,
+    "machine_id": 10,
+    "maintenance_date": "2024-04-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 37,
+    "machine_id": 11,
+    "maintenance_date": "2025-03-14",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 38,
+    "machine_id": 11,
+    "maintenance_date": "2025-04-26",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 39,
+    "machine_id": 11,
+    "maintenance_date": "2025-03-19",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 40,
+    "machine_id": 11,
+    "maintenance_date": "2025-03-09",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 41,
+    "machine_id": 12,
+    "maintenance_date": "2023-06-01",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 42,
+    "machine_id": 12,
+    "maintenance_date": "2024-11-08",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 43,
+    "machine_id": 12,
+    "maintenance_date": "2024-11-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 44,
+    "machine_id": 12,
+    "maintenance_date": "2025-03-06",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 45,
+    "machine_id": 12,
+    "maintenance_date": "2024-06-07",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 46,
+    "machine_id": 13,
+    "maintenance_date": "2023-09-16",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 47,
+    "machine_id": 13,
+    "maintenance_date": "2022-04-13",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 48,
+    "machine_id": 14,
+    "maintenance_date": "2024-04-13",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 49,
+    "machine_id": 14,
+    "maintenance_date": "2025-03-20",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 50,
+    "machine_id": 14,
+    "maintenance_date": "2024-12-24",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 51,
+    "machine_id": 14,
+    "maintenance_date": "2025-04-18",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 52,
+    "machine_id": 14,
+    "maintenance_date": "2024-10-28",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 53,
+    "machine_id": 15,
+    "maintenance_date": "2023-06-13",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 54,
+    "machine_id": 15,
+    "maintenance_date": "2022-12-17",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 55,
+    "machine_id": 15,
+    "maintenance_date": "2022-02-08",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 56,
+    "machine_id": 15,
+    "maintenance_date": "2022-12-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 57,
+    "machine_id": 16,
+    "maintenance_date": "2023-06-11",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 58,
+    "machine_id": 16,
+    "maintenance_date": "2023-10-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 59,
+    "machine_id": 16,
+    "maintenance_date": "2024-04-09",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 60,
+    "machine_id": 16,
+    "maintenance_date": "2022-07-31",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 61,
+    "machine_id": 16,
+    "maintenance_date": "2024-01-13",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 62,
+    "machine_id": 17,
+    "maintenance_date": "2023-12-01",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 63,
+    "machine_id": 17,
+    "maintenance_date": "2023-06-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 64,
+    "machine_id": 17,
+    "maintenance_date": "2022-02-25",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 65,
+    "machine_id": 17,
+    "maintenance_date": "2023-12-26",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 66,
+    "machine_id": 17,
+    "maintenance_date": "2022-07-27",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 67,
+    "machine_id": 18,
+    "maintenance_date": "2024-12-02",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 68,
+    "machine_id": 18,
+    "maintenance_date": "2024-12-05",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 69,
+    "machine_id": 18,
+    "maintenance_date": "2023-07-07",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 70,
+    "machine_id": 19,
+    "maintenance_date": "2024-02-05",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 71,
+    "machine_id": 19,
+    "maintenance_date": "2025-04-19",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 72,
+    "machine_id": 19,
+    "maintenance_date": "2024-07-13",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 73,
+    "machine_id": 19,
+    "maintenance_date": "2024-08-23",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 74,
+    "machine_id": 20,
+    "maintenance_date": "2025-01-27",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 75,
+    "machine_id": 20,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 76,
+    "machine_id": 21,
+    "maintenance_date": "2022-10-16",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 77,
+    "machine_id": 21,
+    "maintenance_date": "2024-02-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 78,
+    "machine_id": 21,
+    "maintenance_date": "2023-04-30",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 79,
+    "machine_id": 21,
+    "maintenance_date": "2023-04-29",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 80,
+    "machine_id": 22,
+    "maintenance_date": "2023-06-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 81,
+    "machine_id": 22,
+    "maintenance_date": "2023-12-28",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 82,
+    "machine_id": 22,
+    "maintenance_date": "2024-08-23",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 83,
+    "machine_id": 22,
+    "maintenance_date": "2025-01-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 84,
+    "machine_id": 23,
+    "maintenance_date": "2024-09-25",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 85,
+    "machine_id": 23,
+    "maintenance_date": "2025-01-22",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 86,
+    "machine_id": 24,
+    "maintenance_date": "2024-11-09",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 87,
+    "machine_id": 24,
+    "maintenance_date": "2024-05-25",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 88,
+    "machine_id": 25,
+    "maintenance_date": "2024-06-30",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 89,
+    "machine_id": 25,
+    "maintenance_date": "2024-10-15",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 90,
+    "machine_id": 25,
+    "maintenance_date": "2024-07-31",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "Calibration unsuccessful."
+  },
+  {
+    "maintenance_id": 91,
+    "machine_id": 25,
+    "maintenance_date": "2024-07-06",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 92,
+    "machine_id": 25,
+    "maintenance_date": "2024-07-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 93,
+    "machine_id": 26,
+    "maintenance_date": "2025-01-22",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 94,
+    "machine_id": 26,
+    "maintenance_date": "2024-10-18",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 95,
+    "machine_id": 27,
+    "maintenance_date": "2025-01-21",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 96,
+    "machine_id": 27,
+    "maintenance_date": "2025-02-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 97,
+    "machine_id": 27,
+    "maintenance_date": "2025-01-26",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "Calibration unsuccessful."
+  },
+  {
+    "maintenance_id": 98,
+    "machine_id": 28,
+    "maintenance_date": "2025-02-21",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 99,
+    "machine_id": 28,
+    "maintenance_date": "2024-12-04",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 100,
+    "machine_id": 28,
+    "maintenance_date": "2025-03-07",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 101,
+    "machine_id": 29,
+    "maintenance_date": "2025-03-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 102,
+    "machine_id": 29,
+    "maintenance_date": "2025-04-11",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 103,
+    "machine_id": 29,
+    "maintenance_date": "2024-12-11",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 104,
+    "machine_id": 30,
+    "maintenance_date": "2025-01-21",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 105,
+    "machine_id": 30,
+    "maintenance_date": "2025-04-10",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 106,
+    "machine_id": 31,
+    "maintenance_date": "2025-04-05",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 107,
+    "machine_id": 31,
+    "maintenance_date": "2025-04-15",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 108,
+    "machine_id": 31,
+    "maintenance_date": "2025-03-28",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 109,
+    "machine_id": 31,
+    "maintenance_date": "2025-04-25",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 110,
+    "machine_id": 31,
+    "maintenance_date": "2025-02-26",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 111,
+    "machine_id": 32,
+    "maintenance_date": "2023-01-21",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 112,
+    "machine_id": 32,
+    "maintenance_date": "2023-04-23",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 113,
+    "machine_id": 32,
+    "maintenance_date": "2024-07-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 114,
+    "machine_id": 32,
+    "maintenance_date": "2023-08-18",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 115,
+    "machine_id": 33,
+    "maintenance_date": "2024-12-31",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 116,
+    "machine_id": 33,
+    "maintenance_date": "2023-09-13",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 117,
+    "machine_id": 33,
+    "maintenance_date": "2024-05-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 118,
+    "machine_id": 33,
+    "maintenance_date": "2025-02-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 119,
+    "machine_id": 33,
+    "maintenance_date": "2024-02-06",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 120,
+    "machine_id": 34,
+    "maintenance_date": "2024-03-24",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 121,
+    "machine_id": 34,
+    "maintenance_date": "2024-10-23",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 122,
+    "machine_id": 34,
+    "maintenance_date": "2025-03-13",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 123,
+    "machine_id": 34,
+    "maintenance_date": "2024-10-30",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 124,
+    "machine_id": 35,
+    "maintenance_date": "2025-01-03",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 125,
+    "machine_id": 35,
+    "maintenance_date": "2025-01-25",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 126,
+    "machine_id": 35,
+    "maintenance_date": "2024-12-31",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 127,
+    "machine_id": 35,
+    "maintenance_date": "2025-04-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 128,
+    "machine_id": 35,
+    "maintenance_date": "2025-02-06",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 129,
+    "machine_id": 36,
+    "maintenance_date": "2025-02-04",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 130,
+    "machine_id": 36,
+    "maintenance_date": "2025-02-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 131,
+    "machine_id": 36,
+    "maintenance_date": "2024-12-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 132,
+    "machine_id": 37,
+    "maintenance_date": "2024-04-22",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 133,
+    "machine_id": 37,
+    "maintenance_date": "2024-01-16",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 134,
+    "machine_id": 37,
+    "maintenance_date": "2023-11-24",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 135,
+    "machine_id": 38,
+    "maintenance_date": "2022-02-04",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 136,
+    "machine_id": 38,
+    "maintenance_date": "2022-09-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 137,
+    "machine_id": 38,
+    "maintenance_date": "2025-02-27",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 138,
+    "machine_id": 39,
+    "maintenance_date": "2022-10-30",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 139,
+    "machine_id": 39,
+    "maintenance_date": "2023-07-28",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 140,
+    "machine_id": 39,
+    "maintenance_date": "2023-07-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 141,
+    "machine_id": 39,
+    "maintenance_date": "2023-04-27",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 142,
+    "machine_id": 39,
+    "maintenance_date": "2025-03-08",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 143,
+    "machine_id": 40,
+    "maintenance_date": "2024-05-30",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 144,
+    "machine_id": 40,
+    "maintenance_date": "2024-12-18",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 145,
+    "machine_id": 40,
+    "maintenance_date": "2025-04-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 146,
+    "machine_id": 41,
+    "maintenance_date": "2024-12-15",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 147,
+    "machine_id": 41,
+    "maintenance_date": "2025-04-21",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 148,
+    "machine_id": 41,
+    "maintenance_date": "2023-12-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 149,
+    "machine_id": 41,
+    "maintenance_date": "2024-07-22",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 150,
+    "machine_id": 42,
+    "maintenance_date": "2023-02-03",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 151,
+    "machine_id": 42,
+    "maintenance_date": "2023-05-31",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 152,
+    "machine_id": 42,
+    "maintenance_date": "2024-09-21",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 153,
+    "machine_id": 42,
+    "maintenance_date": "2022-06-26",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 154,
+    "machine_id": 43,
+    "maintenance_date": "2025-04-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 155,
+    "machine_id": 43,
+    "maintenance_date": "2022-09-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 156,
+    "machine_id": 43,
+    "maintenance_date": "2022-03-16",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 157,
+    "machine_id": 43,
+    "maintenance_date": "2022-04-13",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 158,
+    "machine_id": 43,
+    "maintenance_date": "2024-08-03",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 159,
+    "machine_id": 44,
+    "maintenance_date": "2024-10-23",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 160,
+    "machine_id": 44,
+    "maintenance_date": "2024-04-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 161,
+    "machine_id": 45,
+    "maintenance_date": "2024-04-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 162,
+    "machine_id": 45,
+    "maintenance_date": "2024-10-02",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 163,
+    "machine_id": 45,
+    "maintenance_date": "2024-03-13",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 164,
+    "machine_id": 46,
+    "maintenance_date": "2025-04-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 165,
+    "machine_id": 46,
+    "maintenance_date": "2025-03-25",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 166,
+    "machine_id": 46,
+    "maintenance_date": "2025-03-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 167,
+    "machine_id": 46,
+    "maintenance_date": "2025-02-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 168,
+    "machine_id": 46,
+    "maintenance_date": "2025-03-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 169,
+    "machine_id": 47,
+    "maintenance_date": "2024-08-11",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 170,
+    "machine_id": 47,
+    "maintenance_date": "2023-06-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 171,
+    "machine_id": 48,
+    "maintenance_date": "2025-01-06",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 172,
+    "machine_id": 48,
+    "maintenance_date": "2024-09-08",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 173,
+    "machine_id": 48,
+    "maintenance_date": "2024-09-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 174,
+    "machine_id": 49,
+    "maintenance_date": "2021-11-30",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 175,
+    "machine_id": 49,
+    "maintenance_date": "2022-10-30",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 176,
+    "machine_id": 49,
+    "maintenance_date": "2021-11-20",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 177,
+    "machine_id": 49,
+    "maintenance_date": "2023-12-11",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 178,
+    "machine_id": 50,
+    "maintenance_date": "2023-08-04",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 179,
+    "machine_id": 50,
+    "maintenance_date": "2022-12-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 180,
+    "machine_id": 51,
+    "maintenance_date": "2024-04-04",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 181,
+    "machine_id": 51,
+    "maintenance_date": "2024-03-14",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 182,
+    "machine_id": 51,
+    "maintenance_date": "2023-04-12",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 183,
+    "machine_id": 52,
+    "maintenance_date": "2022-12-03",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 184,
+    "machine_id": 52,
+    "maintenance_date": "2024-05-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 185,
+    "machine_id": 52,
+    "maintenance_date": "2024-02-09",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 186,
+    "machine_id": 52,
+    "maintenance_date": "2023-10-12",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 187,
+    "machine_id": 53,
+    "maintenance_date": "2023-07-26",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 188,
+    "machine_id": 53,
+    "maintenance_date": "2023-07-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 189,
+    "machine_id": 53,
+    "maintenance_date": "2022-08-11",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 190,
+    "machine_id": 53,
+    "maintenance_date": "2023-04-06",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 191,
+    "machine_id": 54,
+    "maintenance_date": "2023-01-19",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 192,
+    "machine_id": 54,
+    "maintenance_date": "2024-03-09",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 193,
+    "machine_id": 54,
+    "maintenance_date": "2021-12-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 194,
+    "machine_id": 54,
+    "maintenance_date": "2022-01-10",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "Calibration unsuccessful."
+  },
+  {
+    "maintenance_id": 195,
+    "machine_id": 55,
+    "maintenance_date": "2025-04-14",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 196,
+    "machine_id": 55,
+    "maintenance_date": "2025-04-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 197,
+    "machine_id": 55,
+    "maintenance_date": "2025-03-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 198,
+    "machine_id": 55,
+    "maintenance_date": "2025-04-04",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 199,
+    "machine_id": 56,
+    "maintenance_date": "2024-09-30",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 200,
+    "machine_id": 56,
+    "maintenance_date": "2025-03-29",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 201,
+    "machine_id": 57,
+    "maintenance_date": "2024-05-05",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 202,
+    "machine_id": 57,
+    "maintenance_date": "2023-09-17",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 203,
+    "machine_id": 57,
+    "maintenance_date": "2024-08-23",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 204,
+    "machine_id": 57,
+    "maintenance_date": "2023-10-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 205,
+    "machine_id": 58,
+    "maintenance_date": "2025-03-03",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 206,
+    "machine_id": 58,
+    "maintenance_date": "2025-03-22",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 207,
+    "machine_id": 58,
+    "maintenance_date": "2025-03-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 208,
+    "machine_id": 58,
+    "maintenance_date": "2025-03-14",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 209,
+    "machine_id": 58,
+    "maintenance_date": "2025-03-08",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 210,
+    "machine_id": 59,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 211,
+    "machine_id": 59,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 212,
+    "machine_id": 59,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 213,
+    "machine_id": 59,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 214,
+    "machine_id": 59,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 215,
+    "machine_id": 60,
+    "maintenance_date": "2024-05-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 216,
+    "machine_id": 60,
+    "maintenance_date": "2024-05-15",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 217,
+    "machine_id": 60,
+    "maintenance_date": "2024-06-02",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 218,
+    "machine_id": 60,
+    "maintenance_date": "2024-06-22",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 219,
+    "machine_id": 60,
+    "maintenance_date": "2025-02-25",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 220,
+    "machine_id": 61,
+    "maintenance_date": "2024-04-28",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 221,
+    "machine_id": 61,
+    "maintenance_date": "2022-10-25",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 222,
+    "machine_id": 62,
+    "maintenance_date": "2025-03-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 223,
+    "machine_id": 62,
+    "maintenance_date": "2024-05-07",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 224,
+    "machine_id": 62,
+    "maintenance_date": "2022-12-05",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 225,
+    "machine_id": 63,
+    "maintenance_date": "2024-09-05",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 226,
+    "machine_id": 63,
+    "maintenance_date": "2024-08-26",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 227,
+    "machine_id": 63,
+    "maintenance_date": "2025-02-08",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 228,
+    "machine_id": 63,
+    "maintenance_date": "2024-12-05",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 229,
+    "machine_id": 63,
+    "maintenance_date": "2024-07-01",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 230,
+    "machine_id": 64,
+    "maintenance_date": "2024-07-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 231,
+    "machine_id": 64,
+    "maintenance_date": "2023-05-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 232,
+    "machine_id": 64,
+    "maintenance_date": "2024-08-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 233,
+    "machine_id": 64,
+    "maintenance_date": "2024-06-28",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 234,
+    "machine_id": 65,
+    "maintenance_date": "2024-04-23",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 235,
+    "machine_id": 65,
+    "maintenance_date": "2024-08-23",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 236,
+    "machine_id": 65,
+    "maintenance_date": "2024-07-12",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 237,
+    "machine_id": 65,
+    "maintenance_date": "2024-11-15",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 238,
+    "machine_id": 65,
+    "maintenance_date": "2024-08-10",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 239,
+    "machine_id": 66,
+    "maintenance_date": "2025-02-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 240,
+    "machine_id": 66,
+    "maintenance_date": "2025-02-13",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 241,
+    "machine_id": 66,
+    "maintenance_date": "2025-01-02",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 242,
+    "machine_id": 67,
+    "maintenance_date": "2023-01-14",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 243,
+    "machine_id": 67,
+    "maintenance_date": "2024-07-24",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 244,
+    "machine_id": 67,
+    "maintenance_date": "2022-11-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 245,
+    "machine_id": 68,
+    "maintenance_date": "2023-11-12",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 246,
+    "machine_id": 68,
+    "maintenance_date": "2024-11-26",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 247,
+    "machine_id": 68,
+    "maintenance_date": "2023-11-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 248,
+    "machine_id": 68,
+    "maintenance_date": "2024-10-31",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 249,
+    "machine_id": 69,
+    "maintenance_date": "2024-09-05",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 250,
+    "machine_id": 69,
+    "maintenance_date": "2025-01-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 251,
+    "machine_id": 70,
+    "maintenance_date": "2024-02-06",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 252,
+    "machine_id": 70,
+    "maintenance_date": "2023-05-18",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 253,
+    "machine_id": 71,
+    "maintenance_date": "2023-05-12",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 254,
+    "machine_id": 71,
+    "maintenance_date": "2024-10-27",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 255,
+    "machine_id": 71,
+    "maintenance_date": "2023-04-02",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 256,
+    "machine_id": 71,
+    "maintenance_date": "2024-04-08",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 257,
+    "machine_id": 71,
+    "maintenance_date": "2022-09-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 258,
+    "machine_id": 72,
+    "maintenance_date": "2022-10-08",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 259,
+    "machine_id": 72,
+    "maintenance_date": "2023-03-01",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 260,
+    "machine_id": 72,
+    "maintenance_date": "2023-12-01",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 261,
+    "machine_id": 72,
+    "maintenance_date": "2025-02-11",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 262,
+    "machine_id": 73,
+    "maintenance_date": "2023-10-27",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 263,
+    "machine_id": 73,
+    "maintenance_date": "2023-04-22",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 264,
+    "machine_id": 73,
+    "maintenance_date": "2023-09-22",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 265,
+    "machine_id": 73,
+    "maintenance_date": "2023-09-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 266,
+    "machine_id": 73,
+    "maintenance_date": "2024-08-24",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 267,
+    "machine_id": 74,
+    "maintenance_date": "2024-06-11",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 268,
+    "machine_id": 74,
+    "maintenance_date": "2024-02-08",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 269,
+    "machine_id": 74,
+    "maintenance_date": "2024-02-26",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 270,
+    "machine_id": 74,
+    "maintenance_date": "2024-04-05",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 271,
+    "machine_id": 74,
+    "maintenance_date": "2024-06-19",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 272,
+    "machine_id": 75,
+    "maintenance_date": "2025-04-20",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 273,
+    "machine_id": 75,
+    "maintenance_date": "2025-03-21",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 274,
+    "machine_id": 76,
+    "maintenance_date": "2022-12-01",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 275,
+    "machine_id": 76,
+    "maintenance_date": "2023-03-04",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 276,
+    "machine_id": 76,
+    "maintenance_date": "2023-01-19",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 277,
+    "machine_id": 77,
+    "maintenance_date": "2024-11-25",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 278,
+    "machine_id": 77,
+    "maintenance_date": "2025-04-07",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 279,
+    "machine_id": 78,
+    "maintenance_date": "2023-11-19",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 280,
+    "machine_id": 78,
+    "maintenance_date": "2024-01-31",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 281,
+    "machine_id": 78,
+    "maintenance_date": "2023-10-03",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 282,
+    "machine_id": 79,
+    "maintenance_date": "2025-03-31",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 283,
+    "machine_id": 79,
+    "maintenance_date": "2025-03-05",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 284,
+    "machine_id": 80,
+    "maintenance_date": "2024-10-24",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 285,
+    "machine_id": 80,
+    "maintenance_date": "2024-08-17",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 286,
+    "machine_id": 80,
+    "maintenance_date": "2025-01-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 287,
+    "machine_id": 80,
+    "maintenance_date": "2025-01-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 288,
+    "machine_id": 81,
+    "maintenance_date": "2024-06-08",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 289,
+    "machine_id": 81,
+    "maintenance_date": "2024-05-09",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 290,
+    "machine_id": 81,
+    "maintenance_date": "2023-08-17",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 291,
+    "machine_id": 82,
+    "maintenance_date": "2023-04-24",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 292,
+    "machine_id": 82,
+    "maintenance_date": "2024-06-26",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 293,
+    "machine_id": 82,
+    "maintenance_date": "2023-12-25",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 294,
+    "machine_id": 82,
+    "maintenance_date": "2024-05-08",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 295,
+    "machine_id": 82,
+    "maintenance_date": "2025-02-05",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 296,
+    "machine_id": 83,
+    "maintenance_date": "2025-01-27",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 297,
+    "machine_id": 83,
+    "maintenance_date": "2024-05-15",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 298,
+    "machine_id": 83,
+    "maintenance_date": "2024-03-29",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 299,
+    "machine_id": 84,
+    "maintenance_date": "2023-01-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 300,
+    "machine_id": 84,
+    "maintenance_date": "2023-11-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 301,
+    "machine_id": 84,
+    "maintenance_date": "2025-04-11",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 302,
+    "machine_id": 84,
+    "maintenance_date": "2023-12-25",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 303,
+    "machine_id": 84,
+    "maintenance_date": "2022-09-21",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 304,
+    "machine_id": 85,
+    "maintenance_date": "2025-04-04",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 305,
+    "machine_id": 85,
+    "maintenance_date": "2025-04-08",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 306,
+    "machine_id": 86,
+    "maintenance_date": "2023-04-27",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 307,
+    "machine_id": 86,
+    "maintenance_date": "2025-02-16",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 308,
+    "machine_id": 86,
+    "maintenance_date": "2023-12-01",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 309,
+    "machine_id": 87,
+    "maintenance_date": "2024-09-13",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 310,
+    "machine_id": 87,
+    "maintenance_date": "2024-11-30",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 311,
+    "machine_id": 88,
+    "maintenance_date": "2025-04-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 312,
+    "machine_id": 88,
+    "maintenance_date": "2025-04-12",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 313,
+    "machine_id": 88,
+    "maintenance_date": "2025-04-17",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 314,
+    "machine_id": 89,
+    "maintenance_date": "2024-12-11",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 315,
+    "machine_id": 89,
+    "maintenance_date": "2025-04-11",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 316,
+    "machine_id": 89,
+    "maintenance_date": "2025-02-24",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 317,
+    "machine_id": 89,
+    "maintenance_date": "2024-01-24",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 318,
+    "machine_id": 89,
+    "maintenance_date": "2024-02-23",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 319,
+    "machine_id": 90,
+    "maintenance_date": "2024-01-23",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 320,
+    "machine_id": 90,
+    "maintenance_date": "2024-10-09",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 321,
+    "machine_id": 91,
+    "maintenance_date": "2023-04-12",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 322,
+    "machine_id": 91,
+    "maintenance_date": "2025-03-06",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 323,
+    "machine_id": 92,
+    "maintenance_date": "2023-11-22",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 324,
+    "machine_id": 92,
+    "maintenance_date": "2024-08-24",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  },
+  {
+    "maintenance_id": 325,
+    "machine_id": 92,
+    "maintenance_date": "2024-04-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 326,
+    "machine_id": 92,
+    "maintenance_date": "2025-04-25",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 327,
+    "machine_id": 92,
+    "maintenance_date": "2022-05-18",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 328,
+    "machine_id": 93,
+    "maintenance_date": "2023-11-08",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 329,
+    "machine_id": 93,
+    "maintenance_date": "2022-10-26",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 330,
+    "machine_id": 93,
+    "maintenance_date": "2023-03-26",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 331,
+    "machine_id": 93,
+    "maintenance_date": "2023-08-23",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 332,
+    "machine_id": 94,
+    "maintenance_date": "2024-10-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 333,
+    "machine_id": 94,
+    "maintenance_date": "2025-04-28",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 334,
+    "machine_id": 94,
+    "maintenance_date": "2024-06-04",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 335,
+    "machine_id": 95,
+    "maintenance_date": "2024-08-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 336,
+    "machine_id": 95,
+    "maintenance_date": "2025-01-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 337,
+    "machine_id": 95,
+    "maintenance_date": "2023-11-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 338,
+    "machine_id": 95,
+    "maintenance_date": "2025-02-20",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 339,
+    "machine_id": 96,
+    "maintenance_date": "2024-06-27",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 340,
+    "machine_id": 96,
+    "maintenance_date": "2024-07-06",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 341,
+    "machine_id": 96,
+    "maintenance_date": "2025-02-28",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 342,
+    "machine_id": 96,
+    "maintenance_date": "2024-12-18",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 343,
+    "machine_id": 97,
+    "maintenance_date": "2024-06-08",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 344,
+    "machine_id": 97,
+    "maintenance_date": "2023-06-13",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 345,
+    "machine_id": 98,
+    "maintenance_date": "2024-10-26",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 346,
+    "machine_id": 98,
+    "maintenance_date": "2024-08-15",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 347,
+    "machine_id": 98,
+    "maintenance_date": "2024-11-14",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 348,
+    "machine_id": 98,
+    "maintenance_date": "2023-12-11",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 349,
+    "machine_id": 98,
+    "maintenance_date": "2024-01-29",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 350,
+    "machine_id": 99,
+    "maintenance_date": "2025-04-18",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 351,
+    "machine_id": 99,
+    "maintenance_date": "2025-02-20",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 352,
+    "machine_id": 100,
+    "maintenance_date": "2025-04-16",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 353,
+    "machine_id": 100,
+    "maintenance_date": "2024-10-21",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 354,
+    "machine_id": 100,
+    "maintenance_date": "2023-12-08",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 355,
+    "machine_id": 100,
+    "maintenance_date": "2024-01-07",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 356,
+    "machine_id": 101,
+    "maintenance_date": "2025-02-07",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 357,
+    "machine_id": 101,
+    "maintenance_date": "2024-04-14",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 358,
+    "machine_id": 101,
+    "maintenance_date": "2024-03-07",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 359,
+    "machine_id": 101,
+    "maintenance_date": "2025-03-04",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 360,
+    "machine_id": 102,
+    "maintenance_date": "2025-02-03",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 361,
+    "machine_id": 102,
+    "maintenance_date": "2024-10-13",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Replacement failed."
+  },
+  {
+    "maintenance_id": 362,
+    "machine_id": 102,
+    "maintenance_date": "2022-10-24",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 363,
+    "machine_id": 102,
+    "maintenance_date": "2022-05-16",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 364,
+    "machine_id": 103,
+    "maintenance_date": "2025-04-25",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "System reboot failed."
+  },
+  {
+    "maintenance_id": 365,
+    "machine_id": 103,
+    "maintenance_date": "2025-04-22",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": true,
+    "notes": "Anomaly found during routine check."
+  },
+  {
+    "maintenance_id": 366,
+    "machine_id": 104,
+    "maintenance_date": "2025-03-29",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 367,
+    "machine_id": 104,
+    "maintenance_date": "2025-01-14",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "System recalibrated."
+  },
+  {
+    "maintenance_id": 368,
+    "machine_id": 104,
+    "maintenance_date": "2025-03-20",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 369,
+    "machine_id": 104,
+    "maintenance_date": "2023-11-04",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 370,
+    "machine_id": 105,
+    "maintenance_date": "2023-06-02",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": false,
+    "notes": "Calibration successful."
+  },
+  {
+    "maintenance_id": 371,
+    "machine_id": 105,
+    "maintenance_date": "2025-04-22",
+    "maintenance_action": "Routine check",
+    "anomaly_detected": false,
+    "notes": "Routine check completed."
+  },
+  {
+    "maintenance_id": 372,
+    "machine_id": 106,
+    "maintenance_date": "2022-09-18",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "Software updated successfully."
+  },
+  {
+    "maintenance_id": 373,
+    "machine_id": 106,
+    "maintenance_date": "2025-02-02",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Replaced faulty sensor."
+  },
+  {
+    "maintenance_id": 374,
+    "machine_id": 106,
+    "maintenance_date": "2024-02-23",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": true,
+    "notes": "Part incompatible."
+  },
+  {
+    "maintenance_id": 375,
+    "machine_id": 107,
+    "maintenance_date": "2023-10-10",
+    "maintenance_action": "Software update",
+    "anomaly_detected": false,
+    "notes": "System rebooted successfully."
+  },
+  {
+    "maintenance_id": 376,
+    "machine_id": 107,
+    "maintenance_date": "2025-03-05",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 377,
+    "machine_id": 108,
+    "maintenance_date": "2024-10-11",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 378,
+    "machine_id": 108,
+    "maintenance_date": "2024-11-22",
+    "maintenance_action": "Replaced part",
+    "anomaly_detected": false,
+    "notes": "Minor malfunction fixed."
+  },
+  {
+    "maintenance_id": 379,
+    "machine_id": 108,
+    "maintenance_date": "2024-05-02",
+    "maintenance_action": "Software update",
+    "anomaly_detected": true,
+    "notes": "Software update failed."
+  },
+  {
+    "maintenance_id": 380,
+    "machine_id": 108,
+    "maintenance_date": "2025-02-26",
+    "maintenance_action": "Calibration",
+    "anomaly_detected": true,
+    "notes": "System recalibration failed."
+  }
+]

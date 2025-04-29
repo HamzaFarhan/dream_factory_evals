@@ -1,0 +1,122 @@
+[
+  {
+    "product_id": 1,
+    "name": "Product 1",
+    "description": "Description for Product 1.",
+    "category": "Software"
+  },
+  {
+    "product_id": 2,
+    "name": "Product 2",
+    "description": "Description for Product 2.",
+    "category": "Service"
+  },
+  {
+    "product_id": 3,
+    "name": "Product 3",
+    "description": "Description for Product 3.",
+    "category": "Service"
+  },
+  {
+    "product_id": 4,
+    "name": "Product 4",
+    "description": "Description for Product 4.",
+    "category": "Software"
+  },
+  {
+    "product_id": 5,
+    "name": "Product 5",
+    "description": "Description for Product 5.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 6,
+    "name": "Product 6",
+    "description": "Description for Product 6.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 7,
+    "name": "Product 7",
+    "description": "Description for Product 7.",
+    "category": "Service"
+  },
+  {
+    "product_id": 8,
+    "name": "Product 8",
+    "description": "Description for Product 8.",
+    "category": "Hardware"
+  },
+  {
+    "product_id": 9,
+    "name": "Product 9",
+    "description": "Description for Product 9.",
+    "category": "Service"
+  },
+  {
+    "product_id": 10,
+    "name": "Product 10",
+    "description": "Description for Product 10.",
+    "category": "Service"
+  },
+  {
+    "product_id": 11,
+    "name": "Product 11",
+    "description": "Description for Product 11.",
+    "category": "Service"
+  },
+  {
+    "product_id": 12,
+    "name": "Product 12",
+    "description": "Description for Product 12.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 13,
+    "name": "Product 13",
+    "description": "Description for Product 13.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 14,
+    "name": "Product 14",
+    "description": "Description for Product 14.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 15,
+    "name": "Product 15",
+    "description": "Description for Product 15.",
+    "category": "Service"
+  },
+  {
+    "product_id": 16,
+    "name": "Product 16",
+    "description": "Description for Product 16.",
+    "category": "Hardware"
+  },
+  {
+    "product_id": 17,
+    "name": "Product 17",
+    "description": "Description for Product 17.",
+    "category": "Electronics"
+  },
+  {
+    "product_id": 18,
+    "name": "Product 18",
+    "description": "Description for Product 18.",
+    "category": "Software"
+  },
+  {
+    "product_id": 19,
+    "name": "Product 19",
+    "description": "Description for Product 19.",
+    "category": "Software"
+  },
+  {
+    "product_id": 20,
+    "name": "Product 20",
+    "description": "Description for Product 20.",
+    "category": "Software"
+  }
+]

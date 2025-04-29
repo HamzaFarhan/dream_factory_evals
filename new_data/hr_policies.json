@@ -1,0 +1,317 @@
+[
+  {
+    "policy_id": 1,
+    "title": "Sales Policy",
+    "description": "Policy details for Sales department.",
+    "effective_date": "2023-12-23",
+    "department_id": 1
+  },
+  {
+    "policy_id": 2,
+    "title": "Sales Policy",
+    "description": "Policy details for Sales department.",
+    "effective_date": "2024-11-05",
+    "department_id": 1
+  },
+  {
+    "policy_id": 3,
+    "title": "Marketing Policy",
+    "description": "Policy details for Marketing department.",
+    "effective_date": "2024-01-31",
+    "department_id": 2
+  },
+  {
+    "policy_id": 4,
+    "title": "Marketing Policy",
+    "description": "Policy details for Marketing department.",
+    "effective_date": "2024-10-29",
+    "department_id": 2
+  },
+  {
+    "policy_id": 5,
+    "title": "Engineering Policy",
+    "description": "Policy details for Engineering department.",
+    "effective_date": "2024-12-27",
+    "department_id": 3
+  },
+  {
+    "policy_id": 6,
+    "title": "Engineering Policy",
+    "description": "Policy details for Engineering department.",
+    "effective_date": "2023-10-30",
+    "department_id": 3
+  },
+  {
+    "policy_id": 7,
+    "title": "Engineering Policy",
+    "description": "Policy details for Engineering department.",
+    "effective_date": "2023-06-27",
+    "department_id": 3
+  },
+  {
+    "policy_id": 8,
+    "title": "HR Policy",
+    "description": "Policy details for HR department.",
+    "effective_date": "2023-05-13",
+    "department_id": 4
+  },
+  {
+    "policy_id": 9,
+    "title": "HR Policy",
+    "description": "Policy details for HR department.",
+    "effective_date": "2024-05-27",
+    "department_id": 4
+  },
+  {
+    "policy_id": 10,
+    "title": "Finance Policy",
+    "description": "Policy details for Finance department.",
+    "effective_date": "2025-04-28",
+    "department_id": 5
+  },
+  {
+    "policy_id": 11,
+    "title": "Finance Policy",
+    "description": "Policy details for Finance department.",
+    "effective_date": "2024-01-09",
+    "department_id": 5
+  },
+  {
+    "policy_id": 12,
+    "title": "Operations Policy",
+    "description": "Policy details for Operations department.",
+    "effective_date": "2024-08-16",
+    "department_id": 6
+  },
+  {
+    "policy_id": 13,
+    "title": "Operations Policy",
+    "description": "Policy details for Operations department.",
+    "effective_date": "2024-11-20",
+    "department_id": 6
+  },
+  {
+    "policy_id": 14,
+    "title": "Customer Service Policy",
+    "description": "Policy details for Customer Service department.",
+    "effective_date": "2024-08-17",
+    "department_id": 7
+  },
+  {
+    "policy_id": 15,
+    "title": "Customer Service Policy",
+    "description": "Policy details for Customer Service department.",
+    "effective_date": "2024-10-31",
+    "department_id": 7
+  },
+  {
+    "policy_id": 16,
+    "title": "IT Policy",
+    "description": "Policy details for IT department.",
+    "effective_date": "2025-03-23",
+    "department_id": 8
+  },
+  {
+    "policy_id": 17,
+    "title": "IT Policy",
+    "description": "Policy details for IT department.",
+    "effective_date": "2023-09-21",
+    "department_id": 8
+  },
+  {
+    "policy_id": 18,
+    "title": "Legal Policy",
+    "description": "Policy details for Legal department.",
+    "effective_date": "2023-05-13",
+    "department_id": 9
+  },
+  {
+    "policy_id": 19,
+    "title": "Legal Policy",
+    "description": "Policy details for Legal department.",
+    "effective_date": "2023-08-18",
+    "department_id": 9
+  },
+  {
+    "policy_id": 20,
+    "title": "Procurement Policy",
+    "description": "Policy details for Procurement department.",
+    "effective_date": "2023-07-30",
+    "department_id": 10
+  },
+  {
+    "policy_id": 21,
+    "title": "Procurement Policy",
+    "description": "Policy details for Procurement department.",
+    "effective_date": "2024-08-30",
+    "department_id": 10
+  },
+  {
+    "policy_id": 22,
+    "title": "R&D Policy",
+    "description": "Policy details for R&D department.",
+    "effective_date": "2024-06-14",
+    "department_id": 11
+  },
+  {
+    "policy_id": 23,
+    "title": "R&D Policy",
+    "description": "Policy details for R&D department.",
+    "effective_date": "2023-10-05",
+    "department_id": 11
+  },
+  {
+    "policy_id": 24,
+    "title": "Administration Policy",
+    "description": "Policy details for Administration department.",
+    "effective_date": "2024-09-21",
+    "department_id": 12
+  },
+  {
+    "policy_id": 25,
+    "title": "Administration Policy",
+    "description": "Policy details for Administration department.",
+    "effective_date": "2024-11-09",
+    "department_id": 12
+  },
+  {
+    "policy_id": 26,
+    "title": "Support Policy",
+    "description": "Policy details for Support department.",
+    "effective_date": "2023-08-29",
+    "department_id": 13
+  },
+  {
+    "policy_id": 27,
+    "title": "Support Policy",
+    "description": "Policy details for Support department.",
+    "effective_date": "2024-07-15",
+    "department_id": 13
+  },
+  {
+    "policy_id": 28,
+    "title": "Support Policy",
+    "description": "Policy details for Support department.",
+    "effective_date": "2024-10-26",
+    "department_id": 13
+  },
+  {
+    "policy_id": 29,
+    "title": "Quality Assurance Policy",
+    "description": "Policy details for Quality Assurance department.",
+    "effective_date": "2023-07-21",
+    "department_id": 14
+  },
+  {
+    "policy_id": 30,
+    "title": "Quality Assurance Policy",
+    "description": "Policy details for Quality Assurance department.",
+    "effective_date": "2024-12-17",
+    "department_id": 14
+  },
+  {
+    "policy_id": 31,
+    "title": "Logistics Policy",
+    "description": "Policy details for Logistics department.",
+    "effective_date": "2025-04-03",
+    "department_id": 15
+  },
+  {
+    "policy_id": 32,
+    "title": "Logistics Policy",
+    "description": "Policy details for Logistics department.",
+    "effective_date": "2023-07-17",
+    "department_id": 15
+  },
+  {
+    "policy_id": 33,
+    "title": "Business Development Policy",
+    "description": "Policy details for Business Development department.",
+    "effective_date": "2023-05-17",
+    "department_id": 16
+  },
+  {
+    "policy_id": 34,
+    "title": "Business Development Policy",
+    "description": "Policy details for Business Development department.",
+    "effective_date": "2023-12-13",
+    "department_id": 16
+  },
+  {
+    "policy_id": 35,
+    "title": "Business Development Policy",
+    "description": "Policy details for Business Development department.",
+    "effective_date": "2024-09-05",
+    "department_id": 16
+  },
+  {
+    "policy_id": 36,
+    "title": "Strategy Policy",
+    "description": "Policy details for Strategy department.",
+    "effective_date": "2025-03-29",
+    "department_id": 17
+  },
+  {
+    "policy_id": 37,
+    "title": "Strategy Policy",
+    "description": "Policy details for Strategy department.",
+    "effective_date": "2024-02-12",
+    "department_id": 17
+  },
+  {
+    "policy_id": 38,
+    "title": "Strategy Policy",
+    "description": "Policy details for Strategy department.",
+    "effective_date": "2024-10-02",
+    "department_id": 17
+  },
+  {
+    "policy_id": 39,
+    "title": "Compliance Policy",
+    "description": "Policy details for Compliance department.",
+    "effective_date": "2023-06-23",
+    "department_id": 18
+  },
+  {
+    "policy_id": 40,
+    "title": "Compliance Policy",
+    "description": "Policy details for Compliance department.",
+    "effective_date": "2024-09-14",
+    "department_id": 18
+  },
+  {
+    "policy_id": 41,
+    "title": "Production Policy",
+    "description": "Policy details for Production department.",
+    "effective_date": "2024-07-30",
+    "department_id": 19
+  },
+  {
+    "policy_id": 42,
+    "title": "Production Policy",
+    "description": "Policy details for Production department.",
+    "effective_date": "2023-07-12",
+    "department_id": 19
+  },
+  {
+    "policy_id": 43,
+    "title": "Innovation Policy",
+    "description": "Policy details for Innovation department.",
+    "effective_date": "2024-11-13",
+    "department_id": 20
+  },
+  {
+    "policy_id": 44,
+    "title": "Innovation Policy",
+    "description": "Policy details for Innovation department.",
+    "effective_date": "2025-01-09",
+    "department_id": 20
+  },
+  {
+    "policy_id": 45,
+    "title": "Innovation Policy",
+    "description": "Policy details for Innovation department.",
+    "effective_date": "2024-07-10",
+    "department_id": 20
+  }
+]

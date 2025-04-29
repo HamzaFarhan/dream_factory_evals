@@ -1,0 +1,102 @@
+[
+  {
+    "department_id": 1,
+    "name": "Sales",
+    "manager_id": 1
+  },
+  {
+    "department_id": 2,
+    "name": "Marketing",
+    "manager_id": 11
+  },
+  {
+    "department_id": 3,
+    "name": "Engineering",
+    "manager_id": 16
+  },
+  {
+    "department_id": 4,
+    "name": "HR",
+    "manager_id": 25
+  },
+  {
+    "department_id": 5,
+    "name": "Finance",
+    "manager_id": 35
+  },
+  {
+    "department_id": 6,
+    "name": "Operations",
+    "manager_id": 40
+  },
+  {
+    "department_id": 7,
+    "name": "Customer Service",
+    "manager_id": 50
+  },
+  {
+    "department_id": 8,
+    "name": "IT",
+    "manager_id": 60
+  },
+  {
+    "department_id": 9,
+    "name": "Legal",
+    "manager_id": 66
+  },
+  {
+    "department_id": 10,
+    "name": "Procurement",
+    "manager_id": 75
+  },
+  {
+    "department_id": 11,
+    "name": "R&D",
+    "manager_id": 80
+  },
+  {
+    "department_id": 12,
+    "name": "Administration",
+    "manager_id": 87
+  },
+  {
+    "department_id": 13,
+    "name": "Support",
+    "manager_id": 97
+  },
+  {
+    "department_id": 14,
+    "name": "Quality Assurance",
+    "manager_id": 103
+  },
+  {
+    "department_id": 15,
+    "name": "Logistics",
+    "manager_id": 109
+  },
+  {
+    "department_id": 16,
+    "name": "Business Development",
+    "manager_id": 118
+  },
+  {
+    "department_id": 17,
+    "name": "Strategy",
+    "manager_id": 126
+  },
+  {
+    "department_id": 18,
+    "name": "Compliance",
+    "manager_id": 136
+  },
+  {
+    "department_id": 19,
+    "name": "Production",
+    "manager_id": 143
+  },
+  {
+    "department_id": 20,
+    "name": "Innovation",
+    "manager_id": 153
+  }
+]

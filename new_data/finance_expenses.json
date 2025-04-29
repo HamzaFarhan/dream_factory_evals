@@ -1,0 +1,142 @@
+[
+  {
+    "expense_id": 1,
+    "description": "Vehicle acquisition",
+    "amount": 2954.3,
+    "expense_date": "2024-06-21",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 2,
+    "description": "Utilities",
+    "amount": 304.96,
+    "expense_date": "2024-04-06",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 3,
+    "description": "Office supplies",
+    "amount": 4504.73,
+    "expense_date": "2024-03-15",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 4,
+    "description": "Utilities",
+    "amount": 3367.97,
+    "expense_date": "2023-09-10",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 5,
+    "description": "Marketing expenses",
+    "amount": 4432.26,
+    "expense_date": "2023-06-05",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 6,
+    "description": "Marketing expenses",
+    "amount": 3772.44,
+    "expense_date": "2025-03-16",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 7,
+    "description": "Charitable donations",
+    "amount": 4336.57,
+    "expense_date": "2024-04-12",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 8,
+    "description": "Charitable donations",
+    "amount": 4418.94,
+    "expense_date": "2024-12-19",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 9,
+    "description": "Employee salaries",
+    "amount": 3933.69,
+    "expense_date": "2024-02-15",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 10,
+    "description": "Utilities",
+    "amount": 1407.35,
+    "expense_date": "2023-06-22",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 11,
+    "description": "Equipment purchase",
+    "amount": 1974.45,
+    "expense_date": "2024-08-01",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 12,
+    "description": "Software subscriptions",
+    "amount": 1189.93,
+    "expense_date": "2023-06-07",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 13,
+    "description": "Land purchase",
+    "amount": 1813.33,
+    "expense_date": "2023-08-16",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 14,
+    "description": "Building renovation",
+    "amount": 1192.33,
+    "expense_date": "2024-06-13",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 15,
+    "description": "Land purchase",
+    "amount": 1708.48,
+    "expense_date": "2023-12-07",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 16,
+    "description": "Vehicle acquisition",
+    "amount": 1820.62,
+    "expense_date": "2025-04-24",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 17,
+    "description": "Technology infrastructure",
+    "amount": 1722.63,
+    "expense_date": "2023-07-24",
+    "category": "Capital"
+  },
+  {
+    "expense_id": 18,
+    "description": "Employee salaries",
+    "amount": 974.98,
+    "expense_date": "2024-11-07",
+    "category": "Operational"
+  },
+  {
+    "expense_id": 19,
+    "description": "Employee training",
+    "amount": 287.46,
+    "expense_date": "2024-07-15",
+    "category": "Misc"
+  },
+  {
+    "expense_id": 20,
+    "description": "Vehicle acquisition",
+    "amount": 3669.87,
+    "expense_date": "2024-11-27",
+    "category": "Capital"
+  }
+]
