@@ -3,7 +3,7 @@ import json
 import os
 from pathlib import Path
 
-import polars as pl
+import pandas as pd
 from dotenv import load_dotenv
 from logfire.experimental.query_client import LogfireQueryClient
 from loguru import logger
@@ -20,7 +20,7 @@ def save_scores(model: KnownModelName, user_role: Role, level: int) -> None:
     report_name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
     scores_dir = Path("scores")
     scores_dir.mkdir(exist_ok=True)
-    scores_path = scores_dir / f"{report_name}.parquet"
+    scores_path = scores_dir / f"{report_name}.csv"
     query = f"""
     SELECT r.created_at, r.start_timestamp, r.end_timestamp, r.duration, r.trace_id, r.attributes FROM records r 
     WHERE attributes->>'name' = '{report_name}'
@@ -52,8 +52,8 @@ def save_scores(model: KnownModelName, user_role: Role, level: int) -> None:
             }
         )
 
-    df = pl.DataFrame(cases_metrics)
-    df.write_parquet(scores_path)
+    df = pd.DataFrame(cases_metrics)
+    df.to_csv(scores_path, index=False)
     logger.success(f"Saved scores to {scores_path}")
 
 
