@@ -1,0 +1,7 @@
+name,duration,accuracy,correct_tool_calls,incorrect_tool_calls_reason,score
+hr_l1_q1,16.999246,2,0,"Tool call params mismatch: {'table_name': 'hr_employees', 'filter': ""(first_name='Alice') AND (last_name='Johnson')""} != {'table_name': 'hr_employees', 'filter': ""(first_name='Alice') AND (last_name='Johnson')"", 'fields': 'email'} at tool number: 1
+",2
+hr_l1_q2,12.896419,2,1,,3
+hr_l1_q3,20.068454,2,0,Too many tool calls: 2 > 1,2
+hr_l1_q4,14.442026,2,1,,3
+hr_l1_q5,12.438951,2,0,Too many tool calls: 2 > 1,2
