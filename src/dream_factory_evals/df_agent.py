@@ -72,6 +72,9 @@ class ChatResult:
     result: str
     tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]]
     message_history: list[ModelMessage] | None = None
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    total_tokens: int | None = None
 
 
 @dataclass
@@ -241,10 +244,14 @@ async def chat(
                                             logger.warning(
                                                 f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
                                             )
+                                            usage = agent_run.usage()
                                             return ChatResult(
                                                 result="",
                                                 tool_calls=tool_calls,
                                                 message_history=agent_run.ctx.state.message_history,
+                                                input_tokens=usage.request_tokens,
+                                                output_tokens=usage.response_tokens,
+                                                total_tokens=usage.total_tokens,
                                             )
                             elif agent.is_model_request_node(node):
                                 for part in node.request.parts:
@@ -256,8 +263,14 @@ async def chat(
                                             tool_name=part.tool_name, result=part.content.content
                                         )
                     res = agent_run.result.output if agent_run.result is not None else ""
+                    usage = agent_run.usage()
                     return ChatResult(
-                        result=res, tool_calls=tool_calls, message_history=agent_run.ctx.state.message_history
+                        result=res,
+                        tool_calls=tool_calls,
+                        message_history=agent_run.ctx.state.message_history,
+                        input_tokens=usage.request_tokens,
+                        output_tokens=usage.response_tokens,
+                        total_tokens=usage.total_tokens,
                     )
     except RetryError as e:
         logger.exception(e)

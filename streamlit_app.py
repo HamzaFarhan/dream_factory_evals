@@ -36,6 +36,16 @@ def show_tool_calls(tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]])
             st.code(f"{tool_call['result'].result}", language="json")  # type: ignore
 
 
+def show_token_counts(input_tokens: int, output_tokens: int, total_tokens: int):
+    color = "rgb(255,179,71)"
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Input Tokens</span>', unsafe_allow_html=True)
+    st.code(f"{input_tokens}", language="json")
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Output Tokens</span>', unsafe_allow_html=True)
+    st.code(f"{output_tokens}", language="json")
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Total Tokens</span>', unsafe_allow_html=True)
+    st.code(f"{total_tokens}", language="json")
+
+
 st.set_page_config(page_title="Dream Factory Chat", layout="wide")
 
 st.title("Dream Factory Chat")
@@ -72,6 +82,10 @@ for message in st.session_state.messages:
             with st.expander(f"Tool calls ({len(message['tool_calls'])})"):
                 show_tool_calls(message["tool_calls"])
 
+        if message.get("input_tokens") and message.get("output_tokens") and message.get("total_tokens"):
+            with st.expander("Token Usage"):
+                show_token_counts(message["input_tokens"], message["output_tokens"], message["total_tokens"])
+
 # User input
 if prompt := st.chat_input("Ask something..."):
     # Display user message
@@ -102,11 +116,20 @@ if prompt := st.chat_input("Ask something..."):
                 with st.expander(f"Tool calls ({len(chat_result.tool_calls)})", expanded=True):
                     show_tool_calls(chat_result.tool_calls)
 
+            if chat_result.input_tokens and chat_result.output_tokens and chat_result.total_tokens:
+                with st.expander("Token Usage"):
+                    show_token_counts(
+                        chat_result.input_tokens, chat_result.output_tokens, chat_result.total_tokens
+                    )
+
             # Format and store assistant response
             assistant_message = {
                 "role": "assistant",
                 "content": chat_result.result,
                 "tool_calls": chat_result.tool_calls,
+                "input_tokens": chat_result.input_tokens,
+                "output_tokens": chat_result.output_tokens,
+                "total_tokens": chat_result.total_tokens,
             }
             st.session_state.messages.append(assistant_message)
 
