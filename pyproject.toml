@@ -20,6 +20,7 @@ dependencies = [
     "pyarrow>=19.0.1",
     "pydantic-ai>=0.0.50.dev3",
     "python-dotenv>=1.1.0",
+    "streamlit>=1.45.0",
     "tenacity>=9.1.2",
 ]
 

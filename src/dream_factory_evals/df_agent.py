@@ -9,11 +9,11 @@ from loguru import logger
 from pydantic import BaseModel
 from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStdio
-from pydantic_ai.messages import ToolCallPart
+from pydantic_ai.messages import ModelMessage, ToolCallPart, ToolReturnPart
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
-from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_fixed
+from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_random
 
 from dream_factory_evals.df_mcp import list_table_names
 
@@ -24,8 +24,13 @@ STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
 
 
 class ToolCall(BaseModel):
-    tool: str
+    tool_name: str
     params: dict[str, Any]
+
+
+class ToolCallResult(BaseModel):
+    tool_name: str
+    result: Any
 
 
 class CantAccessTable(BaseModel):
@@ -63,6 +68,13 @@ class QueryResult[ResultT]:
 
 
 @dataclass
+class ChatResult:
+    result: str
+    tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]]
+    message_history: list[ModelMessage] | None = None
+
+
+@dataclass
 class EvaluateResult(Evaluator[Query, QueryResult]):
     def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
         if ctx.expected_output is None:
@@ -83,8 +95,8 @@ class EvaluateToolCalls(Evaluator[Query, QueryResult]):
         reason = ""
         tool_num = 1
         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-            if output_tool_call.tool != expected_tool_call.tool:
-                reason += f"Tool call mismatch: {output_tool_call.tool} != {expected_tool_call.tool} at tool number: {tool_num}\n"
+            if output_tool_call.tool_name != expected_tool_call.tool_name:
+                reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
             tool_num += 1
@@ -164,7 +176,7 @@ async def task(
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
     tool_calls = []
     try:
-        async for attempt in AsyncRetrying(wait=wait_fixed(1), stop=stop_after_attempt(3)):
+        async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
             with attempt:
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
@@ -178,7 +190,7 @@ async def task(
                                     ]:
                                         if num_tool_calls < max_tool_calls:
                                             tool_calls.append(
-                                                ToolCall(tool=part.tool_name, params=part.args_as_dict())
+                                                ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
                                             )
                                             num_tool_calls += 1
                                         else:
@@ -192,6 +204,64 @@ async def task(
     except RetryError as e:
         logger.exception(e)
     return QueryResult(result=None, tool_calls=tool_calls)
+
+
+async def chat(
+    user_prompt: str,
+    user_role: Role,
+    model: KnownModelName,
+    message_history: list[ModelMessage] | None = None,
+    max_tool_calls: int = MAX_TOOL_CALLS,
+) -> ChatResult:
+    inputs = Query(query=user_prompt, output_type=str)
+    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
+    tool_calls = {}
+    try:
+        async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
+            with attempt:
+                async with agent.run_mcp_servers():
+                    num_tool_calls = 0
+                    async with agent.iter(
+                        user_prompt=task.prompt, output_type=inputs.output_type, message_history=message_history
+                    ) as agent_run:
+                        async for node in agent_run:
+                            if agent.is_call_tools_node(node):
+                                for part in node.model_response.parts:
+                                    if isinstance(part, ToolCallPart) and part.tool_name not in [
+                                        "final_result",
+                                    ]:
+                                        if num_tool_calls < max_tool_calls:
+                                            tool_calls[part.tool_call_id] = {
+                                                "call": ToolCall(
+                                                    tool_name=part.tool_name, params=part.args_as_dict()
+                                                )
+                                            }
+                                            num_tool_calls += 1
+                                        else:
+                                            logger.warning(
+                                                f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
+                                            )
+                                            return ChatResult(
+                                                result="",
+                                                tool_calls=tool_calls,
+                                                message_history=agent_run.ctx.state.message_history,
+                                            )
+                            elif agent.is_model_request_node(node):
+                                for part in node.request.parts:
+                                    if isinstance(part, ToolReturnPart) and part.tool_name not in [
+                                        "get_table_schema",
+                                        "final_result",
+                                    ]:
+                                        tool_calls[part.tool_call_id]["result"] = ToolCallResult(
+                                            tool_name=part.tool_name, result=part.content.content
+                                        )
+                    res = agent_run.result.output if agent_run.result is not None else ""
+                    return ChatResult(
+                        result=res, tool_calls=tool_calls, message_history=agent_run.ctx.state.message_history
+                    )
+    except RetryError as e:
+        logger.exception(e)
+    return ChatResult(result="", tool_calls=tool_calls, message_history=message_history)
 
 
 def evaluate(
@@ -227,8 +297,6 @@ def are_strings_similar(str1: str, str2: str, model: KnownModelName = STRINGS_SI
 
 
 async def main():
-    from pydantic import BaseModel
-
     class Email(BaseModel):
         email: str
 

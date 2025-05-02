@@ -160,6 +160,6 @@ def main():
 
 
 if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "google-gla:gemini-2.0-flash"]
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
     for model in models:
         evaluate(model=model, dataset=finance_dataset, user_role=Role.FINANCE, level=1)
