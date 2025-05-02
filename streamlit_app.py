@@ -64,7 +64,7 @@ with st.sidebar:
     )
 
     st.info(
-        f"Selected role: {role.value} with access to tables starting with '{role.value if role != Role.CEO else 'all'}'"
+        f"Selected role: {role.value.upper()} with access to tables starting with '{role.value if role != Role.CEO else 'all'}'"
     )
 
 # Initialize chat history
