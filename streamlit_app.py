@@ -28,12 +28,12 @@ def show_tool_calls(tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]])
             st.markdown('<span style="color:rgb(77,168,74);font-weight:bold;">Call</span>', unsafe_allow_html=True)
             st.code(f"{tool_call['call'].tool_name}", language="json")
             st.code(f"{tool_call['call'].params}", language="json")  # type: ignore
-        if tool_call.get("result"):
-            st.markdown(
-                '<span style="color:rgb(73,162,207);font-weight:bold;">Result</span>', unsafe_allow_html=True
-            )
-            st.code(f"{tool_call['result'].tool_name}", language="json")
-            st.code(f"{tool_call['result'].result}", language="json")  # type: ignore
+            if tool_call.get("result"):
+                st.markdown(
+                    '<span style="color:rgb(73,162,207);font-weight:bold;">Result</span>', unsafe_allow_html=True
+                )
+                st.code(f"{tool_call['result'].tool_name}", language="json")
+                st.code(f"{tool_call['result'].result}", language="json")  # type: ignore
 
 
 def show_token_counts(input_tokens: int, output_tokens: int, total_tokens: int):

@@ -214,6 +214,7 @@ async def chat(
     user_role: Role,
     model: KnownModelName,
     message_history: list[ModelMessage] | None = None,
+    # usage: Usage | None = None,
     max_tool_calls: int = MAX_TOOL_CALLS,
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=str)
@@ -225,7 +226,10 @@ async def chat(
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
                     async with agent.iter(
-                        user_prompt=task.prompt, output_type=inputs.output_type, message_history=message_history
+                        user_prompt=task.prompt,
+                        output_type=inputs.output_type,
+                        message_history=message_history,
+                        # usage=usage,
                     ) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
