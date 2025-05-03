@@ -159,5 +159,17 @@ def get_table_records_by_ids(
     return httpx.get(**table_url_with_headers(table_name=table_name), params=params).json()
 
 
+@server.tool()
+def calculate_sum(values: list[float]) -> float:
+    """Calculate the sum of a list of values."""
+    return sum(values)
+
+
+@server.tool()
+def calculate_mean(values: list[float]) -> float:
+    """Calculate the mean of a list of values."""
+    return sum(values) / len(values)
+
+
 if __name__ == "__main__":
     server.run()

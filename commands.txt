@@ -10,8 +10,7 @@ gcloud compute ssh --zone "us-central1-c" "apps-demo" --project "dreamai-pocs"
 sudo su -
 
 # Update code:
-cd /opt/dream_factory_evals_app/dream_factory_evals
-#again `git pull` is not working, so update the code manually.
+cd /opt/dream_factory_evals_app/dream_factory_evals && git pull
 
 # Build Docker Image
 docker build . -f Dockerfile -t gcr.io/dreamai-pocs/apps-demo/dream_factory_evals-app:v1

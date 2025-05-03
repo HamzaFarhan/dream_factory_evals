@@ -123,7 +123,9 @@ class Task(BaseModel):
         return res.strip()
 
 
-def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownModelName) -> tuple[Task, Agent]:
+def setup_task_and_agent(
+    query: Query[ResultT], user_role: Role, model: KnownModelName, new: bool = False
+) -> tuple[Task, Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -136,14 +138,16 @@ def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownMod
         available_tables = [t for t in available_tables if t.startswith(user_role.value)]
 
     task = Task(query=query, user_role=user_role, available_tables=available_tables)
-
+    url_key = "DREAM_FACTORY_BASE_URL" if not new else "NEW_DREAM_FACTORY_BASE_URL"
+    api_key_key = (
+        f"DREAM_FACTORY_{user_role.upper()}_API_KEY"
+        if not new
+        else f"NEW_DREAM_FACTORY_{user_role.upper()}_API_KEY"
+    )
     tables_mcp_server = MCPServerStdio(
         command="uv",
         args=["run", "src/dream_factory_evals/df_mcp.py"],
-        env={
-            "DREAM_FACTORY_BASE_URL": os.environ["DREAM_FACTORY_BASE_URL"],
-            "DREAM_FACTORY_API_KEY": os.environ[f"DREAM_FACTORY_{user_role.upper()}_API_KEY"],
-        },
+        env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
     )
 
     agent = Agent(
@@ -162,6 +166,9 @@ def setup_task_and_agent(query: Query[ResultT], user_role: Role, model: KnownMod
             "So keep calling using your tools until you successfully complete the main task. "
             "You may have to complete smaller tasks to get to the main task.\n"
             "Sometimes, trying different string cases (e.g. 'Active' vs 'active') may help.\n"
+            "Efficient tool use is encouraged. So if you think you can do something in fewer tool calls, "
+            "for example, using 'related' to join tables instead of calling 'get_table_records' multiple times, "
+            "then do so."
         ),
         mcp_servers=[tables_mcp_server],
         instrument=True,
@@ -218,7 +225,7 @@ async def chat(
     max_tool_calls: int = MAX_TOOL_CALLS,
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=str)
-    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
+    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model, new=True)
     tool_calls = {}
     try:
         async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
@@ -266,7 +273,7 @@ async def chat(
                                         tool_calls[part.tool_call_id]["result"] = ToolCallResult(
                                             tool_name=part.tool_name, result=part.content.content
                                         )
-                    res = agent_run.result.output if agent_run.result is not None else ""
+                    res = agent_run.result.output if agent_run.result is not None else "Sorry, I couldn't complete the task."
                     usage = agent_run.usage()
                     return ChatResult(
                         result=res,
@@ -278,7 +285,7 @@ async def chat(
                     )
     except RetryError as e:
         logger.exception(e)
-    return ChatResult(result="", tool_calls=tool_calls, message_history=message_history)
+    return ChatResult(result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history)
 
 
 def evaluate(

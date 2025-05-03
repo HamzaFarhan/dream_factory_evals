@@ -60,12 +60,10 @@ with st.sidebar:
     )
 
     role = st.selectbox(
-        "User Role", [Role.HR, Role.FINANCE, Role.OPS, Role.CEO], format_func=lambda x: x.value.upper()
+        "User Role", [Role.CEO, Role.HR, Role.FINANCE, Role.OPS], format_func=lambda x: x.value.upper()
     )
-
-    st.info(
-        f"Selected role: {role.value.upper()} with access to tables starting with '{role.value if role != Role.CEO else 'all'}'"
-    )
+    access = "all" if role == Role.CEO else role.value.upper()
+    st.info(f"Selected role: {role.value.upper()} with access to {access} tables")
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -138,3 +136,8 @@ if st.sidebar.button("Clear Chat History"):
     st.session_state.messages = []
     st.session_state.model_message_history = None
     st.rerun()
+
+
+# when did Brandon perez join and in what dept?
+# what's his role?
+# how much revenue did we have in the year brandon joined?
