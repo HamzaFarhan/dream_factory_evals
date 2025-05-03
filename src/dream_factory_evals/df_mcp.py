@@ -166,6 +166,12 @@ def calculate_sum(values: list[float]) -> float:
 
 
 @server.tool()
+def calculate_difference(num1: float, num2: float) -> float:
+    """Calculate the difference between two numbers by subtracting `num1` from `num2`"""
+    return num2 - num1
+
+
+@server.tool()
 def calculate_mean(values: list[float]) -> float:
     """Calculate the mean of a list of values."""
     return sum(values) / len(values)

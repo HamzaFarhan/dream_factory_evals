@@ -9,10 +9,7 @@ from dream_factory_evals.df_agent import ChatResult, Role, ToolCall, ToolCallRes
 
 
 async def run_chat(
-    prompt: str,
-    role: Role,
-    model: KnownModelName,
-    message_history: list[ModelMessage] | None = None,
+    prompt: str, role: Role, model: KnownModelName, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     try:
         chat_result = await chat(user_prompt=prompt, user_role=role, model=model, message_history=message_history)
