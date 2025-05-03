@@ -17,9 +17,7 @@ cd /opt/dream_factory_evals_app/dream_factory_evals
 docker build . -f Dockerfile -t gcr.io/dreamai-pocs/apps-demo/dream_factory_evals-app:v1
 
 # Bounce docker compose
-cd /opt/dream_factory_evals_app
-docker-compose down
-docker-compose up -d
+cd /opt/dream_factory_evals_app && docker-compose down && docker-compose up -d
 
 # Check logs:
 docker logs -f dream_factory_evals-app

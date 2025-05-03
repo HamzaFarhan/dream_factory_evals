@@ -113,7 +113,7 @@ if prompt := st.chat_input("Ask something..."):
 
             # Display tool calls immediately
             if chat_result.tool_calls:
-                with st.expander(f"Tool calls ({len(chat_result.tool_calls)})", expanded=True):
+                with st.expander(f"Tool calls ({len(chat_result.tool_calls)})"):
                     show_tool_calls(chat_result.tool_calls)
 
             if chat_result.input_tokens and chat_result.output_tokens and chat_result.total_tokens:
