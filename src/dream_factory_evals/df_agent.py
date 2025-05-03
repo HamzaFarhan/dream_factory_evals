@@ -160,9 +160,8 @@ def setup_task_and_agent(
             "So given the main task and the <available_tables>, you would have a good idea of which tables to use.\n"
             "But if you think the user's main task would require you to access a table from a different department "
             "(you would be guessing the name of the department and the table), you MUST STOP and return a "
-            "CantAccessTable object with a helpful detailed reason to the user including what your plan was and why you can't do it.\n"
+            "helpful detailed reason to the user including what your plan was and why you can't do it.\n"
             "If you do have access to the needed tables, start off by using the 'get_table_schema' tool to get the schema of the needed tables.\n"
-            "Returning anything other than a CantAccessTable object as your final output will be considered a success.\n"
             "So keep calling using your tools until you successfully complete the main task. "
             "You may have to complete smaller tasks to get to the main task.\n"
             "Sometimes, trying different string cases (e.g. 'Active' vs 'active') may help.\n"
@@ -273,7 +272,11 @@ async def chat(
                                         tool_calls[part.tool_call_id]["result"] = ToolCallResult(
                                             tool_name=part.tool_name, result=part.content.content
                                         )
-                    res = agent_run.result.output if agent_run.result is not None else "Sorry, I couldn't complete the task."
+                    res = (
+                        agent_run.result.output
+                        if agent_run.result is not None
+                        else "Sorry, I couldn't complete the task."
+                    )
                     usage = agent_run.usage()
                     return ChatResult(
                         result=res,
@@ -285,7 +288,9 @@ async def chat(
                     )
     except RetryError as e:
         logger.exception(e)
-    return ChatResult(result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history)
+    return ChatResult(
+        result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history
+    )
 
 
 def evaluate(

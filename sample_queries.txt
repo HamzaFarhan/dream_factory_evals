@@ -1,0 +1,29 @@
+Role = HR
+model = "google-gla:gemini-2.0-flash"
+
+When did Brandon Perez join and in what dept?
+
+Role = HR
+model = "openai:gpt-4.1-mini"
+
+What's his role?
+
+Role = HR
+model = "openai:gpt-4.1-mini"
+
+How much revenue did we have in the year brandon joined?
+
+Role = CEO
+model = "anthropic:claude-3-5-sonnet-latest"
+
+Now you have access to all tables.
+
+Role = HR
+model = "openai:o4-mini"
+
+When did Brandon Perez join and in what dept?
+
+Role = OPS
+model = "openai:gpt-4.1-mini"
+
+How many machines had a failed routine check in 2024?

@@ -52,8 +52,13 @@ with st.sidebar:
     st.header("Settings")
     model: KnownModelName = st.selectbox(
         "Select Model",
-        ["anthropic:claude-3-5-sonnet-latest", "google-gla:gemini-2.0-flash", "openai:gpt-4.1-mini"],
-        index=1,  # Default to gemini-2.0-flash
+        [
+            "google-gla:gemini-2.0-flash",
+            "anthropic:claude-3-5-sonnet-latest",
+            "openai:gpt-4.1-mini",
+            "openai:o4-mini",
+        ],
+        index=0,  # Default to gemini-2.0-flash
     )
 
     role = st.selectbox(
@@ -135,6 +140,4 @@ if st.sidebar.button("Clear Chat History"):
     st.rerun()
 
 
-# when did Brandon perez join and in what dept?
-# what's his role?
-# how much revenue did we have in the year brandon joined?
+
