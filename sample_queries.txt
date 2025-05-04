@@ -1,3 +1,7 @@
+Some sample queries. I ran all of these steps in sequence.
+
+-----
+
 Role = HR
 model = "google-gla:gemini-2.0-flash"
 
@@ -18,12 +22,29 @@ model = "anthropic:claude-3-5-sonnet-latest"
 
 Now you have access to all tables.
 
-Role = HR
-model = "openai:o4-mini"
-
-When did Brandon Perez join and in what dept?
+CLEAR CHAT HISTORY
 
 Role = OPS
 model = "openai:gpt-4.1-mini"
 
 How many machines had a failed routine check in 2024?
+
+CLEAR CHAT HISTORY
+
+*Comparing Reasoning vs Normal Model*
+
+Role = CEO
+model = "google-gla:gemini-2.0-flash" or "anthropic:claude-3-5-sonnet-latest"
+
+When did Brandon Perez join and in what dept? who is the manager for that department?
+
+CLEAR CHAT HISTORY
+
+Role = CEO
+model = "openai:o4-mini"
+
+When did Brandon Perez join and in what dept? who is the manager for that department?
+
+-----
+
+I found that claude 3.5 is the most efficient when it comes to cool calls. Even more than o4-mini.

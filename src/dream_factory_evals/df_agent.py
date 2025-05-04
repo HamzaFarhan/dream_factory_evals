@@ -165,9 +165,9 @@ def setup_task_and_agent(
             "So keep calling using your tools until you successfully complete the main task. "
             "You may have to complete smaller tasks to get to the main task.\n"
             "Sometimes, trying different string cases (e.g. 'Active' vs 'active') may help.\n"
-            "Efficient tool use is encouraged. So if you think you can do something in fewer tool calls, "
-            "for example, using 'related' to join tables instead of calling 'get_table_records' multiple times, "
-            "then do so."
+            "Efficient tool use is encouraged. So if you can do something in fewer tool calls, "
+            "for example, using 'related' to join tables based on the foreign key instead of calling "
+            "get_table_records multiple times, then do so."
         ),
         mcp_servers=[tables_mcp_server],
         instrument=True,
