@@ -45,7 +45,7 @@ def show_token_counts(input_tokens: int, output_tokens: int, total_tokens: int):
 
 st.set_page_config(page_title="Dream Factory Chat", layout="wide")
 
-st.title("Dream Factory Chat")
+st.title("DreamFactory Chat")
 
 # Sidebar for settings
 with st.sidebar:
@@ -138,6 +138,3 @@ if st.sidebar.button("Clear Chat History"):
     st.session_state.messages = []
     st.session_state.model_message_history = None
     st.rerun()
-
-
-

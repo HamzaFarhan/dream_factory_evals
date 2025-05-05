@@ -168,6 +168,11 @@ def setup_task_and_agent(
             "Efficient tool use is encouraged. So if you can do something in fewer tool calls, "
             "for example, using 'related' to join tables based on the foreign key instead of calling "
             "get_table_records multiple times, then do so."
+            "Sometimes, a table may have a foreign key to another table that's not even in list of available tables.\n"
+            "For example, the scehama of `hr_employees` may have this: `postgres.hr_attendance_by_employee_id`.\n"
+            "There is no `hr_attendance` table in the list of available tables, but if you use this key "
+            "in the `related` parameter of `get_table_records`, it will work. This is just one example.\n"
+            "Trust the schema. If something isn't possible, you'll just get an error and you can try again."
         ),
         mcp_servers=[tables_mcp_server],
         instrument=True,
