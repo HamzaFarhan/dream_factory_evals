@@ -19,7 +19,7 @@ from dream_factory_evals.df_mcp import list_table_names
 
 load_dotenv()
 
-MAX_TOOL_CALLS = 50
+MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
 
 
@@ -75,6 +75,10 @@ class ChatResult:
     input_tokens: int | None = None
     output_tokens: int | None = None
     total_tokens: int | None = None
+
+
+class MarkdownResponse(BaseModel):
+    content: str
 
 
 @dataclass
@@ -173,6 +177,8 @@ def setup_task_and_agent(
             "There is no `hr_attendance` table in the list of available tables, but if you use this key "
             "in the `related` parameter of `get_table_records`, it will work. This is just one example.\n"
             "Trust the schema. If something isn't possible, you'll just get an error and you can try again."
+            "If the user asks you to format your response as a table, return a markdown table.\n"
+            "All of your responses, even the simple ones will be shown as markdown."
         ),
         mcp_servers=[tables_mcp_server],
         instrument=True,
@@ -225,10 +231,9 @@ async def chat(
     user_role: Role,
     model: KnownModelName,
     message_history: list[ModelMessage] | None = None,
-    # usage: Usage | None = None,
     max_tool_calls: int = MAX_TOOL_CALLS,
 ) -> ChatResult:
-    inputs = Query(query=user_prompt, output_type=str)
+    inputs = Query(query=user_prompt, output_type=MarkdownResponse)
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model, new=True)
     tool_calls = {}
     try:
@@ -237,10 +242,7 @@ async def chat(
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
                     async with agent.iter(
-                        user_prompt=task.prompt,
-                        output_type=inputs.output_type,
-                        message_history=message_history,
-                        # usage=usage,
+                        user_prompt=task.prompt, output_type=inputs.output_type, message_history=message_history
                     ) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
@@ -278,7 +280,7 @@ async def chat(
                                             tool_name=part.tool_name, result=part.content.content
                                         )
                     res = (
-                        agent_run.result.output
+                        agent_run.result.output.content
                         if agent_run.result is not None
                         else "Sorry, I couldn't complete the task."
                     )
