@@ -46,7 +46,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=ProductRevenueInfo(product_name="Product 12", revenue_amount=1600, category="Hardware"),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_revenues",
                             "filter": "product_id=12",
@@ -67,7 +67,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=CategoryRevenueComparison(electronics_revenue=1500, software_revenue=2800),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_revenues",
                             "filter": "(quarter=2) AND (year=2022)",
@@ -87,7 +87,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=ProfitInfo(total_revenue=7750, total_expenses=2000, profit=5750),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_revenues",
                             "filter": "(quarter=3) AND (year=2022)",
@@ -95,7 +95,7 @@ finance_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_expenses",
                             "filter": "(expense_date >= '2022-07-01') AND (expense_date <= '2022-09-30')",
@@ -124,7 +124,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_products",
                             "filter": "category='Hardware'",
@@ -146,7 +146,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=ExpenseComparison(capital_expenses=1200, operational_expenses=1050),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_expenses",
                             "filter": "(expense_date >= '2022-01-01') AND (expense_date <= '2022-06-30')",

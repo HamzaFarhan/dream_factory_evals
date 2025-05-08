@@ -2,177 +2,175 @@
   "hr": [
     {
       "query_id": "hr_l4_1",
-      "query": "As an HR strategist, for every department that introduced a new policy in 2023, analyse hiring momentum by: (a) counting staff and managers hired within 90 days after each policy's effective date, (b) computing the staff-to-manager ratio, and (c) recommending which departments must prioritise recruiting managers",
+      "query": "Analyze the profile of employees in the 'Engineering' department who joined in 2023 versus those who joined in 2022 (consider data as of 2024-01-01 for cut-offs). For each group, detail their roles and confirm their department. Also, list any 'Engineering Policy' (from `hr_policies` table, associated with the Engineering department) that became effective between 2022-01-01 and 2024-01-01 (inclusive), including the policy's associated department name. Discuss which of these policies would have been active for a significant portion of each cohort's tenure up to 2024-01-01. What patterns emerge regarding role distribution for these two cohorts? Based on these patterns and policy context, provide two actionable recommendations for HR regarding talent management in the Engineering department.",
       "expected_response": {
-        "department_hiring_insights": [
+        "analysis_summary": {
+          "engineering_cohort_2023_joiners": {
+            "count": 3,
+            "employees": [
+              {
+                "employee_id": 18,
+                "first_name": "Anna",
+                "last_name": "Baker",
+                "role": "Staff",
+                "date_joined": "2023-01-24",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "employee_id": 16,
+                "first_name": "Diana",
+                "last_name": "Foster",
+                "role": "Manager",
+                "date_joined": "2023-04-08",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "employee_id": 24,
+                "first_name": "Tasha",
+                "last_name": "Valencia",
+                "role": "Staff",
+                "date_joined": "2023-11-29",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              }
+            ],
+            "role_distribution": { "Manager": 1, "Staff": 2 },
+            "relevant_active_policies_by_2024_01_01": [
+              {
+                "policy_id": 7,
+                "title": "Engineering Policy",
+                "effective_date": "2023-06-27",
+                "description": "Policy details for Engineering department.",
+                "department_id": 3,
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "policy_id": 6,
+                "title": "Engineering Policy",
+                "effective_date": "2023-10-30",
+                "description": "Policy details for Engineering department.",
+                "department_id": 3,
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              }
+            ]
+          },
+          "engineering_cohort_2022_joiners": {
+            "count": 3,
+            "employees": [
+              {
+                "employee_id": 23,
+                "first_name": "Patrick",
+                "last_name": "Ferrell",
+                "role": "Staff",
+                "date_joined": "2022-07-07",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "employee_id": 21,
+                "first_name": "Brandon",
+                "last_name": "Rodriguez",
+                "role": "Lead",
+                "date_joined": "2022-08-06",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "employee_id": 20,
+                "first_name": "Whitney",
+                "last_name": "Hicks",
+                "role": "Staff",
+                "date_joined": "2022-12-25",
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              }
+            ],
+            "role_distribution": { "Lead": 1, "Staff": 2 },
+            "relevant_active_policies_by_2024_01_01": [
+              {
+                "policy_id": 7,
+                "title": "Engineering Policy",
+                "effective_date": "2023-06-27",
+                "description": "Policy details for Engineering department.",
+                "department_id": 3,
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              },
+              {
+                "policy_id": 6,
+                "title": "Engineering Policy",
+                "effective_date": "2023-10-30",
+                "description": "Policy details for Engineering department.",
+                "department_id": 3,
+                "hr_departments_by_department_id": {
+                  "department_id": 3,
+                  "name": "Engineering",
+                  "manager_id": 16
+                }
+              }
+            ]
+          },
+          "observed_patterns": "The 2023 cohort includes a Manager, while the 2022 cohort includes a Lead. Both cohorts are small (3 employees each) and predominantly Staff. Both cohorts experienced the same new Engineering policies (ID 7 and 6) becoming active during their tenure (specifically in 2023).",
+          "policy_context_discussion": "Policies ID 7 (eff. 2023-06-27) and ID 6 (eff. 2023-10-30) would have been active for the entirety of the 2023 cohort's latter half of their first year, and for the 2022 cohort during their second year of employment. Given the generic descriptions, their specific impact is hard to determine without more content, but their introduction signifies recent updates to Engineering's operational guidelines."
+        },
+        "recommendations_for_talent_management": [
           {
-            "department": "Support",
-            "staff_hired": 1,
-            "managers_hired": 0,
-            "ratio": "∞",
-            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
+            "recommendation": "Develop targeted onboarding and integration support for new managers joining Engineering, as seen with the 2023 cohort, potentially leveraging insights from the recent policy updates (ID 6 and 7) if they pertain to operational changes.",
+            "justification": "Based on the pattern of a manager joining in 2023 and new policies becoming active."
           },
           {
-            "department": "Quality Assurance",
-            "staff_hired": 0,
-            "managers_hired": 1,
-            "ratio": 0,
-            "recommendation": "Balanced – no immediate action required."
-          },
-          {
-            "department": "Logistics",
-            "staff_hired": 1,
-            "managers_hired": 0,
-            "ratio": "∞",
-            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
-          },
-          {
-            "department": "Business Development",
-            "staff_hired": 1,
-            "managers_hired": 0,
-            "ratio": "∞",
-            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
-          },
-          {
-            "department": "Strategy",
-            "staff_hired": 0,
-            "managers_hired": 1,
-            "ratio": 0,
-            "recommendation": "Balanced – no immediate action required."
-          },
-          {
-            "department": "Compliance",
-            "staff_hired": 1,
-            "managers_hired": 0,
-            "ratio": "∞",
-            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
-          },
-          {
-            "department": "Production",
-            "staff_hired": 1,
-            "managers_hired": 0,
-            "ratio": "∞",
-            "recommendation": "Assign a manager – none hired within 90 days of policy launch."
-          },
-          {
-            "department": "Innovation",
-            "staff_hired": 0,
-            "managers_hired": 1,
-            "ratio": 0,
-            "recommendation": "Balanced – no immediate action required."
+            "recommendation": "Investigate career progression paths from Staff to Lead within Engineering, as the 2022 cohort shows a Lead. Ensure new policies support skill development for such transitions.",
+            "justification": "Based on the presence of a Lead in the 2022 cohort and the need to align policies with career growth."
           }
         ]
       },
-      "explanation": "Requires multi‑hop reasoning across three HR tables: first locate 2023 policies, then join employees by department & join date window, finally derive ratios and narrative recommendations.",
+      "explanation": "This Level 4 query requires multi-step data retrieval (employees by join year cohorts using related for department info, policies by department and effective date using related for department info), correlation of employee profiles with policy landscapes, analytical reasoning to identify patterns in small cohorts, and formulation of strategic, data-driven recommendations. It tests the ability to synthesize information and reason about talent management even with generic policy descriptions by focusing on timing and roles.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_policies",
-            "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')"
-          }
-        },
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "(date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
-            "related": "hr_departments_by_department_id",
-            "fields": ["date_joined", "role"]
-          }
-        }
-      ],
-      "sample_solution": "Fetch 2023 HR_POLICIES, for each department pull HR_EMPLOYEES joined via related option, filter to 90‑day window, compute staff/managers counts, derive ratio"
-    },
-    {
-      "query_id": "hr_l4_2",
-      "query": "As an HR analyst, evaluate policy effectiveness: For departments with policies effective in 2022, calculate (1) the median days between policy effective date and the first employee hire after that date, (2) classify departments where this lag exceeded 13 days, and (3) propose one onboarding improvement for each slow‑to‑hire department.",
-      "expected_response": {
-        "lag_analysis": [
-          {
-            "department": "Sales",
-            "median_lag_days": 14,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          },
-          {
-            "department": "Marketing",
-            "median_lag_days": 9,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "Engineering",
-            "median_lag_days": 4,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "HR",
-            "median_lag_days": 19,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          },
-          {
-            "department": "Finance",
-            "median_lag_days": 14,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          },
-          {
-            "department": "Operations",
-            "median_lag_days": 9,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "Customer Service",
-            "median_lag_days": 4,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "IT",
-            "median_lag_days": 19,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          },
-          {
-            "department": "Legal",
-            "median_lag_days": 14,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          },
-          {
-            "department": "Procurement",
-            "median_lag_days": 9,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "R&D",
-            "median_lag_days": 4,
-            "classification": "On-track",
-            "recommendation": "—"
-          },
-          {
-            "department": "Administration",
-            "median_lag_days": 19,
-            "classification": "Delayed",
-            "recommendation": "Reduce lag in first hiring after policy"
-          }
-        ],
-        "summary": "6 of 12 departments exceeded the 13-day threshold."
-      },
-      "explanation": "Combines policy dates with first‑hire timing per department (employees), needs department metadata for naming; involves grouping and median calculation – analytical reasoning beyond simple joins.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "hr_policies",
-            "filter": "(effective_date >= '2022-01-01') AND (effective_date <= '2022-12-31')",
+            "filter": "(department_id=3) AND (date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "role",
+              "date_joined",
+              "department_id"
+            ],
             "related": "hr_departments_by_department_id"
           }
         },
@@ -180,346 +178,1283 @@
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2023-12-31')",
-            "fields": ["date_joined", "role", "department_id"]
+            "filter": "(department_id=3) AND (date_joined >= '2022-01-01') AND (date_joined <= '2022-12-31')",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "role",
+              "date_joined",
+              "department_id"
+            ],
+            "related": "hr_departments_by_department_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_policies",
+            "filter": "(department_id=3) AND (effective_date >= '2022-01-01') AND (effective_date <= '2024-01-01')",
+            "fields": [
+              "policy_id",
+              "title",
+              "description",
+              "effective_date",
+              "department_id"
+            ],
+            "related": "hr_departments_by_department_id"
           }
         }
       ],
-      "sample_solution": "Get 2022 HR_POLICIES; for each department look up first post‑policy HR_EMPLOYEES record, compute lag, flag >=14 days, attach recommendation."
+      "sample_solution": "1. Retrieve Engineering employees joined in 2023, including their department details using `related`. 2. Retrieve Engineering employees joined in 2022, including their department details using `related`. 3. Retrieve Engineering policies (department_id 3) effective between 2022-01-01 and 2024-01-01, including their department details using `related`. 4. For each cohort, list roles and count. 5. Determine which of the retrieved policies were active for these cohorts by 2024-01-01. 6. Analyze role distribution patterns and policy context. 7. Formulate two actionable talent management recommendations based on these findings."
+    },
+    {
+      "query_id": "hr_l4_2",
+      "query": "The general 'HR Policy' (Policy ID 8, effective 2023-05-13) and the specific 'IT Policy' (Policy ID 17, effective 2023-09-21) were introduced. Retrieve these policies along with their associated department names. Analyze their `description` (assume HR Policy applies company-wide). Then, by examining the `role` and `department_name` for employees in the 'IT' and 'Sales' departments who joined between 2023-06-02 and 2024-01-01 (inclusive), what potential impact could these policies have on attracting talent to these departments? Provide two distinct suggestions for leveraging aspects of these policies in recruitment materials for roles in these departments, considering their generic descriptions.",
+      "expected_response": {
+        "policy_analysis_summary": [
+          {
+            "policy_id": 8,
+            "title": "HR Policy",
+            "effective_date": "2023-05-13",
+            "description": "Policy details for HR department.",
+            "department_id": 4,
+            "hr_departments_by_department_id": {
+              "department_id": 4,
+              "name": "HR",
+              "manager_id": 25
+            },
+            "assumed_relevance": "Company-wide HR guidelines, potentially covering employee benefits, work environment, or general conduct, which are attractive to all candidates."
+          },
+          {
+            "policy_id": 17,
+            "title": "IT Policy",
+            "effective_date": "2023-09-21",
+            "description": "Policy details for IT department.",
+            "department_id": 8,
+            "hr_departments_by_department_id": {
+              "department_id": 8,
+              "name": "IT",
+              "manager_id": 60
+            },
+            "assumed_relevance": "Specific guidelines for IT operations, possibly relating to technology use, security, or development practices, attractive to IT professionals seeking clear frameworks."
+          }
+        ],
+        "talent_attraction_impact_assessment": {
+          "it_department_hires_after_2023_06_01": {
+            "count": 1,
+            "employees": [
+              {
+                "employee_id": 61,
+                "first_name": "Tricia",
+                "last_name": "Baker",
+                "role": "Staff",
+                "date_joined": "2023-06-18",
+                "department_id": 8,
+                "hr_departments_by_department_id": {
+                  "department_id": 8,
+                  "name": "IT",
+                  "manager_id": 60
+                }
+              }
+            ],
+            "potential_impact_on_attraction": "The introduction of a new IT-specific policy (ID 17) and a recent HR policy (ID 8) could signal a commitment to modernizing standards and employee support, potentially attractive to IT Staff. The low number of recent hires makes definitive conclusions difficult."
+          },
+          "sales_department_hires_after_2023_06_01": {
+            "count": 2,
+            "employees": [
+              {
+                "employee_id": 8,
+                "first_name": "Mitchell",
+                "last_name": "Clark",
+                "role": "Staff",
+                "date_joined": "2023-06-02",
+                "department_id": 1,
+                "hr_departments_by_department_id": {
+                  "department_id": 1,
+                  "name": "Sales",
+                  "manager_id": 1
+                }
+              },
+              {
+                "employee_id": 3,
+                "first_name": "Andrea",
+                "last_name": "Calderon",
+                "role": "Staff",
+                "date_joined": "2023-06-17",
+                "department_id": 1,
+                "hr_departments_by_department_id": {
+                  "department_id": 1,
+                  "name": "Sales",
+                  "manager_id": 1
+                }
+              }
+            ],
+            "potential_impact_on_attraction": "The new HR policy (ID 8) could enhance attractiveness for Sales Staff by implying updated general employment conditions. The IT policy is less directly relevant to Sales roles."
+          }
+        },
+        "recruitment_material_suggestions": [
+          {
+            "target_department": "IT",
+            "leverage_point": "Highlight the company's commitment to a structured and supportive work environment by mentioning the recent 'IT Policy' (for operational clarity) and 'HR Policy' (for overall employee well-being) in job descriptions for IT roles.",
+            "example_phrasing": "Join a forward-thinking IT team guided by recently updated IT and HR policies designed to support your professional growth and well-being."
+          },
+          {
+            "target_department": "Sales",
+            "leverage_point": "Emphasize the company's dedication to its people by referencing the new 'HR Policy' in recruitment materials, suggesting a focus on fair practices and a positive company culture for Sales roles.",
+            "example_phrasing": "Become part of our dynamic Sales force, supported by a new HR policy framework that underscores our commitment to employee success."
+          }
+        ]
+      },
+      "explanation": "This Level 4 query involves analyzing policy text (albeit generic) fetched with related department data, retrieving specific employee cohorts with related department data, inferring the attractiveness of policies for different departments, and generating practical suggestions for HR marketing by focusing on the *implication* of new policies.",
+      "tools_needed": ["get_table_records", "get_table_records_by_ids"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records_by_ids",
+          "params": {
+            "table_name": "hr_policies",
+            "ids": ["8", "17"],
+            "fields": [
+              "policy_id",
+              "title",
+              "description",
+              "effective_date",
+              "department_id"
+            ],
+            "related": "hr_departments_by_department_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "(department_id=8) AND (date_joined >= '2023-06-02') AND (date_joined <= '2024-01-01')",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "role",
+              "date_joined",
+              "department_id"
+            ],
+            "related": "hr_departments_by_department_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "hr_employees",
+            "filter": "(department_id=1) AND (date_joined >= '2023-06-02') AND (date_joined <= '2024-01-01')",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "role",
+              "date_joined",
+              "department_id"
+            ],
+            "related": "hr_departments_by_department_id"
+          }
+        }
+      ],
+      "sample_solution": "1. Retrieve details for Policy ID 8 and 17, including their department names using `related`. 2. Analyze their generic descriptions and infer general themes. 3. Retrieve IT employees joined between 2023-06-02 and 2024-01-01, including their department names using `related`. 4. Retrieve Sales employees joined in the same period, including their department names using `related`. 5. Assess the potential impact of these policies on talent attraction for IT and Sales. 6. Develop two distinct suggestions for leveraging the *existence* of these new policies in recruitment materials."
     },
     {
       "query_id": "hr_l4_3",
-      "query": "As HR leadership, compare retention of 2022 versus 2023 hire cohorts. Using today’s date, compute the average tenure (in days) of employees hired in each year, produce an insight narrative on retention trends, and recommend two concrete initiatives to improve 2023 cohort retention.",
+      "query": "The 'HR' department (department_id 4) is strategically emphasizing data-driven decision-making, a direction supported by the existing 'HR Policy' (Policy ID 8, effective 2023-05-13). Considering this strategic push, and imagining the department aims to cultivate more specialized data and systems skills within its existing 'Staff' and 'Lead' roles (particularly for those who joined after 2023-01-01), identify three key future-facing competencies the HR department should develop. For each competency, propose one specific development initiative.",
       "expected_response": {
-        "retention_analysis": {
-          "average_tenure_days_2022": 1150,
-          "average_tenure_days_2023": 600,
-          "insight": "2022 hires have stayed on average 550 days longer than the 2023 cohort, indicating early churn risk among recent hires.",
-          "recommendations": [
-            "Implement mentorship programme pairing 2023 hires with 2022 veterans.",
-            "Conduct stay‑interviews with 2023 staff to identify pain points."
+        "strategic_context": {
+          "department": "HR (department_id 4)",
+          "stated_strategic_push": "Data-driven decision-making.",
+          "relevant_policy": {
+            "policy_id": 8,
+            "title": "HR Policy",
+            "effective_date": "2023-05-13",
+            "description": "Policy details for HR department."
+          },
+          "recent_hires_profile_context_join_after_2023_01_01_up_to_2024_01_01": [
+            {
+              "employee_id": 26,
+              "first_name": "Joseph",
+              "last_name": "Davidson",
+              "role": "Lead",
+              "date_joined": "2023-12-08"
+            },
+            {
+              "employee_id": 29,
+              "first_name": "Guy",
+              "last_name": "Gaines",
+              "role": "Staff",
+              "date_joined": "2023-10-29"
+            },
+            {
+              "employee_id": 32,
+              "first_name": "Kimberly",
+              "last_name": "Moreno",
+              "role": "Staff",
+              "date_joined": "2023-12-11"
+            }
           ]
-        }
+        },
+        "future_facing_competencies_and_initiatives": [
+          {
+            "competency": "HR Data Analysis and Reporting.",
+            "justification": "Directly supports the strategic push for data-driven decision-making and the need for specialized data skills.",
+            "development_initiative": "Implement a series of workshops on HR analytics tools (e.g., Excel, PowerBI basics) and fundamental statistical concepts for all HR Staff and Leads."
+          },
+          {
+            "competency": "Understanding and Leveraging HR Information Systems (HRIS).",
+            "justification": "Essential for managing employee data effectively, generating reports, and supporting digital HR processes, aligning with systems specialization.",
+            "development_initiative": "Create an internal mentorship program where experienced HRIS users guide newer team members, supplemented by online modules for specific HRIS functionalities."
+          },
+          {
+            "competency": "Communicating Data-Driven Insights to Stakeholders.",
+            "justification": "Crucial for translating raw data and analytical findings into actionable recommendations for the broader organization, making the data-driven approach impactful.",
+            "development_initiative": "Conduct training sessions on data visualization best practices and presentation skills tailored to conveying HR metrics and insights effectively."
+          }
+        ]
       },
-      "explanation": "Requires calculating tenure by subtracting date_joined from current date for two distinct cohorts, generating comparative metrics and actionable recommendations – multi‑step reasoning across employees & departments data.",
-      "tools_needed": ["get_table_records"],
+      "explanation": "This Level 4 query requires synthesizing a stated strategic direction with existing (though generic) policy information and recent hiring context. It demands analytical reasoning to infer necessary future competencies based on a hypothetical trend towards specialization and creative problem-solving to propose concrete development initiatives. It tests the ability to connect strategic goals with talent development needs, even when policy details are minimal.",
+      "tools_needed": ["get_table_records", "get_table_records_by_ids"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "hr_employees",
-            "filter": "(date_joined >= '2022-01-01') AND (date_joined <= '2023-12-31')",
-            "fields": "employee_id,first_name,last_name,date_joined"
+            "filter": "(department_id=4) AND (date_joined >= '2023-01-01') AND (date_joined <= '2024-01-01') AND ((role='Staff') OR (role='Lead'))",
+            "fields": [
+              "employee_id",
+              "first_name",
+              "last_name",
+              "role",
+              "date_joined"
+            ]
+          }
+        },
+        {
+          "tool": "get_table_records_by_ids",
+          "params": {
+            "table_name": "hr_policies",
+            "ids": ["8"],
+            "fields": [
+              "policy_id",
+              "title",
+              "description",
+              "effective_date",
+              "department_id"
+            ]
           }
         }
       ],
-      "sample_solution": "Fetch HR_EMPLOYEES for 2022‑23, group by hire year, compute days since join to 2025‑04‑23, compare averages, craft insights and recommendations."
+      "sample_solution": "1. Retrieve HR Staff and Lead employees who joined after 2023-01-01 (up to 2024-01-01) to understand recent team composition. 2. Retrieve details for HR Policy ID 8. 3. Given the strategic push for data-driven HR and the (hypothetical) aim for specialized data/systems roles, infer 3 key competencies. 4. For each competency, propose a specific development initiative suitable for HR Staff and Leads, considering the generic nature of the policy implies a need for foundational skill-building."
     }
   ],
   "finance": [
     {
       "query_id": "finance_l4_1",
-      "query": "As a Finance director, for each product category in fiscal year 2022, calculate total revenue. Rank the categories, highlight the top two for investment focus, and provide two actionable recommendations based on your findings.",
+      "query": "For the full year 2024, identify the top 2 product categories by total revenue. For each of these top categories, detail their quarterly revenue. Separately, calculate the total 'Operational' expenses for each quarter of 2024. Analyze if there's any apparent correlation between the quarterly operational expense trends and the quarterly revenue trends of the top product categories. Provide one strategic recommendation for optimizing operational efficiency or revenue generation based on this analysis.",
       "expected_response": {
-        "category_analysis": [
+        "year_analyzed": 2024,
+        "top_product_categories_by_revenue": [
           {
-            "category": "Software",
-            "revenue": 10850
+            "category_name": "Electronics",
+            "total_revenue_2024": 112799.13,
+            "quarterly_revenue": {
+              "Q1": 8786.37,
+              "Q2": 52748.88,
+              "Q3": 16694.27,
+              "Q4": 34569.61
+            }
           },
           {
-            "category": "Electronics",
-            "revenue": 10500
-          },
-          {
-            "category": "Hardware",
-            "revenue": 9150
+            "category_name": "Service",
+            "total_revenue_2024": 82099.01,
+            "quarterly_revenue": {
+              "Q1": 17900.71,
+              "Q2": 9025.19,
+              "Q3": 24863.67,
+              "Q4": 30309.44
+            }
           }
         ],
-        "top_categories": ["Software", "Electronics"],
-        "recommendations": [
-          "Increase marketing budget for Software to capitalise on its high margin.",
-          "Negotiate supplier costs for Electronics to further improve margin."
-        ]
-      },
-      "explanation": "Requires aggregating revenue data across two finance tables, ranking results, and crafting strategic recommendations.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "finance_revenues",
-            "filter": "(revenue_date >= '2022-01-01') AND (revenue_date <= '2022-12-31')",
-            "related": "finance_products_by_product_id"
-          }
+        "quarterly_operational_expenses_2024": {
+          "Q1": 8438.42,
+          "Q2": 304.96,
+          "Q3": 0.0,
+          "Q4": 974.98,
+          "total": 9718.36
+        },
+        "correlation_analysis_and_recommendation": {
+          "analysis_summary": "Electronics revenue peaked in Q2 (52748.88) and Q4 (34569.61). Service revenue was strong in Q3 (24863.67) and Q4 (30309.44). Operational expenses were highest in Q1 (8438.42) and much lower in subsequent quarters, particularly Q3 (0.00). There isn't a clear direct correlation between quarterly operational expense spikes and revenue peaks in the top categories for 2024; revenues seem driven by other factors. The significant drop in Q3 operational expenses while Service revenue was strong and Electronics revenue was moderate is notable.",
+          "strategic_recommendation": "Investigate the cause of the near-zero operational expenses in Q3 2024. If this represents a sustainable efficiency gain without negatively impacting Q3/Q4 revenue generation (especially for Services), try to replicate these efficiencies in other quarters. Otherwise, ensure Q3 was not an anomaly that could risk future operations if critical spending was merely deferred."
         }
-      ],
-      "sample_solution": "Fetch FINANCE_REVENUES for 2022 with related parameter for FINANCE_PRODUCTS, then group and sum revenue by category, focusing on Electronics and Software."
-    },
-    {
-      "query_id": "finance_l4_2",
-      "query": "As a Finance analyst, evaluate quarterly cash‑flow for 2022: combine total revenues, capital expenses, and operational expenses per quarter, detect any quarters with negative net cash flow, summarise the trend, and propose a corrective action.",
-      "expected_response": {
-        "quarterly_cash_flow": [
-          {
-            "quarter": "Q1 2022",
-            "total_revenue": 7250,
-            "capital_expenses": 0,
-            "operational_expenses": 750,
-            "net_cash_flow": 6500
-          },
-          {
-            "quarter": "Q2 2022",
-            "total_revenue": 7500,
-            "capital_expenses": 1200,
-            "operational_expenses": 300,
-            "net_cash_flow": 6000
-          },
-          {
-            "quarter": "Q3 2022",
-            "total_revenue": 7750,
-            "capital_expenses": 0,
-            "operational_expenses": 1400,
-            "net_cash_flow": 6350
-          },
-          {
-            "quarter": "Q4 2022",
-            "total_revenue": 8000,
-            "capital_expenses": 500,
-            "operational_expenses": 750,
-            "net_cash_flow": 6750
-          }
-        ],
-        "negative_cash_flow_quarters": [],
-        "insight": "Net cash flow remained positive in all quarters.",
-        "recommendation": "No immediate action required."
       },
-      "explanation": "Integrates revenues and two categories of expenses across quarters, performs arithmetic to derive net cash flow, flags negative periods, and generates strategic guidance.",
-      "tools_needed": ["get_table_records"],
+      "explanation": "This query requires identifying top categories by joining revenues and products, aggregating revenues quarterly for these categories, aggregating operational expenses quarterly, and then performing a comparative analysis to derive a strategic recommendation. It tests multi-step data retrieval, aggregation, and analytical reasoning.",
+      "tools_needed": ["get_table_records", "calculate_sum"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_revenues",
-            "filter": "(year=2022)",
-            "fields": ["revenue_amount", "quarter"]
+            "filter": "(year=2024)",
+            "fields": ["revenue_amount", "quarter", "product_id"],
+            "related": "finance_products_by_product_id"
           }
         },
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "finance_expenses",
-            "filter": "(expense_date >= '2022-01-01') AND (expense_date <= '2022-12-31')",
-            "fields": ["amount", "category", "expense_date"]
+            "filter": "(category='Operational') AND (expense_date >= '2024-01-01') AND (expense_date <= '2024-12-31')",
+            "fields": ["amount", "expense_date"]
           }
         }
       ],
-      "sample_solution": "Aggregate 2022 FINANCE_REVENUES by quarter, split FINANCE_EXPENSES into capital/operational per quarter, compute net cash flow, highlight negatives, craft recommendation."
+      "sample_solution": "1. Fetch all 2024 revenues, relating to products to get categories. 2. Aggregate total revenue per category for 2024 to find top 2. 3. For these top 2 categories, aggregate their revenues per quarter. 4. Fetch all 2024 operational expenses. 5. Aggregate operational expenses per quarter. 6. Compare quarterly trends and formulate a recommendation."
+    },
+    {
+      "query_id": "finance_l4_2",
+      "query": "Identify all 'Capital' expenses recorded in the year 2023, listing their description, amount, and expense date. Concurrently, for products in the 'Electronics' and 'Hardware' categories, calculate their total revenue for Q4 2023 and for each quarter of 2024. Based on the descriptions of the 2023 capital expenses and the revenue performance of 'Electronics' and 'Hardware' products in 2024, is there any qualitative indication that these investments might have started to impact revenues? Provide a brief assessment and suggest one area for further quantitative ROI analysis.",
+      "expected_response": {
+        "capital_expenses_2023": [
+          {
+            "expense_id": 17,
+            "description": "Technology infrastructure",
+            "amount": 1722.63,
+            "expense_date": "2023-07-24"
+          },
+          {
+            "expense_id": 13,
+            "description": "Land purchase",
+            "amount": 1813.33,
+            "expense_date": "2023-08-16"
+          },
+          {
+            "expense_id": 15,
+            "description": "Land purchase",
+            "amount": 1708.48,
+            "expense_date": "2023-12-07"
+          }
+        ],
+        "revenue_analysis": {
+          "Electronics": {
+            "Q4_2023_revenue": 13831.28,
+            "2024_quarterly_revenue": {
+              "Q1": 8786.37,
+              "Q2": 52748.88,
+              "Q3": 16694.27,
+              "Q4": 34569.61
+            }
+          },
+          "Hardware": {
+            "Q4_2023_revenue": 0.0,
+            "2024_quarterly_revenue": {
+              "Q1": 0.0,
+              "Q2": 8842.21,
+              "Q3": 0.0,
+              "Q4": 3012.43
+            }
+          }
+        },
+        "qualitative_assessment_and_roi_suggestion": {
+          "assessment": "The 'Technology infrastructure' capital expense in July 2023 (1722.63) could potentially be linked to the strong performance of 'Electronics' products in 2024, especially the significant Q2 2024 revenue. 'Hardware' products show revenue in 2024 where there was none in Q4 2023, which might also be influenced by general infrastructure improvements or other unlisted capital expenditures. 'Land purchases' are less likely to have an immediate direct impact on product revenue in these categories within this timeframe.",
+          "roi_suggestion": "A more detailed quantitative ROI analysis should be performed on the 'Technology infrastructure' investment (Expense ID 17) by correlating its deployment specifics (if available) with the product lifecycle and sales data of high-performing 'Electronics' products in 2024."
+        }
+      },
+      "explanation": "This query requires fetching specific expenses, calculating revenues for selected categories across multiple periods (joining products and revenues), and then making a qualitative judgment linking expenses to revenue performance based on descriptions and timing. It tests data retrieval, aggregation, and inferential reasoning.",
+      "tools_needed": ["get_table_records", "calculate_sum"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "(category='Capital') AND (expense_date >= '2023-01-01') AND (expense_date <= '2023-12-31')",
+            "fields": ["expense_id", "description", "amount", "expense_date"]
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "((year=2023) AND (quarter=4)) OR (year=2024)",
+            "fields": ["revenue_amount", "quarter", "year", "product_id"],
+            "related": "finance_products_by_product_id"
+          }
+        }
+      ],
+      "sample_solution": "1. Fetch 2023 Capital expenses. 2. Fetch Q4 2023 and all 2024 revenues, relating to products. 3. Filter revenues for 'Electronics' and 'Hardware' categories. 4. Aggregate revenues by quarter for these categories. 5. Qualitatively assess links between capital expense descriptions and subsequent revenue changes. 6. Suggest an ROI analysis area."
+    },
+    {
+      "query_id": "finance_l4_3",
+      "query": "Compare the total revenue for 'Software' products versus 'Service' products for the full year 2023 and the full year 2024. Calculate the year-over-year revenue growth rate for each of these two categories. Simultaneously, calculate the total 'Operational' expenses for 2023 and 2024, and its year-over-year change. Are the growth trajectories of these two product categories aligned with the overall operational expense trend? If one category shows significantly different growth or potential margin implications relative to operational cost changes, highlight this and suggest one financial strategy to either capitalize on strength or improve performance.",
+      "expected_response": {
+        "revenue_comparison_yoy": {
+          "Software": {
+            "2023_total_revenue": 38172.46,
+            "2024_total_revenue": 74777.46,
+            "yoy_growth_rate_percentage": 95.9
+          },
+          "Service": {
+            "2023_total_revenue": 53776.69,
+            "2024_total_revenue": 82099.01,
+            "yoy_growth_rate_percentage": 52.67
+          }
+        },
+        "operational_expenses_yoy": {
+          "2023_total_operational_expenses": 10397.51,
+          "2024_total_operational_expenses": 9718.36,
+          "yoy_change_percentage": -6.53
+        },
+        "analysis_and_strategy_suggestion": {
+          "analysis": "Software products demonstrated exceptionally high YoY revenue growth (95.90%), significantly outpacing Service products (52.67%). Both categories grew while total operational expenses decreased by 6.53%. This suggests improving operational leverage, especially for the Software category. The high growth in Software with decreasing operational costs indicates potentially strong and improving margins for Software products.",
+          "financial_strategy": "Given Software's strong growth and the favorable operational expense trend, consider re-investing a portion of the efficiency gains (from reduced OpEx) into further accelerating Software product development or marketing to capitalize on its high-growth trajectory and strong margin potential. For Services, while growth is solid, investigate if specific operational efficiencies can be targeted to boost its margin contribution further, or if its growth can be accelerated through targeted investments."
+        }
+      },
+      "explanation": "This query involves YoY calculations for revenues of specific product categories (requiring joins) and for total operational expenses. It then requires a comparative analysis of these trends to identify disparities and suggest a financial strategy. It tests aggregation, percentage change calculation, and strategic financial reasoning.",
+      "tools_needed": [
+        "get_table_records",
+        "calculate_sum",
+        "calculate_difference"
+      ],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_revenues",
+            "filter": "(year=2023) OR (year=2024)",
+            "fields": ["revenue_amount", "year", "product_id"],
+            "related": "finance_products_by_product_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "finance_expenses",
+            "filter": "(category='Operational') AND ((expense_date >= '2023-01-01' AND expense_date <= '2023-12-31') OR (expense_date >= '2024-01-01' AND expense_date <= '2024-12-31'))",
+            "fields": ["amount", "expense_date"]
+          }
+        }
+      ],
+      "sample_solution": "1. Fetch all 2023 and 2024 revenues, relating to products. 2. Filter revenues for 'Software' and 'Service' categories. 3. Aggregate total revenue per category per year. 4. Calculate YoY growth for each. 5. Fetch all 2023 and 2024 operational expenses. 6. Aggregate total operational expenses per year and calculate YoY change. 7. Compare revenue growth trends with OpEx trend and formulate a strategy."
     }
   ],
   "ops": [
     {
       "query_id": "ops_l4_1",
-      "query": "As an Operations reliability engineer, build a risk profile for each machine installed in 2021: (a) count maintenance actions, (b) count anomalies, (c) derive a risk tier (High if anomalies ≥2 or maintenance ≥3, Medium if anomalies=1 or maintenance=2, else Low) and (d) recommend one mitigation for High‑risk machines.",
+      "query": "Identify machines installed before 2023-01-01 located in 'East Jessetown'. For these machines, count the total number of maintenance events recorded in the year 2024 (Jan 1st to Dec 31st). Categorize these 2024 maintenance events by `maintenance_action`. Compare this maintenance profile (total count and action breakdown) to machines installed before 2023-01-01 located in 'Robinsonshire'. Based on the comparison, suggest one specific area where maintenance strategy might need adjustment for one of the locations.",
       "expected_response": {
-        "machine_risk_profile": [
-          [
-            {
-              "machine_name": "Machine 1",
-              "machine_id": 1,
-              "status": "Active",
-              "installation_date": "2021-01-10",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 2",
-              "machine_id": 2,
-              "status": "Maintenance",
-              "installation_date": "2021-02-15",
-              "maintenance_actions": 1,
-              "anomalies": 1
-            },
-            {
-              "machine_name": "Machine 3",
-              "machine_id": 3,
-              "status": "Active",
-              "installation_date": "2021-03-20",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 4",
-              "machine_id": 4,
-              "status": "Inactive",
-              "installation_date": "2021-04-25",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 5",
-              "machine_id": 5,
-              "status": "Active",
-              "installation_date": "2021-05-30",
-              "maintenance_actions": 1,
-              "anomalies": 1
-            },
-            {
-              "machine_name": "Machine 6",
-              "machine_id": 6,
-              "status": "Maintenance",
-              "installation_date": "2021-06-04",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 7",
-              "machine_id": 7,
-              "status": "Active",
-              "installation_date": "2021-07-09",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 8",
-              "machine_id": 8,
-              "status": "Active",
-              "installation_date": "2021-08-14",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 9",
-              "machine_id": 9,
-              "status": "Inactive",
-              "installation_date": "2021-09-19",
-              "maintenance_actions": 1,
-              "anomalies": 1
-            },
-            {
-              "machine_name": "Machine 10",
-              "machine_id": 10,
-              "status": "Active",
-              "installation_date": "2021-10-24",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 11",
-              "machine_id": 11,
-              "status": "Maintenance",
-              "installation_date": "2021-11-29",
-              "maintenance_actions": 1,
-              "anomalies": 0
-            },
-            {
-              "machine_name": "Machine 12",
-              "machine_id": 12,
-              "status": "Active",
-              "installation_date": "2021-12-04",
-              "maintenance_actions": 1,
-              "anomalies": 0
+        "analysis_period": "2024-01-01 to 2024-12-31",
+        "machine_installation_cutoff": "Before 2023-01-01",
+        "location_comparison": {
+          "East Jessetown": {
+            "machines_analyzed_ids": [1, 18, 21, 22, 71, 72, 73, 92],
+            "total_2024_maintenance_events": 6,
+            "maintenance_action_breakdown_2024": {
+              "Routine check": 2,
+              "Calibration": 2,
+              "Software update": 1,
+              "Replaced part": 1
             }
-          ]
-        ],
-        "summary": "All machines are Low risk."
-      },
-      "explanation": "Combines maintenance logs, anomaly flags and machine metadata – multi‑hop aggregation across two structured sources and unstructured note insights to compute risk tiers and generate recommendations.",
-      "tools_needed": ["get_table_records"],
-      "expected_tool_calls": [
-        {
-          "tool": "get_table_records",
-          "params": {
-            "table_name": "ops_machines",
-            "filter": "(installation_date >= '2021-01-01') AND (installation_date <= '2021-12-31')",
-            "related": "ops_maintenance_by_machine_id"
+          },
+          "Robinsonshire": {
+            "machines_analyzed_ids": [12, 13, 15, 16, 17, 50, 51, 52, 53],
+            "total_2024_maintenance_events": 10,
+            "maintenance_action_breakdown_2024": {
+              "Routine check": 1,
+              "Calibration": 3,
+              "Software update": 1,
+              "Replaced part": 5
+            }
           }
+        },
+        "strategic_suggestion": {
+          "observation": "Older machines (installed before 2023) in Robinsonshire had significantly more maintenance events in 2024 (10 vs 6) compared to East Jessetown, with a notably higher number of 'Replaced part' actions (5 vs 1).",
+          "suggestion": "Investigate the root cause for the higher rate of part replacements in older machines at the Robinsonshire location. This could indicate more severe wear and tear, environmental factors, or potentially less effective preventative maintenance compared to East Jessetown. Consider adjusting the preventative maintenance schedule or component inspection frequency specifically for older assets in Robinsonshire."
         }
-      ],
-      "sample_solution": "Fetch OPS_MACHINES with installation dates and related maintenance, aggregate actions and anomalies per machine, compute risk tier logic, add recommendation for High."
-    },
-    {
-      "query_id": "ops_l4_2",
-      "query": "As an Operations manager, analyse maintenance effectiveness by location. For every location: compute active machine count and their anomaly rate.",
-      "expected_response": {
-        "location_maintenance_analysis": [
-          {
-            "New York": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Chicago": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Phoenix": {
-              "active_machines": 1,
-              "anomalies": 1,
-              "anomaly_rate": 1.0
-            },
-            "San Antonio": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "San Diego": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "San Jose": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Jacksonville": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Fort Worth": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Charlotte": {
-              "active_machines": 1,
-              "anomalies": 1,
-              "anomaly_rate": 1.0
-            },
-            "Indianapolis": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Seattle": {
-              "active_machines": 1,
-              "anomalies": 0,
-              "anomaly_rate": 0.0
-            },
-            "Washington": {
-              "active_machines": 1,
-              "anomalies": 1,
-              "anomaly_rate": 1.0
-            }
-          }
-        ]
       },
-      "explanation": "Requires grouping machines by location, joining maintenance records, computing active machine counts and anomaly rates.",
+      "explanation": "This query requires filtering machines by installation date and location, fetching related maintenance records filtered by date, aggregating counts, categorizing actions, comparing results between locations, and deriving a strategic maintenance suggestion.",
       "tools_needed": ["get_table_records"],
       "expected_tool_calls": [
         {
           "tool": "get_table_records",
           "params": {
             "table_name": "ops_machines",
-            "filter": "(status = 'Active')",
+            "filter": "(installation_date < '2023-01-01') AND ((location='East Jessetown') OR (location='Robinsonshire'))",
             "fields": ["machine_id", "location", "installation_date"],
             "related": "ops_maintenance_by_machine_id"
           }
         }
       ],
-      "sample_solution": "Fetch OPS_MACHINES with active machines and related maintenance, aggregate actions per location, compute anomaly rates."
+      "sample_solution": "1. Fetch machines installed before 2023-01-01 in 'East Jessetown' and 'Robinsonshire', including related maintenance records. 2. Filter the maintenance records for each machine to include only those with `maintenance_date` in 2024. 3. For each location, count the total filtered maintenance events. 4. For each location, count the occurrences of each `maintenance_action` within the filtered 2024 events. 5. Compare the total counts and action breakdowns between the two locations. 6. Formulate a suggestion based on observed differences, particularly the higher part replacement rate in Robinsonshire."
+    },
+    {
+      "query_id": "ops_l4_2",
+      "query": "Identify all maintenance events in 2023 and 2024 where `anomaly_detected` was true. For each such event, list the machine name, location, status (from `ops_machines`), maintenance date, maintenance action, and notes. Group these anomaly events by machine. Which machine had the most anomalies detected across these two years? For that specific machine, analyze the sequence of maintenance actions and notes associated with its anomalies. Is there a recurring issue suggested by the data? Recommend a next step for addressing the issues with this machine.",
+      "expected_response": {
+        "analysis_period": "2023-01-01 to 2024-12-31",
+        "anomaly_events_by_machine": {
+          "Machine 1": [
+            {
+              "maintenance_date": "2023-02-17",
+              "maintenance_action": "Software update",
+              "notes": "Software updated successfully.",
+              "anomaly_detected": false
+            },
+            {
+              "maintenance_date": "2023-08-28",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2023-10-09",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibrated.",
+              "anomaly_detected": false
+            },
+            {
+              "maintenance_date": "2024-03-26",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 2": [
+            {
+              "maintenance_date": "2024-04-14",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Inactive"
+            },
+            {
+              "maintenance_date": "2024-05-20",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 4": [
+            {
+              "maintenance_date": "2023-09-09",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 10": [
+            {
+              "maintenance_date": "2024-08-18",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Active"
+            }
+          ],
+          "Machine 12": [
+            {
+              "maintenance_date": "2023-06-01",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 13": [
+            {
+              "maintenance_date": "2022-04-13",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 14": [
+            {
+              "maintenance_date": "2024-10-28",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Active"
+            }
+          ],
+          "Machine 15": [
+            {
+              "maintenance_date": "2022-12-17",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2022-02-08",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 16": [
+            {
+              "maintenance_date": "2022-07-31",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 17": [
+            {
+              "maintenance_date": "2022-07-27",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 18": [
+            {
+              "maintenance_date": "2023-07-07",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 22": [
+            {
+              "maintenance_date": "2023-06-20",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2024-08-23",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Active"
+            }
+          ],
+          "Machine 25": [
+            {
+              "maintenance_date": "2024-07-31",
+              "maintenance_action": "Calibration",
+              "notes": "Calibration unsuccessful.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 26": [
+            {
+              "maintenance_date": "2025-01-22",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 27": [
+            {
+              "maintenance_date": "2025-01-26",
+              "maintenance_action": "Calibration",
+              "notes": "Calibration unsuccessful.",
+              "anomaly_detected": true,
+              "location": "Robinsonshire",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 31": [
+            {
+              "maintenance_date": "2025-04-26",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 34": [
+            {
+              "maintenance_date": "2024-03-24",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "New Roberttown",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2024-10-30",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "New Roberttown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 35": [
+            {
+              "maintenance_date": "2025-01-03",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2025-04-13",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ],
+          "Machine 36": [
+            {
+              "maintenance_date": "2024-04-19",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Active"
+            }
+          ],
+          "Machine 39": [
+            {
+              "maintenance_date": "2023-04-27",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ],
+          "Machine 40": [
+            {
+              "maintenance_date": "2025-04-18",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "North Judithbury",
+              "status": "Active"
+            }
+          ],
+          "Machine 42": [
+            {
+              "maintenance_date": "2023-05-31",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "North Judithbury",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2022-06-26",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "North Judithbury",
+              "status": "Active"
+            }
+          ],
+          "Machine 43": [
+            {
+              "maintenance_date": "2022-03-16",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "North Judithbury",
+              "status": "Active"
+            }
+          ],
+          "Machine 44": [
+            {
+              "maintenance_date": "2024-10-23",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "North Noahstad",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2024-04-18",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "North Noahstad",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 47": [
+            {
+              "maintenance_date": "2024-08-11",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "North Noahstad",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 49": [
+            {
+              "maintenance_date": "2021-11-30",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "North Noahstad",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2022-10-30",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "North Noahstad",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 54": [
+            {
+              "maintenance_date": "2023-01-19",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2021-12-07",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2022-01-10",
+              "maintenance_action": "Calibration",
+              "notes": "Calibration unsuccessful.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ],
+          "Machine 58": [
+            {
+              "maintenance_date": "2025-03-22",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ],
+          "Machine 61": [
+            {
+              "maintenance_date": "2024-04-28",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ],
+          "Machine 62": [
+            {
+              "maintenance_date": "2025-03-20",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 63": [
+            {
+              "maintenance_date": "2024-12-05",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 69": [
+            {
+              "maintenance_date": "2025-01-15",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 70": [
+            {
+              "maintenance_date": "2023-05-18",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 71": [
+            {
+              "maintenance_date": "2023-05-12",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 72": [
+            {
+              "maintenance_date": "2025-02-11",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 73": [
+            {
+              "maintenance_date": "2023-10-27",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            },
+            {
+              "maintenance_date": "2023-09-22",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 81": [
+            {
+              "maintenance_date": "2024-05-09",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 82": [
+            {
+              "maintenance_date": "2023-04-24",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 84": [
+            {
+              "maintenance_date": "2023-01-10",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2025-04-11",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "Lisatown",
+              "status": "Active"
+            }
+          ],
+          "Machine 87": [
+            {
+              "maintenance_date": "2024-09-13",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 92": [
+            {
+              "maintenance_date": "2024-08-24",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 94": [
+            {
+              "maintenance_date": "2025-04-28",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2024-06-04",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "East Jessetown",
+              "status": "Active"
+            }
+          ],
+          "Machine 97": [
+            {
+              "maintenance_date": "2024-06-08",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Ericmouth",
+              "status": "Maintenance"
+            }
+          ],
+          "Machine 102": [
+            {
+              "maintenance_date": "2024-10-13",
+              "maintenance_action": "Replaced part",
+              "notes": "Replacement failed.",
+              "anomaly_detected": true,
+              "location": "Ericmouth",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 103": [
+            {
+              "maintenance_date": "2025-04-25",
+              "maintenance_action": "Software update",
+              "notes": "System reboot failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Inactive"
+            },
+            {
+              "maintenance_date": "2025-04-22",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 106": [
+            {
+              "maintenance_date": "2024-02-23",
+              "maintenance_action": "Replaced part",
+              "notes": "Part incompatible.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Inactive"
+            }
+          ],
+          "Machine 108": [
+            {
+              "maintenance_date": "2024-10-11",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2024-05-02",
+              "maintenance_action": "Software update",
+              "notes": "Software update failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            },
+            {
+              "maintenance_date": "2025-02-26",
+              "maintenance_action": "Calibration",
+              "notes": "System recalibration failed.",
+              "anomaly_detected": true,
+              "location": "Lake Roberto",
+              "status": "Active"
+            }
+          ]
+        },
+        "most_frequent_anomaly_machine": {
+          "machine_id": 54,
+          "machine_name": "Machine 54",
+          "location": "Lake Roberto",
+          "status": "Active",
+          "anomaly_count_2023_2024": 3,
+          "anomaly_details": [
+            {
+              "maintenance_date": "2023-01-19",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check."
+            },
+            {
+              "maintenance_date": "2021-12-07",
+              "maintenance_action": "Routine check",
+              "notes": "Anomaly found during routine check."
+            },
+            {
+              "maintenance_date": "2022-01-10",
+              "maintenance_action": "Calibration",
+              "notes": "Calibration unsuccessful."
+            }
+          ],
+          "recurring_issue_analysis": "Machine 54 shows anomalies detected during routine checks in late 2021 and early 2023, and a calibration failure in early 2022. While spread out, the repeated detection during basic checks and calibration issues suggests a potential underlying persistent or intermittent fault rather than isolated incidents.",
+          "recommendation": "Schedule a comprehensive diagnostic inspection for Machine 54, focusing on components related to calibration and sensors typically checked during routine inspections. Consider temporarily increasing monitoring frequency for this machine."
+        }
+      },
+      "explanation": "This query requires filtering maintenance records by date and anomaly status, joining with machine data using 'related', grouping by machine, counting anomalies per machine, identifying the maximum, analyzing the specific event sequence for that machine, and recommending a course of action.",
+      "tools_needed": ["get_table_records"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_maintenance",
+            "filter": "(anomaly_detected=true) AND (maintenance_date >= '2023-01-01') AND (maintenance_date <= '2024-12-31')",
+            "fields": [
+              "machine_id",
+              "maintenance_date",
+              "maintenance_action",
+              "notes",
+              "anomaly_detected"
+            ],
+            "related": "ops_machines_by_machine_id"
+          }
+        }
+      ],
+      "sample_solution": "1. Fetch all maintenance records from 2023-01-01 to 2024-12-31 where `anomaly_detected` is true, including related machine details. 2. Group the results by `machine_id`. 3. Count the number of anomalies for each machine. 4. Identify the machine with the highest count. 5. Extract the maintenance details (date, action, notes) for the anomalies of the identified machine. 6. Analyze the sequence and content of these details for patterns. 7. Recommend a next step based on the analysis."
+    },
+    {
+      "query_id": "ops_l4_3",
+      "query": "Calculate the average age (as of 2025-01-01) of machines currently in 'Active' status versus those in 'Maintenance' status. For machines currently in 'Maintenance' status, retrieve their last 3 maintenance records (if available), including the machine name, location, maintenance date, action, and notes. Analyze the recent maintenance history (last 3 events) for the two oldest machines currently in 'Maintenance' status. Are there common themes in their recent maintenance actions or notes that might explain their current status? Suggest a potential intervention for one of these older machines.",
+      "expected_response": {
+        "analysis_date": "2025-01-01",
+        "average_machine_age_by_status": {
+          "Active": {
+            "count": 29,
+            "average_age_years": 1.68
+          },
+          "Maintenance": {
+            "count": 26,
+            "average_age_years": 2.28
+          }
+        },
+        "recent_maintenance_for_oldest_maintenance_machines": [
+          {
+            "machine_id": 37,
+            "machine_name": "Machine 37",
+            "location": "Lake Roberto",
+            "status": "Maintenance",
+            "installation_date": "2021-08-11",
+            "age_years": 3.39,
+            "last_3_maintenance": [
+              {
+                "maintenance_date": "2024-04-22",
+                "maintenance_action": "Calibration",
+                "notes": "System recalibrated."
+              },
+              {
+                "maintenance_date": "2024-01-16",
+                "maintenance_action": "Software update",
+                "notes": "Software updated successfully."
+              },
+              {
+                "maintenance_date": "2023-11-24",
+                "maintenance_action": "Routine check",
+                "notes": "Routine check completed."
+              }
+            ]
+          },
+          {
+            "machine_id": 49,
+            "machine_name": "Machine 49",
+            "location": "North Noahstad",
+            "status": "Maintenance",
+            "installation_date": "2021-08-24",
+            "age_years": 3.36,
+            "last_3_maintenance": [
+              {
+                "maintenance_date": "2021-11-30",
+                "maintenance_action": "Calibration",
+                "notes": "System recalibration failed.",
+                "anomaly_detected": true
+              },
+              {
+                "maintenance_date": "2022-10-30",
+                "maintenance_action": "Replaced part",
+                "notes": "Replacement failed.",
+                "anomaly_detected": true
+              },
+              {
+                "maintenance_date": "2021-11-20",
+                "maintenance_action": "Software update",
+                "notes": "Software updated successfully.",
+                "anomaly_detected": false
+              }
+            ]
+          }
+        ],
+        "analysis_and_intervention_suggestion": {
+          "analysis": "Machines currently in 'Maintenance' status are, on average, older than 'Active' machines (2.28 vs 1.68 years). The two oldest machines in maintenance (ID 37, ID 49, both installed Aug 2021) show different recent histories. Machine 37 had routine checks, updates, and calibration recently. Machine 49's history shows older events including failed calibration and part replacement, suggesting potentially more severe or persistent issues.",
+          "intervention_suggestion": "For Machine 49, given its age, history of failed part replacement and calibration issues, and current 'Maintenance' status, prioritize a thorough diagnostic assessment rather than attempting further routine calibration or software updates. Focus on identifying the root cause of the previous failures before attempting further repairs."
+        }
+      },
+      "explanation": "This query requires calculating average age based on status and a reference date, filtering machines by status, retrieving related maintenance history (limited and ordered), identifying the oldest machines within a subset, analyzing their recent history, and proposing an intervention. It tests date calculations, filtering, sorting within related data, and analytical reasoning.",
+      "tools_needed": ["get_table_records", "calculate_mean"],
+      "expected_tool_calls": [
+        {
+          "tool": "get_table_records",
+          "params": {
+            "table_name": "ops_machines",
+            "filter": "(status='Active') OR (status='Maintenance')",
+            "fields": [
+              "machine_id",
+              "machine_name",
+              "location",
+              "status",
+              "installation_date"
+            ],
+            "related": "ops_maintenance_by_machine_id"
+          }
+        }
+      ],
+      "sample_solution": "1. Fetch all 'Active' and 'Maintenance' machines, including related maintenance records. 2. Calculate the age of each machine as of 2025-01-01 based on `installation_date`. 3. Calculate the average age for 'Active' and 'Maintenance' groups. 4. Identify machines with `status='Maintenance'`. 5. Sort these maintenance machines by age (descending). 6. For the top 2 oldest, extract their last 3 maintenance records (sort maintenance records by date descending, take top 3). 7. Analyze the actions and notes in these recent records for common themes or issues. 8. Suggest an intervention for one machine based on its history."
     }
   ]
 }

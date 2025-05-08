@@ -44,8 +44,8 @@ class EvaluateToolCalls(Evaluator[Query, QueryResult]):
         reason = ""
         tool_num = 1
         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-            if output_tool_call.tool != expected_tool_call.tool:
-                reason += f"Tool call mismatch: {output_tool_call.tool} != {expected_tool_call.tool} at tool number: {tool_num}\n"
+            if output_tool_call.tool_name != expected_tool_call.tool_name:
+                reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
             tool_num += 1
@@ -63,7 +63,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 result=ActiveMachines(active_machines=12),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "status='Active'",
@@ -80,7 +80,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 result=MachineStatus(machine_name="Machine 5", status="Active"),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "machine_name='Machine 5'",
@@ -108,7 +108,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "(installation_date >= '2022-01-01') AND (installation_date <= '2022-12-31')",
@@ -127,7 +127,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 result=ReplacementCount(replacement_count=2),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_maintenance",
                             "filter": "(maintenance_action='Replaced part') AND (maintenance_date >= '2023-01-01') AND (maintenance_date <= '2023-12-31')",
@@ -151,7 +151,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "status='Maintenance'",

@@ -39,7 +39,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=TotalRevenue(total_revenue=8000),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_revenues",
                             "filter": "(quarter=4) AND (year=2022)",
@@ -56,7 +56,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=ProductCount(product_count=7),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_products",
                             "filter": "category='Electronics'",
@@ -75,7 +75,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=TotalAmount(total_amount=1700),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_expenses",
                             "filter": "(category='Capital') AND (expense_date >= '2022-01-01') AND (expense_date <= '2022-12-31')",
@@ -92,7 +92,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 result=RevenueAmount(revenue_amount=1500),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_revenues",
                             "filter": "product_id=10",
@@ -127,7 +127,7 @@ finance_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "finance_expenses",
                             "filter": "(expense_date >= '2023-01-01') AND (expense_date <= '2023-12-31')",

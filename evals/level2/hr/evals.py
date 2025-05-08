@@ -46,7 +46,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 result=EmployeeDepartment(employee="Alice Johnson", department="Sales"),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(first_name='Alice') AND (last_name='Johnson')",
@@ -68,14 +68,14 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_departments",
                             "filter": "name='Engineering'",
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(department_id=3) AND (role='Manager')",
@@ -114,7 +114,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_departments",
                             "related": "hr_employees_by_department_id",
@@ -176,7 +176,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')",
@@ -233,7 +233,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "role='Manager'",

@@ -58,7 +58,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "installation_date < '2022-01-01'",
@@ -102,7 +102,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "related": "ops_maintenance_by_machine_id",
@@ -136,7 +136,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "installation_date >= '2021-01-01' AND installation_date <= '2021-12-31'",
@@ -145,7 +145,7 @@ ops_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "installation_date >= '2022-01-01' AND installation_date <= '2022-12-31'",

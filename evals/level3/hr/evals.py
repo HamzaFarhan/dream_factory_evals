@@ -120,7 +120,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(role='Staff') AND (date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
@@ -128,7 +128,7 @@ hr_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "department_id IN (13, 15, 16, 18, 19)",
@@ -147,14 +147,14 @@ hr_dataset = Dataset[Query, QueryResult](
                 result=DepartmentsWithGap(departments_with_gap=[]),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-06-30')",
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(date_joined > '2023-06-30') AND (department_id IN (13, 14, 15, 16, 17, 18))",
@@ -227,7 +227,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "fields": ["employee_id", "date_joined", "department_id"],
@@ -235,7 +235,7 @@ hr_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "department_id IN (3, 5, 8, 11, 14, 17, 20) AND (effective_date >= '2022-01-01') AND (effective_date <= '2023-12-31')",
@@ -322,7 +322,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-12-31')",
@@ -330,7 +330,7 @@ hr_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "department_id IN (13, 14, 15, 16, 17, 18, 19, 20)",
@@ -418,7 +418,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "fields": ["policy_id", "title", "effective_date", "department_id"],
@@ -427,7 +427,7 @@ hr_dataset = Dataset[Query, QueryResult](
                         },
                     ),
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "fields": [

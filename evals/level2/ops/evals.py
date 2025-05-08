@@ -57,7 +57,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_maintenance",
                             "filter": "machine_id=5",
@@ -87,7 +87,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "status='Maintenance'",
@@ -110,7 +110,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_maintenance",
                             "filter": "(maintenance_date >= '2022-01-01') AND (maintenance_date <= '2022-12-31')",
@@ -143,7 +143,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_maintenance",
                             "filter": "(maintenance_date >= '2023-01-01') AND (maintenance_date <= '2023-12-31') AND (anomaly_detected=true)",
@@ -167,7 +167,7 @@ ops_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "ops_machines",
                             "filter": "(status='Active') AND (installation_date <= '2023-12-31')",

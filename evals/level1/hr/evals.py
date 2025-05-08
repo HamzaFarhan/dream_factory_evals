@@ -86,8 +86,8 @@ def date(year: int, month: int, day: int) -> str:
 #         reason = ""
 #         tool_num = 1
 #         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-#             if output_tool_call.tool != expected_tool_call.tool:
-#                 reason += f"Tool call mismatch: {output_tool_call.tool} != {expected_tool_call.tool} at tool number: {tool_num}\n"
+#             if output_tool_call.tool_name != expected_tool_call.tool_name:
+#                 reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
 #             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
 #                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
 #             tool_num += 1
@@ -105,7 +105,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 result=Email(email="alice.johnson@example.com"),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(first_name='Alice') AND (last_name='Johnson')",
@@ -122,7 +122,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 result=DepartmentCount(department_count=20),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_departments",
                         },
@@ -185,7 +185,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
                             "filter": "(effective_date >= '2023-01-01') AND (effective_date <= '2023-06-30')",
@@ -276,7 +276,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 ),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "(date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
@@ -292,7 +292,7 @@ hr_dataset = Dataset[Query, QueryResult](
                 result=ManagerCount(manager_count=7),
                 tool_calls=[
                     ToolCall(
-                        tool="get_table_records",
+                        tool_name="get_table_records",
                         params={
                             "table_name": "hr_employees",
                             "filter": "role='Manager'",
