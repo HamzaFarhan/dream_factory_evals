@@ -102,8 +102,8 @@ class EvaluateToolCalls(Evaluator[Query, QueryResult]):
         reason = ""
         tool_num = 1
         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-            if output_tool_call.tool_name_name != expected_tool_call.tool_name_name:
-                reason += f"Tool call mismatch: {output_tool_call.tool_name_name} != {expected_tool_call.tool_name_name} at tool number: {tool_num}\n"
+            if output_tool_call.tool_name != expected_tool_call.tool_name:
+                reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
             tool_num += 1
