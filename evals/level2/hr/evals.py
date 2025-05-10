@@ -16,7 +16,7 @@ from dream_factory_evals.df_agent import (
     task,
 )
 
-from .types import (
+from .output_types import (
     DepartmentCounts,
     DepartmentEmployeeCount,
     DepartmentManager,
@@ -30,11 +30,6 @@ from .types import (
 
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
-
-
-HR_RESULT_TYPES = (
-    EmployeeDepartment | DepartmentManager | DepartmentCounts | DepartmentsWithPolicy | ManagersWithDepartments
-)
 
 
 hr_dataset = Dataset[Query, QueryResult](

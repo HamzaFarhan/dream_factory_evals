@@ -17,83 +17,13 @@ from dream_factory_evals.df_agent import (
     evaluate,
 )
 
-from .output_types import (
-    DepartmentCount,
-    Email,
-    Employee,
-    Employees,
-    Expense,
-    Expenses,
-    Machine,
-    Machines,
-    MachineStatus,
-    ManagerCount,
-    Policies,
-    Policy,
-    ProductCount,
-    ReplacementCount,
-    RevenueAmount,
-    TotalAmount,
-    TotalRevenue,
-)
+from .output_types import DepartmentCount, Email, Employee, Employees, ManagerCount, Policies, Policy
 
 _ = logfire.configure()
 
 
-HR_RESULT_TYPES = (
-    Email
-    | DepartmentCount
-    | Employee
-    | Employees
-    | Expense
-    | Expenses
-    | Machine
-    | Machines
-    | MachineStatus
-    | ManagerCount
-    | Policies
-    | Policy
-    | ProductCount
-    | ReplacementCount
-    | RevenueAmount
-    | TotalAmount
-    | TotalRevenue
-)
-
-
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
-
-
-# @dataclass
-# class EvaluateResult(Evaluator[Query, QueryResult]):
-#     def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
-#         if ctx.expected_output is None:
-#             return True
-#         return ctx.output.result == ctx.expected_output.result
-
-
-# @dataclass
-# class EvaluateToolCalls(Evaluator[Query, QueryResult]):
-#     def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> EvaluationReason:
-#         if ctx.expected_output is None:
-#             return EvaluationReason(value=True)
-#         if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
-#             return EvaluationReason(
-#                 value=False,
-#                 reason=f"Too many tool calls: {len(ctx.output.tool_calls)} > {len(ctx.expected_output.tool_calls)}",
-#             )
-#         reason = ""
-#         tool_num = 1
-#         for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-#             if output_tool_call.tool_name != expected_tool_call.tool_name:
-#                 reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
-#             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
-#                 reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
-#             tool_num += 1
-#         if reason:
-#             return EvaluationReason(value=False, reason=reason)
-#         return EvaluationReason(value=True)
 
 
 hr_dataset = Dataset[Query, QueryResult](

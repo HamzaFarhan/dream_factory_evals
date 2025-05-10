@@ -188,10 +188,7 @@ def setup_task_and_agent(
 
 
 async def task(
-    inputs: Query,
-    user_role: Role,
-    model: KnownModelName,
-    max_tool_calls: int = MAX_TOOL_CALLS,
+    inputs: Query, user_role: Role, model: KnownModelName, max_tool_calls: int = MAX_TOOL_CALLS
 ) -> QueryResult:
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
     tool_calls = []
@@ -214,16 +211,23 @@ async def task(
                                             )
                                             num_tool_calls += 1
                                         else:
-                                            logger.warning(
-                                                f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
-                                            )
-                                            return QueryResult(result=None, tool_calls=tool_calls)
+                                            error_msg = f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
+                                            logger.warning(error_msg)
+                                            return QueryResult(result=error_msg, tool_calls=tool_calls)
 
-                    res = agent_run.result.output if agent_run.result is not None else None
+                    # Handle the result - ensure we always return a QueryResult
+                    res = agent_run.result.output if agent_run.result is not None else "No result produced"
                     return QueryResult(result=res, tool_calls=tool_calls)
-    except RetryError as e:
-        logger.exception(e)
-    return QueryResult(result=None, tool_calls=tool_calls)
+    except Exception as e:
+        error_msg = f"Unexpected error: {str(e)}"
+        logger.exception(error_msg)
+        return QueryResult(result=error_msg, tool_calls=tool_calls)
+    logger.error(
+        "Internal Error: The 'task' function in df_agent.py reached an unexpected state "
+        "where it did not explicitly return a QueryResult. This may indicate an issue "
+        "with the retry logic or an unhandled execution path."
+    )
+    return QueryResult(result="Internal Server Error: Unexpected execution path.", tool_calls=tool_calls)
 
 
 async def chat(

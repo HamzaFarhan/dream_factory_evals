@@ -27,8 +27,6 @@ from .output_types import (
 
 _ = logfire.configure()
 
-FINANCE_RESULT_TYPES = TotalRevenue | ProductCount | TotalAmount | RevenueAmount | Expense | Expenses
-
 
 finance_dataset = Dataset[Query, QueryResult](
     cases=[

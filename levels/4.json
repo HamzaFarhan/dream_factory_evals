@@ -161,6 +161,14 @@
         {
           "tool": "get_table_records",
           "params": {
+            "table_name": "hr_departments",
+            "filter": "name='Engineering'",
+            "fields": "department_id"
+          }
+        },
+        {
+          "tool": "get_table_records",
+          "params": {
             "table_name": "hr_employees",
             "filter": "(department_id=3) AND (date_joined >= '2023-01-01') AND (date_joined <= '2023-12-31')",
             "fields": [

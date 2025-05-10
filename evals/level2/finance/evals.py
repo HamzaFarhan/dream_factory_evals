@@ -16,7 +16,7 @@ from dream_factory_evals.df_agent import (
     task,
 )
 
-from .types import (
+from .outout_types import (
     CategoryRevenueComparison,
     ExpenseComparison,
     HardwareRevenue,
@@ -29,10 +29,6 @@ from .types import (
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
-
-FINANCE_RESULT_TYPES = (
-    ProductRevenueInfo | CategoryRevenueComparison | ProfitInfo | HardwareRevenues | ExpenseComparison
-)
 
 finance_dataset = Dataset[Query, QueryResult](
     cases=[

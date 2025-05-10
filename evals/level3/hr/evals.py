@@ -17,7 +17,7 @@ from dream_factory_evals.df_agent import (
     evaluate,
 )
 
-from .types import (
+from .output_types import (
     DepartmentStaffPolicies,
     DepartmentStaffPolicy,
     DepartmentsWithGap,
@@ -36,14 +36,6 @@ _ = logfire.configure()
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
-
-HR_RESULT_TYPES = (
-    DepartmentStaffPolicies
-    | DepartmentsWithGap
-    | DepartmentTimingAnalysis
-    | RoleDistributionAnalysis
-    | PolicyFirstDepartments
-)
 
 hr_dataset = Dataset[Query, QueryResult](
     cases=[

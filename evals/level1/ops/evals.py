@@ -20,8 +20,6 @@ from .output_types import (
 
 _ = logfire.configure()
 
-OPS_RESULT_TYPES = ActiveMachines | MachineStatus | Machine | Machines | ReplacementCount
-
 
 @dataclass
 class EvaluateResult(Evaluator[Query, QueryResult]):

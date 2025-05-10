@@ -16,7 +16,7 @@ from dream_factory_evals.df_agent import (
     task,
 )
 
-from .types import (
+from .output_types import (
     AnomalyRate,
     AnomalyRates,
     InstallationYearComparison,
@@ -28,8 +28,6 @@ from .types import (
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
-
-OPS_RESULT_TYPES = MaintenanceByLocation | AnomalyRates | InstallationYearComparison
 
 ops_dataset = Dataset[Query, QueryResult](
     cases=[

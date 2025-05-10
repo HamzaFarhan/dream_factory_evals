@@ -16,7 +16,7 @@ from dream_factory_evals.df_agent import (
     task,
 )
 
-from .types import (
+from .output_types import (
     CategoryTotal,
     CategoryTotals,
     ExpensePercentage,
@@ -29,8 +29,6 @@ from .types import (
 def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
-
-FINANCE_RESULT_TYPES = QuarterlyAnalysis | Q1Profit | ExpensePercentage | CategoryTotals
 
 finance_dataset = Dataset[Query, QueryResult](
     cases=[
