@@ -41,7 +41,9 @@ def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-finance_dataset = Dataset[Query, QueryResult](
+ResultT = FinanceL4Query1Response | FinanceL4Query2Response | FinanceL4Query3Response
+
+finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="finance_l4_1",
@@ -237,7 +239,7 @@ finance_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

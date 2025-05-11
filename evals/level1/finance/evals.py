@@ -27,8 +27,9 @@ from .output_types import (
 
 _ = logfire.configure()
 
+ResultT = TotalRevenue | ProductCount | TotalAmount | RevenueAmount | Expenses
 
-finance_dataset = Dataset[Query, QueryResult](
+finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="finance_l1_q1",
@@ -137,7 +138,7 @@ finance_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

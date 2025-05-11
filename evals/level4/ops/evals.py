@@ -42,7 +42,9 @@ def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-ops_dataset = Dataset[Query, QueryResult](
+ResultT = LocationMaintenanceAnalysisResponse | AnomalyEventsAnalysisResponse | MachineAgeAnalysisResponse
+
+ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="ops_l4_1",
@@ -189,14 +191,8 @@ ops_dataset = Dataset[Query, QueryResult](
                 result=MachineAgeAnalysisResponse(
                     analysis_date="2025-01-01",
                     average_machine_age_by_status=AverageAgeByStatus(
-                        Active=AgeStatusCount(
-                            count=76,
-                            average_age_years=3.2
-                        ),
-                        Maintenance=AgeStatusCount(
-                            count=24,
-                            average_age_years=3.7
-                        )
+                        Active=AgeStatusCount(count=76, average_age_years=3.2),
+                        Maintenance=AgeStatusCount(count=24, average_age_years=3.7),
                     ),
                     recent_maintenance_for_oldest_maintenance_machines=[
                         OldestMachineMaintenance(
@@ -269,7 +265,7 @@ ops_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

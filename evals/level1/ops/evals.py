@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 from functools import partial
 
 import logfire
 from pydantic_evals import Case, Dataset
-from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
 
-from dream_factory_evals.df_agent import Query, QueryResult, Role, ToolCall, task
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    Role,
+    ToolCall,
+    task,
+)
 
 from .output_types import (
     ActiveMachines,
@@ -20,39 +26,9 @@ from .output_types import (
 
 _ = logfire.configure()
 
+ResultT = ActiveMachines | MachineStatus | Machines | ReplacementCount
 
-@dataclass
-class EvaluateResult(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
-        if ctx.expected_output is None:
-            return True
-        return ctx.output.result == ctx.expected_output.result
-
-
-@dataclass
-class EvaluateToolCalls(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> EvaluationReason:
-        if ctx.expected_output is None:
-            return EvaluationReason(value=True)
-        if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
-            return EvaluationReason(
-                value=False,
-                reason=f"Too many tool calls: {len(ctx.output.tool_calls)} > {len(ctx.expected_output.tool_calls)}",
-            )
-        reason = ""
-        tool_num = 1
-        for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
-            if output_tool_call.tool_name != expected_tool_call.tool_name:
-                reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
-            if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
-                reason += f"Tool call params mismatch: {output_tool_call.params} != {expected_tool_call.params} at tool number: {tool_num}\n"
-            tool_num += 1
-        if reason:
-            return EvaluationReason(value=False, reason=reason)
-        return EvaluationReason(value=True)
-
-
-ops_dataset = Dataset[Query, QueryResult](
+ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="ops_l1_q1",
@@ -159,7 +135,7 @@ ops_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

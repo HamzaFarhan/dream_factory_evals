@@ -30,7 +30,9 @@ def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-finance_dataset = Dataset[Query, QueryResult](
+ResultT = QuarterlyAnalysis | Q1Profit | ExpensePercentage | CategoryTotals
+
+finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="finance_l3_1",
@@ -176,7 +178,7 @@ finance_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

@@ -24,13 +24,14 @@ class ToolCall(BaseModel):
 
 @dataclass
 class QueryResult[ResultT]:
-    result: ResultT
+    result: ResultT | None
     tool_calls: list[ToolCall]
+    error: str | None = None
 
 
-async def task(inputs: Query, model: KnownModelName, agent_name: str) -> QueryResult:
+async def task(inputs: Query[ResultT], model: KnownModelName, agent_name: str) -> QueryResult[ResultT]:
     agent = Agent(model=model, name=agent_name, instructions="Help the user with their query.")
-    tool_calls = []
+    tool_calls: list[ToolCall] = []
     async with agent.iter(user_prompt=inputs.query, output_type=inputs.output_type) as agent_run:
         async for node in agent_run:
             if agent.is_call_tools_node(node):
@@ -38,11 +39,12 @@ async def task(inputs: Query, model: KnownModelName, agent_name: str) -> QueryRe
                     if isinstance(part, ToolCallPart) and part.tool_name not in ["final_result"]:
                         tool_calls.append(ToolCall(tool_name=part.tool_name, params=part.args_as_dict()))
 
-    res = agent_run.result.output if agent_run.result is not None else None
-    return QueryResult(result=res, tool_calls=tool_calls)
+    if agent_run.result is None:
+        return QueryResult(result=None, tool_calls=tool_calls, error="No result from agent")
+    return QueryResult(result=agent_run.result.output, tool_calls=tool_calls)
 
 
-async def evaluate(dataset: Dataset[Query, QueryResult], model: KnownModelName, agent_name: str):
+async def evaluate(dataset: Dataset[Query[ResultT], QueryResult[ResultT]], model: KnownModelName, agent_name: str):
     report = await dataset.evaluate(task=partial(task, model=model, agent_name=agent_name))
     report.print(
         include_input=True,

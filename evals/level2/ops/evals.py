@@ -31,7 +31,15 @@ def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-ops_dataset = Dataset[Query, QueryResult](
+ResultT = (
+    MachineMaintenanceInfo
+    | MaintenanceStatusInfo
+    | MaintenanceActionCount
+    | MachinesWithAnomalies
+    | MachineAgeInfo
+)
+
+ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="ops_l2_1",
@@ -170,7 +178,7 @@ ops_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 

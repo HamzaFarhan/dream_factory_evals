@@ -44,7 +44,9 @@ def date(year: int, month: int, day: int) -> str:
     return date_(year, month, day).strftime("%Y-%m-%d")
 
 
-hr_dataset = Dataset[Query, QueryResult](
+ResultT = EngineeringAnalysisResponse | PolicyRecruitmentResponse | StrategicCompetencyResponse
+
+hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="hr_l4_1",
@@ -457,7 +459,7 @@ hr_dataset = Dataset[Query, QueryResult](
             ),
         ),
     ],
-    evaluators=[EvaluateResult(), EvaluateToolCalls()],
+    evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
 
 
