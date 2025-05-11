@@ -35,7 +35,7 @@ def save_scores(model: KnownModelName, user_role: Role, level: int) -> None:
 
     cases = json.loads(Path(f"{report_name}.json").read_text())["attributes"]["values"][0]["cases"]
 
-    cases_metrics = []
+    cases_metrics: list[dict[str, str | int | float]] = []
     for case in cases:
         accuracy = 2 * int(case["assertions"]["EvaluateResult"]["value"])
         correct_tool_calls = int(case["assertions"]["EvaluateToolCalls"]["value"])

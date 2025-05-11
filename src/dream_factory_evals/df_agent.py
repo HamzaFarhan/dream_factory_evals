@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import partial
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Literal, TypeVar, get_args
 
 from dotenv import load_dotenv
 from loguru import logger
@@ -10,7 +10,9 @@ from pydantic import BaseModel
 from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ModelMessage, ToolCallPart, ToolReturnPart
-from pydantic_ai.models import KnownModelName
+from pydantic_ai.models import KnownModelName, Model
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_evals import Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
 from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_random
@@ -21,6 +23,14 @@ load_dotenv()
 
 MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
+
+ModelT = KnownModelName | Literal["SG_LANG", "Qwen2.5"]
+
+
+def is_known_model_name(model: ModelT) -> bool:
+    """Check if the given string is a valid KnownModelName."""
+    known_model_names = get_args(KnownModelName.__value__)
+    return model in known_model_names
 
 
 class ToolCall(BaseModel):
@@ -130,8 +140,12 @@ class Task(BaseModel, Generic[ResultT]):
         return res.strip()
 
 
+def sglang_model(base_url: str) -> Model:
+    return OpenAIModel("Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
+
+
 def setup_task_and_agent(
-    query: Query[ResultT], user_role: Role, model: KnownModelName, new: bool = False
+    query: Query[ResultT], user_role: Role, model: ModelT, new: bool = False
 ) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
@@ -159,9 +173,8 @@ def setup_task_and_agent(
             "DREAM_FACTORY_API_KEY": os.environ[api_key_key],
         },
     )
-
     agent = Agent(
-        model=model,
+        model=sglang_model(os.environ["SG_LANG_BASE_URL"]) if not is_known_model_name(model) else model,
         name="df_agent",
         system_prompt=(
             "You will be given a main task by the user.\n"
@@ -194,10 +207,7 @@ def setup_task_and_agent(
 
 
 async def task(
-    inputs: Query[ResultT],
-    user_role: Role,
-    model: KnownModelName,
-    max_tool_calls: int = MAX_TOOL_CALLS,
+    inputs: Query[ResultT], user_role: Role, model: ModelT, max_tool_calls: int = MAX_TOOL_CALLS
 ) -> QueryResult[ResultT]:
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
     tool_calls: list[ToolCall] = []
@@ -246,7 +256,7 @@ async def task(
 async def chat(
     user_prompt: str,
     user_role: Role,
-    model: KnownModelName,
+    model: ModelT,
     message_history: list[ModelMessage] | None = None,
     max_tool_calls: int = MAX_TOOL_CALLS,
 ) -> ChatResult:
@@ -324,7 +334,7 @@ async def chat(
 
 
 def evaluate(
-    model: KnownModelName,
+    model: ModelT,
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
     user_role: Role,
     level: int,
@@ -346,7 +356,7 @@ def evaluate(
     )
 
 
-def are_strings_similar(str1: str, str2: str, model: KnownModelName = STRINGS_SIMILARITY_MODEL) -> bool:
+def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY_MODEL) -> bool:
     strings_similarity_agent = Agent(model=model, name="strings_similarity_agent", output_type=bool)
     prompt = (
         "The wording/structure/grammar may be different, but are these 2 strings saying the same thing?\n"

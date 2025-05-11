@@ -1,0 +1,27 @@
+ZONE="us-central1-a"
+PROJECT_ID="dreamai-pocs"
+VMNAME="demo-vm"
+
+# Start VM
+gcloud compute instances start $VMNAME --zone=$ZONE --project=$PROJECT_ID
+
+
+gcloud compute ssh --zone $ZONE $VMNAME --project $PROJECT_ID
+sudo su -
+
+
+docker run --rm -it --gpus all \
+	--shm-size 32g \
+	-p 30000:30000 \
+	-v /opt/data/.cache/huggingface:/root/.cache/huggingface \
+	--env "HF_TOKEN=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" \
+	--ipc=host \
+	lmsysorg/sglang:latest \
+	python3 -m sglang.launch_server --model-path Qwen/Qwen2.5-3B-Instruct --tool-call-parser qwen25 --host 0.0.0.0 --port 30000
+
+ZONE="us-central1-a"
+PROJECT_ID="dreamai-pocs"
+VMNAME="demo-vm"
+# Stop VM
+gcloud compute instances stop $VMNAME --zone=$ZONE --project=$PROJECT_ID
+

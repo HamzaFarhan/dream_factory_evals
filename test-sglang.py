@@ -1,36 +1,25 @@
-import openai
+from pydantic import BaseModel
+from pydantic_ai import Agent
+from pydantic_ai.models import Model
+from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.providers.openai import OpenAIProvider
 
-# Configure the client to point to your SGLang Docker container
-client = openai.OpenAI(
-    base_url="http://34.121.101.35:30000/v1",  # Default SGLang Docker port
-    api_key="EMPTY",  # SGLang doesn't require an API key
+
+class Email(BaseModel):
+    email: str
+
+
+def sglang_model(model_name: str) -> Model:
+    return OpenAIModel(
+        model_name,
+        provider=OpenAIProvider(base_url="http://34.66.87.55:30000/v1", api_key="EMPTY"),
+    )
+
+
+agent = Agent(sglang_model("Qwen2.5"))
+query = (
+    "Extract the email address from the following text: "
+    "'Please contact us at info@example.com for more information.'"
 )
-
-# Test a simple completion
-response = client.chat.completions.create(
-    model="default",
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Tell me a short joke about Docker."},
-    ],
-    temperature=0.7,
-    max_tokens=50,
-)
-
-print("Response from SGLang Docker container:")
-print(response.choices[0].message.content)
-
-# Test streaming
-print("\nTesting streaming response:")
-stream = client.chat.completions.create(
-    model="default",
-    messages=[{"role": "user", "content": "Explain Docker in one sentence."}],
-    stream=True,
-    max_tokens=30,
-)
-
-for chunk in stream:
-    content = chunk.choices[0].delta.content
-    if content:
-        print(content, end="", flush=True)
-print()
+result = agent.run_sync(query, output_type=Email)
+print(result.output.email)

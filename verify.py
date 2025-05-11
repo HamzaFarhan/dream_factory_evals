@@ -15,5 +15,3 @@ res = httpx.get(
         "limit": 100,
     },
 ).json()
-
-res
