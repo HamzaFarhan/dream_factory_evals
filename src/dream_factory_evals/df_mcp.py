@@ -1,4 +1,5 @@
 import os
+from typing import TypedDict
 
 import httpx
 from loguru import logger
@@ -14,8 +15,8 @@ def get_params(
     offset: int = 0,
     order_field: str = "",
     related: str | list[str] = "",
-) -> dict:
-    params = {}
+) -> dict[str, str | int | None]:
+    params: dict[str, str | int | None] = {}
     if filter:
         params["filter"] = filter
     if fields:
@@ -31,14 +32,19 @@ def get_params(
     return params
 
 
+class TableUrlWithHeaders(TypedDict):
+    url: str
+    headers: dict[str, str]
+
+
 def table_url_with_headers(
     table_name: str,
     base_url: str | None = None,
     dream_factory_api_key: str | None = None,
-) -> dict:
+) -> TableUrlWithHeaders:
     base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
     dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
-    return dict(url=f"{base_url}/_table/{table_name}", headers={"X-DreamFactory-API-Key": dream_factory_api_key})
+    return {"url": f"{base_url}/_table/{table_name}", "headers": {"X-DreamFactory-API-Key": dream_factory_api_key}}
 
 
 def list_table_names(
@@ -66,7 +72,7 @@ def list_table_names(
 @server.tool()
 def get_table_schema(
     table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
-) -> dict:
+) -> dict[str, str | dict[str, str]]:
     """Get the schema of a table.
 
     Parameters
@@ -100,7 +106,7 @@ def get_table_records(
     offset: int = 0,
     order_field: str = "",
     related: str | list[str] = "",
-) -> dict:
+) -> dict[str, str | dict[str, str]]:
     """Get the records of a table.
 
     Parameters
@@ -180,7 +186,7 @@ def get_table_records(
 @server.tool()
 def get_table_records_by_ids(
     table_name: str, ids: str | list[str], fields: str | list[str] = "*", related: str | list[str] = ""
-) -> dict:
+) -> dict[str, str | dict[str, str]]:
     """Get one or more records from a table by their IDs.
 
     Parameters
@@ -201,7 +207,7 @@ def get_table_records_by_ids(
     dict
         The records of the table
     """
-    params = {"ids": ids if isinstance(ids, str) else ",".join(ids)}
+    params: dict[str, str | int | None] = {"ids": ids if isinstance(ids, str) else ",".join(ids)}
     params.update(get_params(fields=fields, related=related))
     return httpx.get(**table_url_with_headers(table_name=table_name), params=params).json()
 

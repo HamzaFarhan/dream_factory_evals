@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import partial
-from typing import Any, TypeVar
+from typing import Any, Generic, TypeVar
 
 from dotenv import load_dotenv
 from loguru import logger
@@ -63,8 +63,9 @@ class Query[ResultT]:
 
 @dataclass
 class QueryResult[ResultT]:
-    result: ResultT
+    result: ResultT | None
     tool_calls: list[ToolCall]
+    error: str | None = None
 
 
 @dataclass
@@ -82,16 +83,18 @@ class MarkdownResponse(BaseModel):
 
 
 @dataclass
-class EvaluateResult(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> bool:
+class EvaluateResult(Evaluator[Query[ResultT], QueryResult[ResultT]]):
+    def evaluate(self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]) -> bool:
         if ctx.expected_output is None:
             return True
+        if ctx.output.error is not None:
+            return False
         return ctx.output.result == ctx.expected_output.result
 
 
 @dataclass
-class EvaluateToolCalls(Evaluator[Query, QueryResult]):
-    def evaluate(self, ctx: EvaluatorContext[Query, QueryResult]) -> EvaluationReason:
+class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
+    def evaluate(self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]) -> EvaluationReason:
         if ctx.expected_output is None:
             return EvaluationReason(value=True)
         if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
@@ -112,8 +115,8 @@ class EvaluateToolCalls(Evaluator[Query, QueryResult]):
         return EvaluationReason(value=True)
 
 
-class Task(BaseModel):
-    query: Query
+class Task(BaseModel, Generic[ResultT]):
+    query: Query[ResultT]
     user_role: Role
     available_tables: list[str]
 
@@ -129,7 +132,7 @@ class Task(BaseModel):
 
 def setup_task_and_agent(
     query: Query[ResultT], user_role: Role, model: KnownModelName, new: bool = False
-) -> tuple[Task, Agent]:
+) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -151,7 +154,10 @@ def setup_task_and_agent(
     tables_mcp_server = MCPServerStdio(
         command="uv",
         args=["run", "src/dream_factory_evals/df_mcp.py"],
-        env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
+        env={
+            "DREAM_FACTORY_BASE_URL": os.environ[url_key],
+            "DREAM_FACTORY_API_KEY": os.environ[api_key_key],
+        },
     )
 
     agent = Agent(
@@ -188,10 +194,13 @@ def setup_task_and_agent(
 
 
 async def task(
-    inputs: Query, user_role: Role, model: KnownModelName, max_tool_calls: int = MAX_TOOL_CALLS
-) -> QueryResult:
+    inputs: Query[ResultT],
+    user_role: Role,
+    model: KnownModelName,
+    max_tool_calls: int = MAX_TOOL_CALLS,
+) -> QueryResult[ResultT]:
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
-    tool_calls = []
+    tool_calls: list[ToolCall] = []
     try:
         async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
             with attempt:
@@ -207,27 +216,31 @@ async def task(
                                     ]:
                                         if num_tool_calls < max_tool_calls:
                                             tool_calls.append(
-                                                ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
+                                                ToolCall(
+                                                    tool_name=part.tool_name,
+                                                    params=part.args_as_dict(),
+                                                )
                                             )
                                             num_tool_calls += 1
                                         else:
                                             error_msg = f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
                                             logger.warning(error_msg)
-                                            return QueryResult(result=error_msg, tool_calls=tool_calls)
-
-                    # Handle the result - ensure we always return a QueryResult
-                    res = agent_run.result.output if agent_run.result is not None else "No result produced"
-                    return QueryResult(result=res, tool_calls=tool_calls)
+                                            return QueryResult(result=None, tool_calls=tool_calls, error=error_msg)
+                    if agent_run.result is None:
+                        return QueryResult(result=None, tool_calls=tool_calls, error="No result produced")
+                    return QueryResult(result=agent_run.result.output, tool_calls=tool_calls)
     except Exception as e:
         error_msg = f"Unexpected error: {str(e)}"
         logger.exception(error_msg)
-        return QueryResult(result=error_msg, tool_calls=tool_calls)
+        return QueryResult(result=None, tool_calls=tool_calls, error=error_msg)
     logger.error(
         "Internal Error: The 'task' function in df_agent.py reached an unexpected state "
         "where it did not explicitly return a QueryResult. This may indicate an issue "
         "with the retry logic or an unhandled execution path."
     )
-    return QueryResult(result="Internal Server Error: Unexpected execution path.", tool_calls=tool_calls)
+    return QueryResult(
+        result=None, tool_calls=tool_calls, error="Internal Server Error: Unexpected execution path."
+    )
 
 
 async def chat(
@@ -239,14 +252,16 @@ async def chat(
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=MarkdownResponse)
     task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model, new=True)
-    tool_calls = {}
+    tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]] = {}
     try:
         async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
             with attempt:
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
                     async with agent.iter(
-                        user_prompt=task.prompt, output_type=inputs.output_type, message_history=message_history
+                        user_prompt=task.prompt,
+                        output_type=inputs.output_type,
+                        message_history=message_history,
                     ) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
@@ -257,7 +272,8 @@ async def chat(
                                         if num_tool_calls < max_tool_calls:
                                             tool_calls[part.tool_call_id] = {
                                                 "call": ToolCall(
-                                                    tool_name=part.tool_name, params=part.args_as_dict()
+                                                    tool_name=part.tool_name,
+                                                    params=part.args_as_dict(),
                                                 )
                                             }
                                             num_tool_calls += 1
@@ -281,7 +297,8 @@ async def chat(
                                         "final_result",
                                     ]:
                                         tool_calls[part.tool_call_id]["result"] = ToolCallResult(
-                                            tool_name=part.tool_name, result=part.content.content
+                                            tool_name=part.tool_name,
+                                            result=part.content.content,
                                         )
                     res = (
                         agent_run.result.output.content
@@ -300,13 +317,15 @@ async def chat(
     except RetryError as e:
         logger.exception(e)
     return ChatResult(
-        result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history
+        result="Sorry, I couldn't complete the task.",
+        tool_calls=tool_calls,
+        message_history=message_history,
     )
 
 
 def evaluate(
     model: KnownModelName,
-    dataset: Dataset[Query, QueryResult],
+    dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
     user_role: Role,
     level: int,
     max_tool_calls: int = MAX_TOOL_CALLS,
@@ -314,7 +333,8 @@ def evaluate(
     name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
 
     report = dataset.evaluate_sync(
-        task=partial(task, user_role=user_role, model=model, max_tool_calls=max_tool_calls), name=name
+        task=partial(task, user_role=user_role, model=model, max_tool_calls=max_tool_calls),
+        name=name,
     )
     report.print(
         include_input=True,
