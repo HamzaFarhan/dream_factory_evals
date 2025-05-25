@@ -4,6 +4,7 @@ import argparse
 from datetime import date as date_
 
 import logfire
+from output_types import DepartmentCount, Email, Employee, Employees, ManagerCount, Policies, Policy
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -16,8 +17,6 @@ from dream_factory_evals.df_agent import (
     ToolCall,
     evaluate,
 )
-
-from .output_types import DepartmentCount, Email, Employee, Employees, ManagerCount, Policies, Policy
 
 _ = logfire.configure()
 

@@ -4,6 +4,7 @@ import argparse
 from functools import partial
 
 import logfire
+from output_types import ActiveMachines, Machine, Machines, MachineStatus, ReplacementCount
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -14,14 +15,6 @@ from dream_factory_evals.df_agent import (
     Role,
     ToolCall,
     task,
-)
-
-from .output_types import (
-    ActiveMachines,
-    Machine,
-    Machines,
-    MachineStatus,
-    ReplacementCount,
 )
 
 _ = logfire.configure()

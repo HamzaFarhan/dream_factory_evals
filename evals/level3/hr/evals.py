@@ -4,6 +4,18 @@ import argparse
 from datetime import date as date_
 
 import logfire
+from output_types import (
+    DepartmentStaffPolicies,
+    DepartmentStaffPolicy,
+    DepartmentsWithGap,
+    DepartmentTimingAnalysis,
+    DepartmentTimingAnalysisItem,
+    PolicyFirstDepartment,
+    PolicyFirstDepartments,
+    RoleDistributionAnalysis,
+    RoleDistributionAnalysisItem,
+    StaffInfo,
+)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -15,19 +27,6 @@ from dream_factory_evals.df_agent import (
     Role,
     ToolCall,
     evaluate,
-)
-
-from .output_types import (
-    DepartmentStaffPolicies,
-    DepartmentStaffPolicy,
-    DepartmentsWithGap,
-    DepartmentTimingAnalysis,
-    DepartmentTimingAnalysisItem,
-    PolicyFirstDepartment,
-    PolicyFirstDepartments,
-    RoleDistributionAnalysis,
-    RoleDistributionAnalysisItem,
-    StaffInfo,
 )
 
 _ = logfire.configure()

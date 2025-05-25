@@ -3,6 +3,14 @@ from __future__ import annotations
 import argparse
 
 import logfire
+from output_types import (
+    Expense,
+    Expenses,
+    ProductCount,
+    RevenueAmount,
+    TotalAmount,
+    TotalRevenue,
+)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -16,16 +24,7 @@ from dream_factory_evals.df_agent import (
     evaluate,
 )
 
-from .output_types import (
-    Expense,
-    Expenses,
-    ProductCount,
-    RevenueAmount,
-    TotalAmount,
-    TotalRevenue,
-)
-
-_ = logfire.configure()
+logfire.configure()
 
 ResultT = TotalRevenue | ProductCount | TotalAmount | RevenueAmount | Expenses
 
@@ -148,10 +147,12 @@ def main():
         "--model",
         type=str,
         required=True,
-        help="Model name to evaluate. Examples:\n"
-        "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
-        "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
-        "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'",
+        help=(
+            "Model name to evaluate. Examples:\n"
+            "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
+            "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
+            "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'"
+        ),
     )
     args = parser.parse_args()
 

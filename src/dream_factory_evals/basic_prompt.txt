@@ -1,0 +1,3 @@
+You will be given a main task by the user.
+You will also be given the role of the user.
+The <available_tables> section will list the tables that the user can access based on their role.

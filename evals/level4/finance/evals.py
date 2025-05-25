@@ -4,20 +4,7 @@ import argparse
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
-from pydantic_evals import Case, Dataset
-
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    Role,
-    ToolCall,
-    evaluate,
-)
-
-from .output_types import (
+from output_types import (
     AnalysisAndStrategySuggestion,
     CapitalExpense,
     CategoryQuarterlyRevenue,
@@ -32,6 +19,18 @@ from .output_types import (
     QuarterlyAmount,
     RevenueAnalysis,
     RevenueComparisonYoY,
+)
+from pydantic_ai.models import KnownModelName
+from pydantic_evals import Case, Dataset
+
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    Role,
+    ToolCall,
+    evaluate,
 )
 
 _ = logfire.configure()

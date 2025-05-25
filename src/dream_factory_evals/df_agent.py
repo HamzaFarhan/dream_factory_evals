@@ -2,6 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import partial
+from pathlib import Path
 from typing import Any, Generic, Literal, TypeVar, get_args
 
 from dotenv import load_dotenv
@@ -19,7 +20,7 @@ from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_random
 
 from dream_factory_evals.df_mcp import list_table_names
 
-load_dotenv()
+_ = load_dotenv()
 
 MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
@@ -165,9 +166,13 @@ def setup_task_and_agent(
         if not new
         else f"NEW_DREAM_FACTORY_{user_role.upper()}_API_KEY"
     )
+
+    # Get the directory where this module is located
+    module_dir = Path(__file__).parent
+
     tables_mcp_server = MCPServerStdio(
         command="uv",
-        args=["run", "src/dream_factory_evals/df_mcp.py"],
+        args=["run", str(module_dir / "df_mcp.py")],
         env={
             "DREAM_FACTORY_BASE_URL": os.environ[url_key],
             "DREAM_FACTORY_API_KEY": os.environ[api_key_key],
@@ -176,29 +181,7 @@ def setup_task_and_agent(
     agent = Agent(
         model=sglang_model(os.environ["SG_LANG_BASE_URL"]) if not is_known_model_name(model) else model,
         name="df_agent",
-        system_prompt=(
-            "You will be given a main task by the user.\n"
-            "You will also be given the role of the user.\n"
-            "The <available_tables> section will list the tables that the user can access based on their role.\n"
-            "So given the main task and the <available_tables>, you would have a good idea of which tables to use.\n"
-            "But if you think the user's main task would require you to access a table from a different department "
-            "(you would be guessing the name of the department and the table), you MUST STOP and return a "
-            "helpful detailed reason to the user including what your plan was and why you can't do it.\n"
-            "If you do have access to the needed tables, start off by using the 'get_table_schema' tool to get the schema of the needed tables.\n"
-            "So keep calling using your tools until you successfully complete the main task. "
-            "You may have to complete smaller tasks to get to the main task.\n"
-            "Sometimes, trying different string cases (e.g. 'Active' vs 'active') may help.\n"
-            "Efficient tool use is encouraged. So if you can do something in fewer tool calls, "
-            "for example, using 'related' to join tables based on the foreign key instead of calling "
-            "get_table_records multiple times, then do so."
-            "Sometimes, a table may have a foreign key to another table that's not even in list of available tables.\n"
-            "For example, the scehama of `hr_employees` may have this: `postgres.hr_attendance_by_employee_id`.\n"
-            "There is no `hr_attendance` table in the list of available tables, but if you use this key "
-            "in the `related` parameter of `get_table_records`, it will work. This is just one example.\n"
-            "Trust the schema. If something isn't possible, you'll just get an error and you can try again."
-            "If the user asks you to format your response as a table, return a markdown table.\n"
-            "All of your responses, even the simple ones will be shown as markdown."
-        ),
+        system_prompt=(module_dir / "agent_prompt.txt").read_text(),
         mcp_servers=[tables_mcp_server],
         instrument=True,
         retries=3,
@@ -226,10 +209,7 @@ async def task(
                                     ]:
                                         if num_tool_calls < max_tool_calls:
                                             tool_calls.append(
-                                                ToolCall(
-                                                    tool_name=part.tool_name,
-                                                    params=part.args_as_dict(),
-                                                )
+                                                ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
                                             )
                                             num_tool_calls += 1
                                         else:
@@ -244,9 +224,11 @@ async def task(
         logger.exception(error_msg)
         return QueryResult(result=None, tool_calls=tool_calls, error=error_msg)
     logger.error(
-        "Internal Error: The 'task' function in df_agent.py reached an unexpected state "
-        "where it did not explicitly return a QueryResult. This may indicate an issue "
-        "with the retry logic or an unhandled execution path."
+        (
+            "Internal Error: The 'task' function in df_agent.py reached an unexpected state "
+            "where it did not explicitly return a QueryResult. This may indicate an issue "
+            "with the retry logic or an unhandled execution path."
+        )
     )
     return QueryResult(
         result=None, tool_calls=tool_calls, error="Internal Server Error: Unexpected execution path."
@@ -338,10 +320,10 @@ def evaluate(
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
     user_role: Role,
     level: int,
+    name: str | None = None,
     max_tool_calls: int = MAX_TOOL_CALLS,
 ):
-    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
-
+    name = name or f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
     report = dataset.evaluate_sync(
         task=partial(task, user_role=user_role, model=model, max_tool_calls=max_tool_calls),
         name=name,

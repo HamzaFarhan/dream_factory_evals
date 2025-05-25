@@ -4,20 +4,7 @@ import argparse
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
-from pydantic_evals import Case, Dataset
-
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    Role,
-    ToolCall,
-    evaluate,
-)
-
-from .output_types import (
+from output_types import (
     AnalysisSummary,
     CohortAnalysis,
     CompetencyDevelopmentInitiative,
@@ -35,6 +22,18 @@ from .output_types import (
     RoleDistribution,
     StrategicCompetencyResponse,
     TalentRecommendation,
+)
+from pydantic_ai.models import KnownModelName
+from pydantic_evals import Case, Dataset
+
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    Role,
+    ToolCall,
+    evaluate,
 )
 
 _ = logfire.configure()
@@ -481,6 +480,6 @@ def main():
 
 
 if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-mini", "openai:gpt-4.1-nano"]
+    models: list[KnownModelName] = ["google-gla:gemini-2.0-flash"]
     for model in models:
         evaluate(model=model, dataset=hr_dataset, user_role=Role.HR, level=4)
