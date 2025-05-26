@@ -25,6 +25,7 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     ReportInfo,
     Role,
+    TaskConfig,
     ToolCall,
     evaluate,
 )
@@ -457,4 +458,5 @@ if __name__ == "__main__":
                 name=f"{model}-{Role.HR.value}-level-3", model=model, user_role=Role.HR, level=3
             ),
             dataset=hr_dataset,
+            task_config=TaskConfig(user_role=Role.HR, model=model),
         )

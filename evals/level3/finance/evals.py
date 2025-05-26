@@ -20,6 +20,7 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     ReportInfo,
     Role,
+    TaskConfig,
     ToolCall,
     evaluate,
 )
@@ -189,4 +190,5 @@ if __name__ == "__main__":
                 name=f"{model}-{Role.FINANCE.value}-level-3", model=model, user_role=Role.FINANCE, level=3
             ),
             dataset=finance_dataset,
+            task_config=TaskConfig(user_role=Role.FINANCE, model=model),
         )

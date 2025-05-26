@@ -5,7 +5,8 @@ from loguru import logger
 from pydantic_ai.messages import ModelMessage
 from pydantic_ai.models import KnownModelName
 
-from dream_factory_evals.df_agent import ChatResult, Role, ToolCall, ToolCallResult, chat
+from dream_factory_evals.df_agent import Role, ToolCall, ToolCallResult
+from dream_factory_evals.df_chat import ChatResult, chat
 
 
 async def run_chat(

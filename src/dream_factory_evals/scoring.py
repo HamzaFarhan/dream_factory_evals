@@ -12,7 +12,7 @@ from dream_factory_evals.df_agent import ReportInfo, Role
 
 load_dotenv()
 
-logfire_read_token = os.getenv("LOGFIRE_READ_TOKEN", "")
+logfire_read_token = os.environ["LOGFIRE_READ_TOKEN"]
 
 SCORES_DIR = Path(os.getenv("SCORES_DIR", "scores"))
 SCORES_DIR.mkdir(parents=True, exist_ok=True)
@@ -109,5 +109,4 @@ if __name__ == "__main__":
         ReportInfo(name=f"{model}-{user_role.value}-level-{level}", model=model, user_role=user_role, level=level)
         for model in models
     ]
-    # Create a leaderboard for HR role, level 1
     create_leaderboard(leaderboard_name=f"{user_role.value}-level-{level}", report_infos=report_infos)

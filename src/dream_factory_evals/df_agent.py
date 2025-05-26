@@ -1,5 +1,4 @@
 import os
-from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
@@ -9,23 +8,26 @@ from dotenv import load_dotenv
 from loguru import logger
 from pydantic import AfterValidator, BaseModel
 from pydantic_ai import Agent
-from pydantic_ai.mcp import MCPServerStdio
-from pydantic_ai.messages import ModelMessage, ToolCallPart, ToolReturnPart
+from pydantic_ai.mcp import MCPServer, MCPServerStdio
+from pydantic_ai.messages import ToolCallPart
 from pydantic_ai.models import KnownModelName, Model
 from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_evals import Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
-from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_random
+from tenacity import AsyncRetrying, stop_after_attempt, wait_random
 
 from dream_factory_evals.df_mcp import list_table_names
 
 _ = load_dotenv()
 
-MAX_TOOL_CALLS = 20
-STRINGS_SIMILARITY_MODEL = "google-gla:gemini-1.5-flash"
+MODULE_DIR = Path(__file__).parent
 
-ModelT = KnownModelName | Literal["SG_LANG", "Qwen2.5"]
+RETRIES = 3
+MAX_TOOL_CALLS = 20
+STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.0-flash"
+
+type ModelT = KnownModelName | Literal["SG_LANG", "Qwen2.5"]
 
 
 def is_known_model_name(model: ModelT) -> bool:
@@ -80,16 +82,6 @@ class QueryResult[ResultT]:
     error: str | None = None
 
 
-@dataclass
-class ChatResult:
-    result: str
-    tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]]
-    message_history: list[ModelMessage] | None = None
-    input_tokens: int | None = None
-    output_tokens: int | None = None
-    total_tokens: int | None = None
-
-
 class MarkdownResponse(BaseModel):
     content: str
 
@@ -142,13 +134,17 @@ class Task(BaseModel, Generic[ResultT]):
         return res.strip()
 
 
-def sglang_model(base_url: str) -> Model:
-    return OpenAIModel("Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
+class TaskConfig(BaseModel):
+    user_role: Role
+    model: ModelT
+    retries: int = RETRIES
+    prompt_name: str = "basic_prompt.txt"
+    mcp_servers: list[MCPServer] | None = None
+    max_tool_calls: int = MAX_TOOL_CALLS
+    new: bool = False
 
 
-def setup_task_and_agent(
-    query: Query[ResultT], user_role: Role, model: ModelT, new: bool = False
-) -> tuple[Task[ResultT], Agent]:
+def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -157,43 +153,36 @@ def setup_task_and_agent(
         )["resource"]
     ]
 
-    if user_role != Role.CEO:
-        available_tables = [t for t in available_tables if t.startswith(user_role.value)]
+    if config.user_role != Role.CEO:
+        available_tables = [t for t in available_tables if t.startswith(config.user_role.value)]
 
-    task = Task(query=query, user_role=user_role, available_tables=available_tables)
-    url_key = "DREAM_FACTORY_BASE_URL" if not new else "NEW_DREAM_FACTORY_BASE_URL"
+    task = Task(query=query, user_role=config.user_role, available_tables=available_tables)
+    url_key = "DREAM_FACTORY_BASE_URL" if not config.new else "NEW_DREAM_FACTORY_BASE_URL"
     api_key_key = (
-        f"DREAM_FACTORY_{user_role.upper()}_API_KEY"
-        if not new
-        else f"NEW_DREAM_FACTORY_{user_role.upper()}_API_KEY"
+        f"DREAM_FACTORY_{config.user_role.upper()}_API_KEY"
+        if not config.new
+        else f"NEW_DREAM_FACTORY_{config.user_role.upper()}_API_KEY"
     )
-
-    # Get the directory where this module is located
-    module_dir = Path(__file__).parent
-
     tables_mcp_server = MCPServerStdio(
         command="uv",
-        args=["run", str(module_dir / "df_mcp.py")],
-        env={
-            "DREAM_FACTORY_BASE_URL": os.environ[url_key],
-            "DREAM_FACTORY_API_KEY": os.environ[api_key_key],
-        },
+        args=["run", str(MODULE_DIR / "df_mcp.py")],
+        env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
     )
     agent = Agent(
-        model=sglang_model(os.environ["SG_LANG_BASE_URL"]) if not is_known_model_name(model) else model,
+        model=sglang_model(os.environ["SG_LANG_BASE_URL"])
+        if not is_known_model_name(config.model)
+        else config.model,
         name="df_agent",
-        system_prompt=(module_dir / "agent_prompt.txt").read_text(),
-        mcp_servers=[tables_mcp_server],
+        system_prompt=(MODULE_DIR / config.prompt_name).read_text(),
+        mcp_servers=(config.mcp_servers or []) + [tables_mcp_server],
         instrument=True,
-        retries=3,
+        retries=config.retries,
     )
     return task, agent
 
 
-async def task(
-    inputs: Query[ResultT], user_role: Role, model: ModelT, max_tool_calls: int = MAX_TOOL_CALLS
-) -> QueryResult[ResultT]:
-    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model)
+async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[ResultT]:
+    task, agent = setup_task_and_agent(query=inputs, config=config)
     tool_calls: list[ToolCall] = []
     try:
         async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
@@ -208,13 +197,15 @@ async def task(
                                         "get_table_schema",
                                         "final_result",
                                     ]:
-                                        if num_tool_calls < max_tool_calls:
+                                        if num_tool_calls < config.max_tool_calls:
                                             tool_calls.append(
                                                 ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
                                             )
                                             num_tool_calls += 1
                                         else:
-                                            error_msg = f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
+                                            error_msg = (
+                                                f"Too many tool calls: {num_tool_calls} > {config.max_tool_calls}"
+                                            )
                                             logger.warning(error_msg)
                                             return QueryResult(result=None, tool_calls=tool_calls, error=error_msg)
                     if agent_run.result is None:
@@ -236,84 +227,8 @@ async def task(
     )
 
 
-async def chat(
-    user_prompt: str,
-    user_role: Role,
-    model: ModelT,
-    message_history: list[ModelMessage] | None = None,
-    max_tool_calls: int = MAX_TOOL_CALLS,
-) -> ChatResult:
-    inputs = Query(query=user_prompt, output_type=MarkdownResponse)
-    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model, new=True)
-    tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]] = {}
-    try:
-        async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
-            with attempt:
-                async with agent.run_mcp_servers():
-                    num_tool_calls = 0
-                    async with agent.iter(
-                        user_prompt=task.prompt,
-                        output_type=inputs.output_type,
-                        message_history=message_history,
-                    ) as agent_run:
-                        async for node in agent_run:
-                            if agent.is_call_tools_node(node):
-                                for part in node.model_response.parts:
-                                    if isinstance(part, ToolCallPart) and part.tool_name not in [
-                                        "final_result",
-                                    ]:
-                                        if num_tool_calls < max_tool_calls:
-                                            tool_calls[part.tool_call_id] = {
-                                                "call": ToolCall(
-                                                    tool_name=part.tool_name,
-                                                    params=part.args_as_dict(),
-                                                )
-                                            }
-                                            num_tool_calls += 1
-                                        else:
-                                            logger.warning(
-                                                f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
-                                            )
-                                            usage = agent_run.usage()
-                                            return ChatResult(
-                                                result="",
-                                                tool_calls=tool_calls,
-                                                message_history=agent_run.ctx.state.message_history,
-                                                input_tokens=usage.request_tokens,
-                                                output_tokens=usage.response_tokens,
-                                                total_tokens=usage.total_tokens,
-                                            )
-                            elif agent.is_model_request_node(node):
-                                for part in node.request.parts:
-                                    if isinstance(part, ToolReturnPart) and part.tool_name not in [
-                                        "get_table_schema",
-                                        "final_result",
-                                    ]:
-                                        tool_calls[part.tool_call_id]["result"] = ToolCallResult(
-                                            tool_name=part.tool_name,
-                                            result=part.content.content,
-                                        )
-                    res = (
-                        agent_run.result.output.content
-                        if agent_run.result is not None
-                        else "Sorry, I couldn't complete the task."
-                    )
-                    usage = agent_run.usage()
-                    return ChatResult(
-                        result=res,
-                        tool_calls=tool_calls,
-                        message_history=agent_run.ctx.state.message_history,
-                        input_tokens=usage.request_tokens,
-                        output_tokens=usage.response_tokens,
-                        total_tokens=usage.total_tokens,
-                    )
-    except RetryError as e:
-        logger.exception(e)
-    return ChatResult(
-        result="Sorry, I couldn't complete the task.",
-        tool_calls=tool_calls,
-        message_history=message_history,
-    )
+def sglang_model(base_url: str) -> Model:
+    return OpenAIModel("Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
 
 
 class ReportInfo(BaseModel):
@@ -326,14 +241,11 @@ class ReportInfo(BaseModel):
 def evaluate(
     report_info: ReportInfo,
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
-    max_tool_calls: int = MAX_TOOL_CALLS,
-    task: Callable[[Query[ResultT], Role, ModelT, int], Awaitable[QueryResult[ResultT]]] = task,
+    task_config: TaskConfig,
+    # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task,
 ):
     logger.info(f"Evaluating {report_info.name}")
-    report = dataset.evaluate_sync(
-        task=lambda inputs: task(inputs, report_info.user_role, report_info.model, max_tool_calls),
-        name=report_info.name,
-    )
+    report = dataset.evaluate_sync(task=lambda inputs: task(inputs, task_config), name=report_info.name)
     report.print(
         include_input=True,
         include_output=True,
@@ -352,21 +264,3 @@ def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY
         f"String 2: {str2}\n"
     )
     return strings_similarity_agent.run_sync(prompt).output
-
-
-async def main():
-    class Email(BaseModel):
-        email: str
-
-    inputs = Query(query="What is the email address of Alice Johnson?", output_type=Email)
-    user_role = Role.HR
-    model = "google-gla:gemini-2.0-flash"
-    result = await task(inputs=inputs, user_role=user_role, model=model)
-    print(f"\n---\nRESULT:\n\n{result.result}\n\n---\n")
-    print(f"TOOL CALLS:\n\n{result.tool_calls}\n---\n")
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(main())

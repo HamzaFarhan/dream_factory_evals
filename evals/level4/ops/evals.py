@@ -30,6 +30,7 @@ from dream_factory_evals.df_agent import (
     QueryResult,
     ReportInfo,
     Role,
+    TaskConfig,
     ToolCall,
     evaluate,
 )
@@ -276,4 +277,5 @@ if __name__ == "__main__":
                 name=f"{model}-{Role.OPS.value}-level-4", model=model, user_role=Role.OPS, level=4
             ),
             dataset=ops_dataset,
+            task_config=TaskConfig(user_role=Role.OPS, model=model),
         )
