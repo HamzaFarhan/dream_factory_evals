@@ -1,131 +1,169 @@
-MCP Server is in `src/dream_factory_evals/df_mcp.py`
+# Overview
 
-## MCP Tools
+We are evaluating how an `Agent` uses the `DreamFactory` `MCP`.
 
-Below are the available MCP tools from `src/dream_factory_evals/df_mcp.py`:
+Given a query, we evaluate:
+
+1. The actual output
+2. The tool calls:
+    - The number of tool calls
+    - The parameters of the tool calls
+3. The duration
+4. The cost
+
+## Tables
+
+We have 8 tables in our database:
+
+1. `hr_employees`
+2. `hr_departments`
+3. `hr_policies`
+4. `finance_expenses`
+5. `finance_products`
+6. `finance_revenues`
+7. `ops_machines`
+8. `ops_maintenance`
+
+## Roles
+
+We have 4 roles:
+
+1. `CEO`
+2. `HR`
+3. `Finance`
+4. `Ops`
+
+Each role has its own API key.
+
+`CEO` has access to all tables.  
+`HR` has access to `hr_employees`, `hr_departments`, `hr_policies`.  
+`Finance` has access to `finance_expenses`, `finance_products`, `finance_revenues`.  
+`Ops` has access to `ops_machines`, `ops_maintenance`.  
+
+# Implementation
+
+## 1. MCP
+
+The server is configured using `DREAM_FACTORY_BASE_URL` and `DREAM_FACTORY_API_KEY` environment variables.
+
+### Tools
+
+- `get_table_schema`
+- `get_table_records`
+- `get_table_records_by_ids`
+- `calculate_sum`
+- `calculate_difference`
+- `calculate_mean`
+
+### RBAC
+
+`get_table_schema`, `get_table_records`, and `get_table_records_by_ids` accept `table_name` as a parameter.
+
+If a server configured with a certain role's API key tries to access a table that the role does not have access to, the server will return an error.  
+So `RBAC` is already enforced, but the `Agent` needs to know which tables are available to it.  
+Ideally, the `MCP` would also have a `list_table_names` tool that returns the tables that the role has access to.
+But that tool only worked with the `CEO` API key.
+
+As a workaround, we do this for every `Agent` run:
+1. Call the `list_table_names` tool with the `CEO` API key.
+2. Drop all tables who's name doesn't start with the role's name.  
+   So if the role is `HR`, we drop all tables who's name doesn't start with `hr_`.
+3. Append the remaining tables to the `Agent`'s instructions/system prompt along with the role.
+
+## 2. Evals
+
+We have 4 levels of evals with increasing complexity. For each level, we have 3-5 queries per role.  
+The queries are not that important because we are working with dummy data. The important thing is the process of creating the queries.
+
+### Structure
+
+Each query has:
+- `query_id`
+- `query`
+- `expected_response`
+- `expected_tool_calls`
+
+#### expected_response
+
+This could be anything. The plain string, an object, a list of objects, etc.
+
+A level 1 query's `expected_response` may just be a number:
+
+```json
+{
+    "query_id": "hr_l1_1",
+    "query": "How many employees are there?",
+    "expected_response": {
+        "number_of_employees": 100
+    }
+}
+```
+
+A level 4 query's `expected_response` may be an object with multiple fields along with analysis:
+
+```json
+{
+    "query_id": "finance_l4_1",
+    "query": "Compare Q4 2023 vs Q4 2024 revenue performance for 'Software' and 'Electronics' products. Calculate growth rates and identify which category performed better. Also analyze total 'Marketing' expenses for both quarters. Provide one strategic recommendation based on the revenue-to-marketing spend efficiency.",
+    "expected_response": {
+        "quarterly_comparison": {
+            "Software": {
+                "Q4_2023_revenue": 15420.33,
+                "Q4_2024_revenue": 28750.12,
+                "growth_rate_percentage": 86.4
+            },
+            "Electronics": {
+                "Q4_2023_revenue": 13831.28,
+                "Q4_2024_revenue": 34569.61,
+                "growth_rate_percentage": 149.9
+            }
+        },
+        "marketing_expenses": {
+            "Q4_2023": 2450.75,
+            "Q4_2024": 3200.50
+        },
+        "analysis": {
+            "better_performing_category": "Electronics",
+            "revenue_to_marketing_efficiency": "Electronics showed 149.9% growth vs 86.4% for Software, while marketing spend increased only 30.6%"
+        },
+        "strategic_recommendation": "Allocate more marketing budget to Electronics products in Q1 2025, as they demonstrate superior growth response to marketing investment."
+    }
+}
+```
+The problem is, when evaluating the `Agent`'s response against the `expected_response`, we do an equality check.  
+Since we're working with LLMs, the `Agent`'s response for the above `hr_l1_1` query may be:
+- `100.0`
+- `"One Hundred"`
+- `"There are 100 employees"`
+- ...  
+
+All of these are correct responses to the query, but they are not equal to `100`. And will fail the eval.
+
+To solve this, we use `pydantic` to create `output_type`s for each query. So the `hr_l1_1` query is now defined as:
 
 ```python
-@server.tool()
-def get_table_records(
-    table_name: str,
-    filter: str = "",
-    fields: str | list[str] = "*",
-    limit: int | None = None,
-    offset: int = 0,
-    order_field: str = "",
-    related: str | list[str] = "",
-) -> dict:
-    """
-    Get the records of a table.
+from pydantic import BaseModel
+from pydantic_evals import Case
 
-    Args:
-        table_name: The name of the table to get the records from.
-        filter: The filter to apply to the data. This is equivalent to the WHERE clause of a SQL statement.
-        fields: The fields to return. If *, all fields will be returned. Defaults to *.
-        limit: Max number of records to return. If None, all matching records will be returned, subject to the offset parameter or system settings maximum. Defaults to None.
-        offset: Index of first record to return. For example, to get records 91-100, set offset to 90 and limit to 10. Defaults to 0.
-        order_field: The field to order the records by. Also supports sort direction ASC or DESC such as 'Name ASC'. Default direction is ASC.
-        related: Names of related tables to join via foreign keys based on the schema (e.g. hr_employees_by_department_id). Can be a single table name as string, a list of table names, or '*' to include all related tables. Defaults to None.
+class EmployeeCount(BaseModel):
+    number_of_employees: int
 
-    Returns:
-        The records of the table.
-
-    Filter Strings:
-        Supports standardized ANSI SQL syntax with the following operators:
-
-        Logical Operators (clauses must be wrapped in parentheses):
-        - AND: True if both conditions are true
-        - OR: True if either condition is true
-        - NOT: True if the condition is false
-
-        Comparison Operators:
-        - '=' or 'EQ': Equality test
-        - '!=' or 'NE' or '<>': Inequality test
-        - '>' or 'GT': Greater than
-        - '>=' or 'GTE': Greater than or equal
-        - '<' or 'LT': Less than
-        - '<=' or 'LTE': Less than or equal
-        - 'IN': Equality check against values in a set, e.g., a IN (1,2,3)
-        - 'NOT IN' or 'NIN': Inverse of IN (MongoDB only)
-        - 'LIKE': Pattern matching with '%' wildcard
-        - 'CONTAINS': Same as LIKE '%value%'
-        - 'STARTS WITH': Same as LIKE 'value%'
-        - 'ENDS WITH': Same as LIKE '%value'
-
-        REMINDER: When using an operator, you must include the parentheses.
-
-        Examples:
-        - (first_name='John') AND (last_name='Smith')
-        - (first_name='John') OR (first_name='Jane')
-        - first_name!='John'
-        - first_name like 'J%'
-        - email like '%@mycompany.com'
-        - (Age >= 30) AND (Age < 40)
-    """
+case = Case(
+    inputs=Query(
+        query="How many employees are there?",
+        output_type=EmployeeCount
+    ),
+    expected_output=QueryResult(
+        result=EmployeeCount(number_of_employees=100)
+    )
+)
 ```
+Now, when our `Agent` is run for this `case`, it will be forced to output a `EmployeeCount` object which will have a valid integer as `number_of_employees`.  
+Two `EmployeeCount` objects can be checked for equality using `==`.
 
-```python
-@server.tool()
-def get_table_records_by_ids(
-    table_name: str, ids: str | list[str], fields: str | list[str] = "*", related: str | list[str] = ""
-) -> dict:
-    """Get one or more records from a table by their IDs.
+But what about free form text like `strategic_recommendation` above for the `finance_l4_1` query?  
+Even if the `Agent` outputs a valid string with the correct recommendation, it is unlikely to be the exact string word for word as the one in the `expected_response`.
 
-    Args:
-        table_name: The name of the table to get the records from.
-        ids: The IDs of the records to get.
-        fields: The fields to return. If *, all fields will be returned. Defaults to *.
-        related: Names of related tables to join via foreign keys based on the schema (e.g. hr_employees_by_department_id). Can be a single table name as string, a list of table names, or '*' to include all related tables. Defaults to None.
-
-    Returns:
-        The records of the table.
-    """
-```
-
-```python
-@server.tool()
-def calculate_sum(values: list[float]) -> float:
-    """Calculate the sum of a list of values."""
-```
-
-```python
-@server.tool()
-def calculate_difference(num1: float, num2: float) -> float:
-    """Calculate the difference between two numbers by subtracting `num1` from `num2`"""
-```
-
-```python
-@server.tool()
-def calculate_mean(values: list[float]) -> float:
-    """Calculate the mean of a list of values."""
-```
-
-Queries are in the `levels` directory
-Extracted JSON data is in the `data` directory
-MCP Client (AI Agent) is in `src/dream_factory_evals/df_agent.py`
-
-The code in `df_agent.py` is straight forward using pydantic-ai but it's not documented.
-
-You can run the agent with some inputs to see how it uses the MCP Server:
-
-1. Install uv: https://docs.astral.sh/uv/getting-started/installation/
-2. Clone the repo
-3. Have a .env file in the root of the repo that looks like this:
-
-```
-DREAM_FACTORY_BASE_URL=
-DREAM_FACTORY_CEO_API_KEY= # The all-access one
-DREAM_FACTORY_FINANCE_API_KEY=
-DREAM_FACTORY_HR_API_KEY=
-DREAM_FACTORY_OPS_API_KEY=
-GEMINI_API_KEY=
-...
-```
-
-4. Run the agent:
-
-```bash
-cd src/dream_factory_evals
-uv run df_agent.py
-```
+To solve this, we use another small `Agent` to compare the main `Agent`'s output with the `expected_response`.  
+All it does is compare the `expected_response` and the `Agent`'s output strings and returns `True` if they are saying the same thing despite different wording/structure/grammar. Otherwise, it returns `False`.
 
