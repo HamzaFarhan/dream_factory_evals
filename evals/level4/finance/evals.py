@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import argparse
 from datetime import date as date_
 
 import logfire
@@ -28,6 +27,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
+    ReportInfo,
     Role,
     ToolCall,
     evaluate,
@@ -242,23 +242,12 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Run finance evaluations")
-    parser.add_argument(
-        "--model",
-        type=str,
-        required=True,
-        help="Model name to evaluate. Examples:\n"
-        "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
-        "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
-        "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'",
-    )
-    args = parser.parse_args()
-
-    evaluate(model=args.model, dataset=finance_dataset, user_role=Role.FINANCE, level=4)
-
-
 if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-mini", "openai:gpt-4.1-nano"]
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
     for model in models:
-        evaluate(model=model, dataset=finance_dataset, user_role=Role.FINANCE, level=4)
+        evaluate(
+            report_info=ReportInfo(
+                name=f"{model}-{Role.FINANCE.value}-level-4", model=model, user_role=Role.FINANCE, level=4
+            ),
+            dataset=finance_dataset,
+        )

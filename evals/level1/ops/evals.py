@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import argparse
-from functools import partial
-
 import logfire
 from output_types import ActiveMachines, Machine, Machines, MachineStatus, ReplacementCount
+from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -12,9 +10,10 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
+    ReportInfo,
     Role,
     ToolCall,
-    task,
+    evaluate,
 )
 
 _ = logfire.configure()
@@ -132,27 +131,12 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Run OPS evaluations")
-    parser.add_argument(
-        "--model",
-        type=str,
-        required=True,
-        help="Model name to evaluate. Examples:\n"
-        "  OpenAI: 'openai:gpt-4-turbo', 'openai:gpt-4o'\n"
-        "  Anthropic: 'anthropic:claude-3-5-sonnet-latest', 'anthropic:claude-3-opus-latest'\n"
-        "  Google: 'google-gla:gemini-1.5-pro', 'google-gla:gemini-1.5-flash'",
-    )
-    args = parser.parse_args()
-
-    model = args.model
-    user_role = Role.OPS
-    name = f"{model.upper()}-{user_role.value.upper()}-LEVEL-1"
-
-    report = ops_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=model), name=name)
-    print(f"Evaluation report for {args.model}:")
-    print(report)
-
-
 if __name__ == "__main__":
-    main()
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
+    for model in models:
+        evaluate(
+            report_info=ReportInfo(
+                name=f"{model}-{Role.OPS.value}-level-1", model=model, user_role=Role.OPS, level=1
+            ),
+            dataset=ops_dataset,
+        )

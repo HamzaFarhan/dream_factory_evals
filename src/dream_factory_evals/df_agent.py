@@ -1,13 +1,13 @@
 import os
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from enum import StrEnum
-from functools import partial
 from pathlib import Path
-from typing import Any, Generic, Literal, TypeVar, get_args
+from typing import Annotated, Any, Generic, Literal, TypeVar, get_args
 
 from dotenv import load_dotenv
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import AfterValidator, BaseModel
 from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ModelMessage, ToolCallPart, ToolReturnPart
@@ -55,6 +55,7 @@ class Role(StrEnum):
     CEO = "ceo"
 
 
+InputsT = TypeVar("InputsT")
 ResultT = TypeVar("ResultT")
 
 
@@ -315,18 +316,23 @@ async def chat(
     )
 
 
+class ReportInfo(BaseModel):
+    name: Annotated[str, AfterValidator(lambda x: x.replace(" ", "-").replace(":", "-"))]
+    model: ModelT
+    user_role: Role
+    level: int
+
+
 def evaluate(
-    model: ModelT,
+    report_info: ReportInfo,
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
-    user_role: Role,
-    level: int,
-    name: str | None = None,
     max_tool_calls: int = MAX_TOOL_CALLS,
+    task: Callable[[Query[ResultT], Role, ModelT, int], Awaitable[QueryResult[ResultT]]] = task,
 ):
-    name = name or f"{model.upper()}-{user_role.value.upper()}-LEVEL-{level}"
+    logger.info(f"Evaluating {report_info.name}")
     report = dataset.evaluate_sync(
-        task=partial(task, user_role=user_role, model=model, max_tool_calls=max_tool_calls),
-        name=name,
+        task=lambda inputs: task(inputs, report_info.user_role, report_info.model, max_tool_calls),
+        name=report_info.name,
     )
     report.print(
         include_input=True,

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import argparse
 from datetime import date as date_
-from functools import partial
 
 from output_types import (
     CategoryTotal,
@@ -12,6 +10,7 @@ from output_types import (
     QuarterlyAnalysis,
     QuarterlyAnalysisItem,
 )
+from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -19,9 +18,10 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
+    ReportInfo,
     Role,
     ToolCall,
-    task,
+    evaluate,
 )
 
 
@@ -181,15 +181,12 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True)
-    args = parser.parse_args()
-    user_role = Role.FINANCE
-    name = f"level3_finance_{args.model}"
-    report = finance_dataset.evaluate_sync(task=partial(task, user_role=user_role, model=args.model), name=name)
-    print(report)
-
-
 if __name__ == "__main__":
-    main()
+    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
+    for model in models:
+        evaluate(
+            report_info=ReportInfo(
+                name=f"{model}-{Role.FINANCE.value}-level-3", model=model, user_role=Role.FINANCE, level=3
+            ),
+            dataset=finance_dataset,
+        )
