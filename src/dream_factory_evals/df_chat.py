@@ -6,15 +6,12 @@ from tenacity import AsyncRetrying, RetryError, stop_after_attempt, wait_random
 
 from dream_factory_evals.df_agent import (
     MarkdownResponse,
-    ModelT,
     Query,
-    Role,
+    TaskConfig,
     ToolCall,
     ToolCallResult,
     setup_task_and_agent,
 )
-
-MAX_TOOL_CALLS = 20
 
 
 @dataclass
@@ -28,14 +25,11 @@ class ChatResult:
 
 
 async def chat(
-    user_prompt: str,
-    user_role: Role,
-    model: ModelT,
-    message_history: list[ModelMessage] | None = None,
-    max_tool_calls: int = MAX_TOOL_CALLS,
+    user_prompt: str, task_config: TaskConfig, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=MarkdownResponse)
-    task, agent = setup_task_and_agent(query=inputs, user_role=user_role, model=model, new=True)
+    task_config.new = True
+    task, agent = setup_task_and_agent(query=inputs, config=task_config)
     tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]] = {}
     try:
         async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
@@ -53,7 +47,7 @@ async def chat(
                                     if isinstance(part, ToolCallPart) and part.tool_name not in [
                                         "final_result",
                                     ]:
-                                        if num_tool_calls < max_tool_calls:
+                                        if num_tool_calls < task_config.max_tool_calls:
                                             tool_calls[part.tool_call_id] = {
                                                 "call": ToolCall(
                                                     tool_name=part.tool_name,
@@ -63,7 +57,7 @@ async def chat(
                                             num_tool_calls += 1
                                         else:
                                             logger.warning(
-                                                f"Too many tool calls: {num_tool_calls} > {max_tool_calls}"
+                                                f"Too many tool calls: {num_tool_calls} > {task_config.max_tool_calls}"
                                             )
                                             usage = agent_run.usage()
                                             return ChatResult(

@@ -10,6 +10,7 @@ from output_types import (
     ProductRevenueInfo,
     ProfitInfo,
 )
+from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -159,13 +160,46 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-if __name__ == "__main__":
+async def eval_vs_thinking(model: KnownModelName):
+    role = Role.CEO
+    level = 2
+    task_config = TaskConfig(user_role=role, model=model)
+    # evaluate(
+    #     report_info=ReportInfo(
+    #         name=f"{model}-{role.value}-level-{level}", model=model, user_role=role, level=level
+    #     ),
+    #     dataset=finance_dataset,
+    #     task_config=task_config,
+    # )
+    thinking_server = MCPServerStdio(
+        command="npx", args=["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    )
+    task_config = TaskConfig(user_role=role, model=model, mcp_servers=[thinking_server])
+    await evaluate(
+        report_info=ReportInfo(
+            name=f"{model}-{role.value}-level-{level}-thinking", model=model, user_role=role, level=level
+        ),
+        dataset=finance_dataset,
+        task_config=task_config,
+    )
+
+
+
+
+
+async def main():
     models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
     for model in models:
-        evaluate(
+        await evaluate(
             report_info=ReportInfo(
                 name=f"{model}-{Role.FINANCE.value}-level-2", model=model, user_role=Role.FINANCE, level=2
             ),
             dataset=finance_dataset,
             task_config=TaskConfig(user_role=Role.FINANCE, model=model),
         )
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())

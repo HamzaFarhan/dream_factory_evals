@@ -12,6 +12,7 @@ from output_types import (
     ManagerDepartmentInfo,
     ManagersWithDepartments,
 )
+from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -247,13 +248,65 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-if __name__ == "__main__":
+async def eval_vs_thinking(model: KnownModelName):
+    role = Role.CEO
+    level = 2
+    task_config = TaskConfig(user_role=role, model=model)
+    # await evaluate(
+    #     report_info=ReportInfo(
+    #         name=f"{model}-{role.value}-level-{level}", model=model, user_role=role, level=level
+    #     ),
+    #     dataset=hr_dataset,
+    #     task_config=task_config,
+    # )
+    thinking_server = MCPServerStdio(
+        command="npx", args=["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    )
+    task_config = TaskConfig(user_role=role, model=model, mcp_servers=[thinking_server])
+    await evaluate(
+        report_info=ReportInfo(
+            name=f"{model}-{role.value}-level-{level}-thinking", model=model, user_role=role, level=level
+        ),
+        dataset=hr_dataset,
+        task_config=task_config,
+    )
+
+
+async def basic_vs_better_prompt(model: KnownModelName):
+    role = Role.HR
+    level = 2
+    task_config = TaskConfig(user_role=role, model=model, prompt_name="basic_prompt.txt")
+    await evaluate(
+        report_info=ReportInfo(
+            name=f"{model}-{role.value}-level-{level}-basic-prompt", model=model, user_role=role, level=level
+        ),
+        dataset=hr_dataset,
+        task_config=task_config,
+    )
+
+    task_config = TaskConfig(user_role=role, model=model, prompt_name="agent_prompt.txt")
+    await evaluate(
+        report_info=ReportInfo(
+            name=f"{model}-{role.value}-level-{level}-better-prompt", model=model, user_role=role, level=level
+        ),
+        dataset=hr_dataset,
+        task_config=task_config,
+    )
+
+
+async def main():
     models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
     for model in models:
-        evaluate(
+        await evaluate(
             report_info=ReportInfo(
                 name=f"{model}-{Role.HR.value}-level-2", model=model, user_role=Role.HR, level=2
             ),
             dataset=hr_dataset,
             task_config=TaskConfig(user_role=Role.HR, model=model),
         )
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(eval_vs_thinking(model="openai:gpt-4.1-nano"))

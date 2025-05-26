@@ -4,11 +4,12 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Annotated, Any, Generic, Literal, TypeVar, get_args
 
+import logfire
 from dotenv import load_dotenv
 from loguru import logger
 from pydantic import AfterValidator, BaseModel
 from pydantic_ai import Agent
-from pydantic_ai.mcp import MCPServer, MCPServerStdio
+from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ToolCallPart
 from pydantic_ai.models import KnownModelName, Model
 from pydantic_ai.models.openai import OpenAIModel
@@ -20,6 +21,7 @@ from tenacity import AsyncRetrying, stop_after_attempt, wait_random
 from dream_factory_evals.df_mcp import list_table_names
 
 _ = load_dotenv()
+logfire.configure()
 
 MODULE_DIR = Path(__file__).parent
 
@@ -139,7 +141,7 @@ class TaskConfig(BaseModel):
     model: ModelT
     retries: int = RETRIES
     prompt_name: str = "basic_prompt.txt"
-    mcp_servers: list[MCPServer] | None = None
+    mcp_servers: list[MCPServerStdio] | None = None
     max_tool_calls: int = MAX_TOOL_CALLS
     new: bool = False
 
@@ -168,13 +170,15 @@ def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Tas
         args=["run", str(MODULE_DIR / "df_mcp.py")],
         env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
     )
+    mcp_servers = config.mcp_servers or []
+    mcp_servers.append(tables_mcp_server)
     agent = Agent(
         model=sglang_model(os.environ["SG_LANG_BASE_URL"])
         if not is_known_model_name(config.model)
         else config.model,
         name="df_agent",
         system_prompt=(MODULE_DIR / config.prompt_name).read_text(),
-        mcp_servers=(config.mcp_servers or []) + [tables_mcp_server],
+        mcp_servers=mcp_servers,
         instrument=True,
         retries=config.retries,
     )
@@ -193,10 +197,10 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
                                 for part in node.model_response.parts:
-                                    if isinstance(part, ToolCallPart) and part.tool_name not in [
-                                        "get_table_schema",
-                                        "final_result",
-                                    ]:
+                                    if isinstance(part, ToolCallPart) and not any(
+                                        x in part.tool_name
+                                        for x in ["get_table_schema", "final_result", "thinking"]
+                                    ):
                                         if num_tool_calls < config.max_tool_calls:
                                             tool_calls.append(
                                                 ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
@@ -238,14 +242,14 @@ class ReportInfo(BaseModel):
     level: int
 
 
-def evaluate(
+async def evaluate(
     report_info: ReportInfo,
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
     task_config: TaskConfig,
     # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task,
 ):
     logger.info(f"Evaluating {report_info.name}")
-    report = dataset.evaluate_sync(task=lambda inputs: task(inputs, task_config), name=report_info.name)
+    report = await dataset.evaluate(task=lambda inputs: task(inputs, task_config), name=report_info.name)
     report.print(
         include_input=True,
         include_output=True,

@@ -141,7 +141,7 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
 )
 
 
-if __name__ == "__main__":
+def main():
     models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
     for model in models:
         evaluate(
@@ -151,3 +151,7 @@ if __name__ == "__main__":
             dataset=finance_dataset,
             task_config=TaskConfig(user_role=Role.FINANCE, model=model),
         )
+
+
+if __name__ == "__main__":
+    main()

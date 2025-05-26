@@ -38,9 +38,7 @@ class TableUrlWithHeaders(TypedDict):
 
 
 def table_url_with_headers(
-    table_name: str,
-    base_url: str | None = None,
-    dream_factory_api_key: str | None = None,
+    table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
 ) -> TableUrlWithHeaders:
     base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
     dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
