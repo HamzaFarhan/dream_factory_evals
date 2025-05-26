@@ -139,8 +139,7 @@ Since we're working with LLMs, the `Agent`'s response for the above `hr_l1_1` qu
 
 All of these are correct responses to the query, but they are not equal to `100`. And will fail the eval.
 
-To solve this, we use `pydantic` to create `output_type`s for each query. So the `hr_l1_1` query is now defined as:
-
+To solve this, we use `Pydantic` to create `output_type`s for each query. So the `hr_l1_1` query is now defined as:
 ```python
 from pydantic import BaseModel
 from pydantic_evals import Case
@@ -149,6 +148,7 @@ class EmployeeCount(BaseModel):
     number_of_employees: int
 
 case = Case(
+    name="hr_l1_1",
     inputs=Query(
         query="How many employees are there?",
         output_type=EmployeeCount
@@ -158,7 +158,7 @@ case = Case(
     )
 )
 ```
-Now, when our `Agent` is run for this `case`, it will be forced to output a `EmployeeCount` object which will have a valid integer as `number_of_employees`.  
+Now, when our `Agent` is run for this `case`, we will use `PydanticAI` to force it to output a `EmployeeCount` object which will have a valid integer as `number_of_employees`.  
 Two `EmployeeCount` objects can be checked for equality using `==`.
 
 But what about free form text like `strategic_recommendation` above for the `finance_l4_1` query?  
@@ -166,4 +166,132 @@ Even if the `Agent` outputs a valid string with the correct recommendation, it i
 
 To solve this, we use another small `Agent` to compare the main `Agent`'s output with the `expected_response`.  
 All it does is compare the `expected_response` and the `Agent`'s output strings and returns `True` if they are saying the same thing despite different wording/structure/grammar. Otherwise, it returns `False`.
+
+So this is now our `finance_l4_1` case:
+```python
+from typing import Literal
+
+from pydantic import BaseModel
+
+from dream_factory_evals.df_agent import are_strings_similar
+from pydantic_evals import Case
+
+class CategoryPerformance(BaseModel):
+    Q4_2023_revenue: float
+    Q4_2024_revenue: float
+    growth_rate_percentage: float
+
+class MarketingExpenses(BaseModel):
+    Q4_2023: float
+    Q4_2024: float
+
+class Analysis(BaseModel):
+    better_performing_category: Literal["Software", "Electronics"]
+    revenue_to_marketing_efficiency: str
+
+    def __eq__(self, other: object) -> bool:
+        """
+        This is a custom equality check.
+        `better_performing_category` is a literal string, so we can use `==` to compare them.
+        `revenue_to_marketing_efficiency` is a free form text, so we use the `are_strings_similar` function to compare them.
+        """
+        if not isinstance(other, Analysis):
+            return NotImplemented
+        return (
+            self.better_performing_category == other.better_performing_category
+            and are_strings_similar(self.revenue_to_marketing_efficiency, other.revenue_to_marketing_efficiency)
+        )
+
+class RevenueComparison(BaseModel):
+    quarterly_comparison: dict[Literal["Software", "Electronics"], CategoryPerformance]
+    marketing_expenses: MarketingExpenses
+    analysis: Analysis
+    strategic_recommendation: str
+
+    def __eq__(self, other: object) -> bool:
+        """
+        This is a custom equality check.
+        `quarterly_comparison` is a dictionary of CategoryPerformance objects, so we can use `==` to compare them.
+        `marketing_expenses` is a MarketingExpenses object, so we can use `==` to compare them.
+        `analysis` is an Analysis object, so we can use `==` to compare them.
+        `strategic_recommendation` is a free form text, so we use the `are_strings_similar` function to compare them.
+        """
+        if not isinstance(other, RevenueComparison):
+            return NotImplemented
+        return (
+            self.quarterly_comparison == other.quarterly_comparison
+            and self.marketing_expenses == other.marketing_expenses
+            and self.analysis == other.analysis
+            and are_strings_similar(self.strategic_recommendation, other.strategic_recommendation)
+
+case = Case(
+    name="finance_l4_1",
+    inputs=Query(
+        query=(
+            "Compare Q4 2023 vs Q4 2024 revenue performance for 'Software' and 'Electronics' products. "
+            "Calculate growth rates and identify which category performed better. "
+            "Also analyze total 'Marketing' expenses for both quarters. "
+            "Provide one strategic recommendation based on the revenue-to-marketing spend efficiency."
+        ),
+        output_type=RevenueComparison
+    ),
+    expected_output=QueryResult(
+        result=RevenueComparison(
+            quarterly_comparison={
+                "Software": CategoryPerformance(
+                    Q4_2023_revenue=15420.33,
+                    Q4_2024_revenue=28750.12,
+                    growth_rate_percentage=86.4
+                ),
+                "Electronics": CategoryPerformance(
+                    Q4_2023_revenue=13831.28,
+                    Q4_2024_revenue=34569.61,
+                    growth_rate_percentage=149.9
+                )
+            },
+            marketing_expenses=MarketingExpenses(
+                Q4_2023=2450.75,
+                Q4_2024=3200.50
+            ),
+            analysis=Analysis(
+                better_performing_category="Electronics",
+                revenue_to_marketing_efficiency="Electronics showed 149.9% growth vs 86.4% for Software, while marketing spend increased only 30.6%"
+            ),
+            strategic_recommendation="Allocate more marketing budget to Electronics products in Q1 2025, as they demonstrate superior growth response to marketing investment."
+        )
+    )
+)
+```
+
+#### expected_tool_calls
+
+The `expected_output` of a `Case` will also have `tool_calls`. This would be a list of MCP tool calls that the `Agent` is expected to make. We will evaluate the number of tool calls and the parameters of the tool calls.
+
+### Process
+
+Of course, the first step is actually creating the queries.
+These are the steps:
+1. Use the DreamFactory API to get the data from the database and store it into json files.
+   One json file per table.
+2. Load these files into Cursor/Windsurf/ChatGPT/Claude/Gemini/etc.
+3. Explain what a level 1/2/3/4 query is.
+4. Create the queries and save them into a json file. One file per level.
+5. Each query will follow the [Structure](#structure) defined above.
+6. Create the `Case`s from the queries.
+
+Now for each role in each level, we will have a `Dataset`. This dataset will have 3-5 `Case`s.  
+
+So if we go to `dream_factory_evals/evals/level2/hr/`, there is an `evals.py` file which has the level 2 `Dataset` for the `HR` role.  
+And there is an `output_types.py` file which has the `output_type`s for the `Dataset`.
+
+We have to repeat this process for each role in each level.
+
+## 3. Value
+
+This insight of needing to create `output_type`s for each query is quite valuable and something that was not obvious to us at first.
+
+The `MCP` along with this process are the core deliverables of this project.
+
+
+
 
