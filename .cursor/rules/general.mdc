@@ -26,6 +26,5 @@ DO NOT GIVE ME HIGH LEVEL STUFF, IF I ASK FOR FIX OR EXPLANATION, I WANT ACTUAL 
 - When running a command in the terminal, the command should start with `uv run`
 - When running python code, use `uv run <file.py>`
 - When reading/analyzing files, always read the maximum number of lines per call whenever possible to minimize the number of tool calls and reduce costs. Only make additional calls when necessary to get more context.
-- If I have an `.env` file and it's not in the `.gitignore`, add it to the `.gitignore`. If you can't, remind me to do so.
 
 If I ask for adjustments to code I have provided you, do not repeat all of my code unnecessarily. Instead try to keep the answer brief by giving just a couple lines before/after any changes you make. Multiple code blocks are ok.

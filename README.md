@@ -2,6 +2,9 @@
 
 ## Table of Contents
 
+- [Setup](#setup)
+  - [Install uv](#install-uv)
+  - [Environment Variables](#environment-variables)
 - [Overview](#overview)
 - [Database Schema](#database-schema)
   - [Tables](#tables)
@@ -13,6 +16,74 @@
 - [Running Evaluations](#running-evaluations)
 - [Creating Leaderboards](#creating-leaderboards)
 - [Example Queries](#example-queries)
+
+## Setup
+
+### Install uv
+
+https://docs.astral.sh/uv/getting-started/installation/
+
+### Environment Variables
+
+Create a `.env` file in the project root with the following environment variables:
+
+```bash
+# DreamFactory API Configuration (Required)
+DREAM_FACTORY_BASE_URL=https://demov7.dreamfactory.com/api/v2/yearlingsolutions
+DREAM_FACTORY_CEO_API_KEY=your-ceo-api-key
+DREAM_FACTORY_HR_API_KEY=your-hr-api-key
+DREAM_FACTORY_FINANCE_API_KEY=your-finance-api-key
+DREAM_FACTORY_OPS_API_KEY=your-ops-api-key
+
+# DreamFactory API Configuration for the new data
+NEW_DREAM_FACTORY_BASE_URL="https://demov7.dreamfactory.com/api/v2/yearling2"
+NEW_DREAM_FACTORY_CEO_API_KEY=your-new-ceo-api-key
+NEW_DREAM_FACTORY_HR_API_KEY=your-new-hr-api-key
+NEW_DREAM_FACTORY_FINANCE_API_KEY=your-new-finance-api-key
+NEW_DREAM_FACTORY_OPS_API_KEY=your-new-ops-api-key
+
+# Logfire configuration for leaderboard creation (Required for leaderboards)
+LOGFIRE_READ_TOKEN=your-logfire-read-token
+
+# Optional: Evaluation defaults (can be overridden via CLI)
+PROMPT_NAME=basic_prompt.txt
+MAX_TOOL_CALLS=20
+RETRIES=3
+SCORES_DIR=scores
+```
+
+#### Required Environment Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DREAM_FACTORY_BASE_URL` | Base URL for your DreamFactory API | `https://demov7.dreamfactory.com/api/v2/yearlingsolutions` |
+| `DREAM_FACTORY_CEO_API_KEY` | API key for CEO role (full access) | `your-ceo-api-key` |
+| `DREAM_FACTORY_HR_API_KEY` | API key for HR role (hr_* tables only) | `your-hr-api-key` |
+| `DREAM_FACTORY_FINANCE_API_KEY` | API key for Finance role (finance_* tables only) | `your-finance-api-key` |
+| `DREAM_FACTORY_OPS_API_KEY` | API key for Operations role (ops_* tables only) | `your-ops-api-key` |
+| `NEW_DREAM_FACTORY_*` | New Data DreamFactory API configuration | N/A |
+| `LOGFIRE_READ_TOKEN` | Logfire read token for leaderboard creation | N/A |
+
+#### Optional Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PROMPT_NAME` | Default prompt file to use | `basic_prompt.txt` |
+| `MAX_TOOL_CALLS` | Maximum tool calls per evaluation | `20` |
+| `RETRIES` | Number of retries for failed requests | `3` |
+| `SCORES_DIR` | Directory for leaderboard scores | `scores` |
+
+### Logging and Observability
+
+Every agent run is automatically logged to **Logfire**, which is based on **OpenTelemetry**. This provides comprehensive observability for:
+
+- **Agent execution traces** - Complete execution flow and timing
+- **Tool calls** - All MCP tool invocations and responses  
+- **Model interactions** - LLM requests and responses
+- **Performance metrics** - Duration, token usage, and costs
+- **Error tracking** - Detailed error logs and stack traces
+
+The `LOGFIRE_READ_TOKEN` is required for the leaderboard creation system to query these logged evaluation results and generate performance comparisons.
 
 ## Overview
 
