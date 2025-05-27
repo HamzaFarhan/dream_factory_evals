@@ -38,7 +38,7 @@ def get_valid_models() -> list[str]:
 
 def get_valid_roles() -> list[str]:
     """Get all valid role values."""
-    return [role.value for role in Role]
+    return [role.value for role in Role if role != Role.CEO]
 
 
 @app.command()

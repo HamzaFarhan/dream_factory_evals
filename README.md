@@ -273,55 +273,60 @@ This evaluation framework provides several key insights:
 
 ## Running Evaluations
 
-### Basic Evaluation
+### CLI Interface
+
+The evaluation system provides a CLI tool for running evaluations:
 
 ```bash
-# Run HR Level 2 evaluations
-uv run evals/level2/hr/evals.py
+# Basic usage
+uv run src/dream_factory_evals/run_eval.py <model> <role> <level>
+
+# Examples
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2
+uv run src/dream_factory_evals/run_eval.py "anthropic:claude-4-sonnet-20250514" finance 3
+uv run src/dream_factory_evals/run_eval.py "google-gla:gemini-2.0-flash" ops 1
 ```
 
-### Custom Evaluation
+### CLI Options
 
-```python
-from dream_factory_evals.df_agent import evaluate, ReportInfo, TaskConfig, Role
+```bash
+# Custom report name
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
 
-# Configure evaluation
-task_config = TaskConfig(
-    user_role=Role.HR,
-    model="openai:gpt-4.1-mini",
-    retries=3,
-    max_tool_calls=20
-)
+# Custom prompt file
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
 
-# Run evaluation
-await evaluate(
-    report_info=ReportInfo(
-        name="hr-level2-test",
-        model="openai:gpt-4.1-mini", 
-        user_role=Role.HR,
-        level=2
-    ),
-    dataset=hr_dataset,
-    task_config=task_config
-)
+# Adjust retry and tool call limits
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --max-tool-calls 30 --retries 5
+```
+
+### Environment Variables
+
+Configure defaults using environment variables:
+
+```bash
+export PROMPT_NAME="basic_prompt.txt"
+export MAX_TOOL_CALLS="20"
+export RETRIES="3"
+```
+
+### List Available Options
+
+```bash
+# List all available models
+uv run src/dream_factory_evals/run_eval.py list-models
+
+# List all available roles  
+uv run src/dream_factory_evals/run_eval.py list-roles
 ```
 
 ### Comparing Models
 
-```python
-models = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini", "anthropic:claude-3-sonnet"]
-
-for model in models:
-    await evaluate(
-        report_info=ReportInfo(
-            name=f"{model}-hr-level2",
-            model=model,
-            user_role=Role.HR,
-            level=2
-        ),
-        dataset=hr_dataset,
-        task_config=TaskConfig(user_role=Role.HR, model=model)
-    )
+```bash
+# Test multiple models on the same dataset
+for model in "openai:gpt-4.1-mini" "anthropic:claude-4-sonnet-20250514" "google-gla:gemini-2.0-flash"; do
+    uv run src/dream_factory_evals/run_eval.py "$model" hr 2
+done
 ```
 
 ## Examples
