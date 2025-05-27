@@ -332,6 +332,37 @@ for model in "openai:gpt-4.1-mini" "anthropic:claude-4-sonnet-20250514" "google-
 done
 ```
 
+### Comparing Configurations
+
+You can also compare the same model with different configurations to optimize performance:
+
+```bash
+# Compare different prompts
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "basic_prompt.txt" --report-name "gpt-4.1-mini-hr-2-basic"
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt" --report-name "gpt-4.1-mini-hr-2-advanced"
+
+# Compare with and without think tool
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "gpt-4.1-mini-hr-2-no-think"
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think --report-name "gpt-4.1-mini-hr-2-with-think"
+
+# Compare all configurations for a model
+model="openai:gpt-4.1-mini"
+role="hr"
+level=2
+
+# Basic prompt without think
+uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --report-name "${model}-${role}-${level}-basic"
+
+# Basic prompt with think
+uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --think --report-name "${model}-${role}-${level}-basic-think"
+
+# Advanced prompt without think
+uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --report-name "${model}-${role}-${level}-advanced"
+
+# Advanced prompt with think
+uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --think --report-name "${model}-${role}-${level}-advanced-think"
+```
+
 ## Creating Leaderboards
 
 After running evaluations, you can create leaderboards to compare model performance across multiple evaluation reports.

@@ -250,7 +250,7 @@ async def basic_vs_better_prompt(model: KnownModelName):
         task_config=task_config,
     )
 
-    task_config = TaskConfig(user_role=role, model=model, prompt_name="agent_prompt.txt")
+    task_config = TaskConfig(user_role=role, model=model, prompt_name="advanced_prompt.txt")
     await evaluate(
         report_info=ReportInfo(
             name=f"{model}-{role.value}-level-{level}-better-prompt", model=model, user_role=role, level=level
