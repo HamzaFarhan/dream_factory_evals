@@ -58,10 +58,7 @@ deps = Deps(active_project="Gary's Project")
 
 async def main():
     async with agent.run_mcp_servers():
-        res = await agent.run(
-            user_prompt="how many total employees are there? Use the thinking tool.",
-            deps=deps,
-        )
+        res = await agent.run(user_prompt="how many total employees are there? Use the thinking tool.", deps=deps)
         print(res.output)
 
 

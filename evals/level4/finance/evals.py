@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -11,11 +10,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -60,31 +55,19 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                             category_name="Electronics",
                             total_revenue_2024=112799.13,
                             quarterly_revenue=QuarterlyAmount(
-                                Q1=8786.37,
-                                Q2=52748.88,
-                                Q3=16694.27,
-                                Q4=34569.61,
-                                total=112799.13,
+                                Q1=8786.37, Q2=52748.88, Q3=16694.27, Q4=34569.61, total=112799.13
                             ),
                         ),
                         CategoryQuarterlyRevenue(
                             category_name="Service",
                             total_revenue_2024=82099.01,
                             quarterly_revenue=QuarterlyAmount(
-                                Q1=17900.71,
-                                Q2=9025.19,
-                                Q3=24863.67,
-                                Q4=30309.44,
-                                total=82099.01,
+                                Q1=17900.71, Q2=9025.19, Q3=24863.67, Q4=30309.44, total=82099.01
                             ),
                         ),
                     ],
                     quarterly_operational_expenses_2024=QuarterlyAmount(
-                        Q1=8438.42,
-                        Q2=304.96,
-                        Q3=0.0,
-                        Q4=974.98,
-                        total=9718.36,
+                        Q1=8438.42, Q2=304.96, Q3=0.0, Q4=974.98, total=9718.36
                     ),
                     correlation_analysis_and_recommendation=CorrelationAnalysisAndRecommendation(
                         analysis_summary="Electronics revenue peaked in Q2 (52748.88) and Q4 (34569.61). Service revenue was strong in Q3 (24863.67) and Q4 (30309.44). Operational expenses were highest in Q1 (8438.42) and much lower in subsequent quarters, particularly Q3 (0.00). There isn't a clear direct correlation between quarterly operational expense spikes and revenue peaks in the top categories for 2024; revenues seem driven by other factors. The significant drop in Q3 operational expenses while Service revenue was strong and Electronics revenue was moderate is notable.",
@@ -128,37 +111,23 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                             expense_date="2023-07-24",
                         ),
                         CapitalExpense(
-                            expense_id=13,
-                            description="Land purchase",
-                            amount=1813.33,
-                            expense_date="2023-08-16",
+                            expense_id=13, description="Land purchase", amount=1813.33, expense_date="2023-08-16"
                         ),
                         CapitalExpense(
-                            expense_id=15,
-                            description="Land purchase",
-                            amount=1708.48,
-                            expense_date="2023-12-07",
+                            expense_id=15, description="Land purchase", amount=1708.48, expense_date="2023-12-07"
                         ),
                     ],
                     revenue_analysis=RevenueAnalysis(
                         Electronics=CategoryRevenue(
                             Q4_2023_revenue=13831.28,
                             quarterly_revenue_for_2024=QuarterlyAmount(
-                                Q1=8786.37,
-                                Q2=52748.88,
-                                Q3=16694.27,
-                                Q4=34569.61,
-                                total=112799.13,
+                                Q1=8786.37, Q2=52748.88, Q3=16694.27, Q4=34569.61, total=112799.13
                             ),
                         ),
                         Hardware=CategoryRevenue(
                             Q4_2023_revenue=0.0,
                             quarterly_revenue_for_2024=QuarterlyAmount(
-                                Q1=0.0,
-                                Q2=8842.21,
-                                Q3=0.0,
-                                Q4=3012.43,
-                                total=11854.64,
+                                Q1=0.0, Q2=8842.21, Q3=0.0, Q4=3012.43, total=11854.64
                             ),
                         ),
                     ),
@@ -252,18 +221,3 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-4",
-                model=model,
-                user_role=Role.FINANCE,
-                level=4,
-            ),
-            dataset=finance_dataset,
-            task_config=TaskConfig(user_role=Role.FINANCE, model=model),
-        )

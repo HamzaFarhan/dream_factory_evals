@@ -187,10 +187,7 @@ for loc in machine_locations:
 # --- OPS_MAINTENANCE ---
 maintenances: list[dict[str, Any]] = []
 actions_dict = {
-    "Routine check": {
-        False: ["Routine check completed."],
-        True: ["Anomaly found during routine check."],
-    },
+    "Routine check": {False: ["Routine check completed."], True: ["Anomaly found during routine check."]},
     "Replaced part": {
         False: ["Replaced faulty sensor.", "Minor malfunction fixed."],
         True: ["Replacement failed.", "Part incompatible."],

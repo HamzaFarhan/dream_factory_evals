@@ -10,18 +10,10 @@ from dream_factory_evals.df_chat import ChatResult, chat
 
 
 async def run_chat(
-    prompt: str,
-    role: Role,
-    model: KnownModelName,
-    message_history: list[ModelMessage] | None = None,
+    prompt: str, role: Role, model: KnownModelName, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     try:
-        chat_result = await chat(
-            user_prompt=prompt,
-            user_role=role,
-            model=model,
-            message_history=message_history,
-        )
+        chat_result = await chat(user_prompt=prompt, user_role=role, model=model, message_history=message_history)
         return chat_result
     except Exception as e:
         logger.exception(f"Error during chat: {e}")
@@ -31,16 +23,12 @@ async def run_chat(
 def show_tool_calls(tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]]):
     for _, tool_call in tool_calls.items():
         if tool_call.get("call"):
-            st.markdown(
-                '<span style="color:rgb(77,168,74);font-weight:bold;">Call</span>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<span style="color:rgb(77,168,74);font-weight:bold;">Call</span>', unsafe_allow_html=True)
             st.code(f"{tool_call['call'].tool_name}", language="json")
             st.code(f"{tool_call['call'].params}", language="json")  # type: ignore
             if tool_call.get("result"):
                 st.markdown(
-                    '<span style="color:rgb(73,162,207);font-weight:bold;">Result</span>',
-                    unsafe_allow_html=True,
+                    '<span style="color:rgb(73,162,207);font-weight:bold;">Result</span>', unsafe_allow_html=True
                 )
                 st.code(f"{tool_call['result'].tool_name}", language="json")
                 st.code(f"{tool_call['result'].result}", language="json")  # type: ignore
@@ -48,20 +36,11 @@ def show_tool_calls(tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]])
 
 def show_token_counts(input_tokens: int, output_tokens: int, total_tokens: int):
     color = "rgb(255,179,71)"
-    st.markdown(
-        f'<span style="color:{color};font-weight:bold;">Input Tokens</span>',
-        unsafe_allow_html=True,
-    )
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Input Tokens</span>', unsafe_allow_html=True)
     st.code(f"{input_tokens}", language="json")
-    st.markdown(
-        f'<span style="color:{color};font-weight:bold;">Output Tokens</span>',
-        unsafe_allow_html=True,
-    )
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Output Tokens</span>', unsafe_allow_html=True)
     st.code(f"{output_tokens}", language="json")
-    st.markdown(
-        f'<span style="color:{color};font-weight:bold;">Total Tokens</span>',
-        unsafe_allow_html=True,
-    )
+    st.markdown(f'<span style="color:{color};font-weight:bold;">Total Tokens</span>', unsafe_allow_html=True)
     st.code(f"{total_tokens}", language="json")
 
 
@@ -84,9 +63,7 @@ with st.sidebar:
     )
 
     role = st.selectbox(
-        "User Role",
-        [Role.CEO, Role.HR, Role.FINANCE, Role.OPS],
-        format_func=lambda x: x.value.upper(),
+        "User Role", [Role.CEO, Role.HR, Role.FINANCE, Role.OPS], format_func=lambda x: x.value.upper()
     )
     access = "all" if role == Role.CEO else role.value.upper()
     st.info(f"Selected role: {role.value.upper()} with access to {access} tables")
@@ -108,11 +85,7 @@ for message in st.session_state.messages:
 
         if message.get("input_tokens") and message.get("output_tokens") and message.get("total_tokens"):
             with st.expander("Token Usage"):
-                show_token_counts(
-                    message["input_tokens"],
-                    message["output_tokens"],
-                    message["total_tokens"],
-                )
+                show_token_counts(message["input_tokens"], message["output_tokens"], message["total_tokens"])
 
 # User input
 if prompt := st.chat_input("Ask something..."):
@@ -129,10 +102,7 @@ if prompt := st.chat_input("Ask something..."):
             # Run chat function
             chat_result = asyncio.run(
                 run_chat(
-                    prompt=prompt,
-                    role=role,
-                    model=model,
-                    message_history=st.session_state.model_message_history,
+                    prompt=prompt, role=role, model=model, message_history=st.session_state.model_message_history
                 )
             )
 
@@ -150,9 +120,7 @@ if prompt := st.chat_input("Ask something..."):
             if chat_result.input_tokens and chat_result.output_tokens and chat_result.total_tokens:
                 with st.expander("Token Usage"):
                     show_token_counts(
-                        chat_result.input_tokens,
-                        chat_result.output_tokens,
-                        chat_result.total_tokens,
+                        chat_result.input_tokens, chat_result.output_tokens, chat_result.total_tokens
                     )
 
             # Format and store assistant response

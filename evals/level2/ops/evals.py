@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import date as date_
 
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -10,11 +9,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -105,10 +100,7 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                 output_type=MaintenanceActionCount,
             ),
             expected_output=QueryResult(
-                result=MaintenanceActionCount(
-                    routine_check_count=6,
-                    replaced_part_count=3,
-                ),
+                result=MaintenanceActionCount(routine_check_count=6, replaced_part_count=3),
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
@@ -162,10 +154,7 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                 output_type=MachineAgeInfo,
             ),
             expected_output=QueryResult(
-                result=MachineAgeInfo(
-                    average_age_years=2.15,
-                    active_machine_count=12,
-                ),
+                result=MachineAgeInfo(average_age_years=2.15, active_machine_count=12),
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
@@ -181,18 +170,3 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.OPS.value}-level-2",
-                model=model,
-                user_role=Role.OPS,
-                level=2,
-            ),
-            dataset=ops_dataset,
-            task_config=TaskConfig(user_role=Role.OPS, model=model),
-        )

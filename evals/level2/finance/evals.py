@@ -81,8 +81,7 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         Case(
             name="finance_l2_3",
             inputs=Query(
-                query="What was the profit (revenue minus expenses) for Q3 2022?",
-                output_type=ProfitInfo,
+                query="What was the profit (revenue minus expenses) for Q3 2022?", output_type=ProfitInfo
             ),
             expected_output=QueryResult(
                 result=ProfitInfo(total_revenue=7750, total_expenses=2000, profit=5750),
@@ -179,32 +178,8 @@ async def eval_vs_thinking(model: KnownModelName):
     task_config = TaskConfig(user_role=role, model=model, mcp_servers=[thinking_server])
     await evaluate(
         report_info=ReportInfo(
-            name=f"{model}-{role.value}-level-{level}-thinking",
-            model=model,
-            user_role=role,
-            level=level,
+            name=f"{model}-{role.value}-level-{level}-thinking", model=model, user_role=role, level=level
         ),
         dataset=finance_dataset,
         task_config=task_config,
     )
-
-
-async def main():
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        await evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-2",
-                model=model,
-                user_role=Role.FINANCE,
-                level=2,
-            ),
-            dataset=finance_dataset,
-            task_config=TaskConfig(user_role=Role.FINANCE, model=model),
-        )
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(main())

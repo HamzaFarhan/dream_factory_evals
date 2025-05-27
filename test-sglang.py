@@ -11,8 +11,7 @@ class Email(BaseModel):
 
 def sglang_model(model_name: str) -> Model:
     return OpenAIModel(
-        model_name,
-        provider=OpenAIProvider(base_url="http://34.66.87.55:30000/v1", api_key="EMPTY"),
+        model_name, provider=OpenAIProvider(base_url="http://34.66.87.55:30000/v1", api_key="EMPTY")
     )
 
 

@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -11,11 +10,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -130,10 +125,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                     ),
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_policies",
-                            "filter": "department_id IN (13, 15, 16, 18, 19)",
-                        },
+                        params={"table_name": "hr_policies", "filter": "department_id IN (13, 15, 16, 18, 19)"},
                     ),
                 ],
             ),
@@ -454,18 +446,3 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-3",
-                model=model,
-                user_role=Role.HR,
-                level=3,
-            ),
-            dataset=hr_dataset,
-            task_config=TaskConfig(user_role=Role.HR, model=model),
-        )

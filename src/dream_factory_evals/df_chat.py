@@ -25,9 +25,7 @@ class ChatResult:
 
 
 async def chat(
-    user_prompt: str,
-    task_config: TaskConfig,
-    message_history: list[ModelMessage] | None = None,
+    user_prompt: str, task_config: TaskConfig, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=MarkdownResponse)
     task_config.new = True
@@ -39,9 +37,7 @@ async def chat(
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
                     async with agent.iter(
-                        user_prompt=task.prompt,
-                        output_type=inputs.output_type,
-                        message_history=message_history,
+                        user_prompt=task.prompt, output_type=inputs.output_type, message_history=message_history
                     ) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
@@ -52,8 +48,7 @@ async def chat(
                                         if num_tool_calls < task_config.max_tool_calls:
                                             tool_calls[part.tool_call_id] = {
                                                 "call": ToolCall(
-                                                    tool_name=part.tool_name,
-                                                    params=part.args_as_dict(),
+                                                    tool_name=part.tool_name, params=part.args_as_dict()
                                                 )
                                             }
                                             num_tool_calls += 1
@@ -77,8 +72,7 @@ async def chat(
                                         "final_result",
                                     ]:
                                         tool_calls[part.tool_call_id]["result"] = ToolCallResult(
-                                            tool_name=part.tool_name,
-                                            result=part.content.content,
+                                            tool_name=part.tool_name, result=part.content.content
                                         )
                     res = (
                         agent_run.result.output.content
@@ -97,7 +91,5 @@ async def chat(
     except RetryError as e:
         logger.exception(e)
     return ChatResult(
-        result="Sorry, I couldn't complete the task.",
-        tool_calls=tool_calls,
-        message_history=message_history,
+        result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history
     )

@@ -246,7 +246,7 @@ async def evaluate(
     report_info: ReportInfo,
     dataset: Dataset[Query[ResultT], QueryResult[ResultT]],
     task_config: TaskConfig,
-    # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task,
+    # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task
 ):
     logger.info(f"Evaluating {report_info.name}")
     report = await dataset.evaluate(task=lambda inputs: task(inputs, task_config), name=report_info.name)

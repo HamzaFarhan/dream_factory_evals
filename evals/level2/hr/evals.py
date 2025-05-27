@@ -42,10 +42,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     cases=[
         Case(
             name="hr_l2_1",
-            inputs=Query(
-                query="What department does Alice Johnson work in?",
-                output_type=EmployeeDepartment,
-            ),
+            inputs=Query(query="What department does Alice Johnson work in?", output_type=EmployeeDepartment),
             expected_output=QueryResult(
                 result=EmployeeDepartment(employee="Alice Johnson", department="Sales"),
                 tool_calls=[
@@ -62,10 +59,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="hr_l2_2",
-            inputs=Query(
-                query="Who is the manager of the Engineering department?",
-                output_type=DepartmentManager,
-            ),
+            inputs=Query(query="Who is the manager of the Engineering department?", output_type=DepartmentManager),
             expected_output=QueryResult(
                 result=DepartmentManager(
                     first_name="Carol",
@@ -76,27 +70,18 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_departments",
-                            "filter": "name='Engineering'",
-                        },
+                        params={"table_name": "hr_departments", "filter": "name='Engineering'"},
                     ),
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_employees",
-                            "filter": "(department_id=3) AND (role='Manager')",
-                        },
+                        params={"table_name": "hr_employees", "filter": "(department_id=3) AND (role='Manager')"},
                     ),
                 ],
             ),
         ),
         Case(
             name="hr_l2_3",
-            inputs=Query(
-                query="How many employees are in each department?",
-                output_type=DepartmentCounts,
-            ),
+            inputs=Query(query="How many employees are in each department?", output_type=DepartmentCounts),
             expected_output=QueryResult(
                 result=DepartmentCounts(
                     department_counts=[
@@ -125,10 +110,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_departments",
-                            "related": "hr_employees_by_department_id",
-                        },
+                        params={"table_name": "hr_departments", "related": "hr_employees_by_department_id"},
                     ),
                 ],
             ),
@@ -199,47 +181,20 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         Case(
             name="hr_l2_5",
             inputs=Query(
-                query="List all managers along with their departments.",
-                output_type=ManagersWithDepartments,
+                query="List all managers along with their departments.", output_type=ManagersWithDepartments
             ),
             expected_output=QueryResult(
                 result=ManagersWithDepartments(
                     managers=[
+                        ManagerDepartmentInfo(first_name="Carol", last_name="Williams", department="Engineering"),
+                        ManagerDepartmentInfo(first_name="Eve", last_name="Davis", department="Finance"),
+                        ManagerDepartmentInfo(first_name="Henry", last_name="Moore", department="IT"),
+                        ManagerDepartmentInfo(first_name="Kelly", last_name="Thomas", department="R&D"),
                         ManagerDepartmentInfo(
-                            first_name="Carol",
-                            last_name="Williams",
-                            department="Engineering",
+                            first_name="Noah", last_name="Harris", department="Quality Assurance"
                         ),
-                        ManagerDepartmentInfo(
-                            first_name="Eve",
-                            last_name="Davis",
-                            department="Finance",
-                        ),
-                        ManagerDepartmentInfo(
-                            first_name="Henry",
-                            last_name="Moore",
-                            department="IT",
-                        ),
-                        ManagerDepartmentInfo(
-                            first_name="Kelly",
-                            last_name="Thomas",
-                            department="R&D",
-                        ),
-                        ManagerDepartmentInfo(
-                            first_name="Noah",
-                            last_name="Harris",
-                            department="Quality Assurance",
-                        ),
-                        ManagerDepartmentInfo(
-                            first_name="Quinn",
-                            last_name="Garcia",
-                            department="Strategy",
-                        ),
-                        ManagerDepartmentInfo(
-                            first_name="Tyler",
-                            last_name="Clark",
-                            department="Innovation",
-                        ),
+                        ManagerDepartmentInfo(first_name="Quinn", last_name="Garcia", department="Strategy"),
+                        ManagerDepartmentInfo(first_name="Tyler", last_name="Clark", department="Innovation"),
                     ]
                 ),
                 tool_calls=[
@@ -276,10 +231,7 @@ async def eval_vs_thinking(model: KnownModelName):
     task_config = TaskConfig(user_role=role, model=model, mcp_servers=[thinking_server])
     await evaluate(
         report_info=ReportInfo(
-            name=f"{model}-{role.value}-level-{level}-thinking",
-            model=model,
-            user_role=role,
-            level=level,
+            name=f"{model}-{role.value}-level-{level}-thinking", model=model, user_role=role, level=level
         ),
         dataset=hr_dataset,
         task_config=task_config,
@@ -292,10 +244,7 @@ async def basic_vs_better_prompt(model: KnownModelName):
     task_config = TaskConfig(user_role=role, model=model, prompt_name="basic_prompt.txt")
     await evaluate(
         report_info=ReportInfo(
-            name=f"{model}-{role.value}-level-{level}-basic-prompt",
-            model=model,
-            user_role=role,
-            level=level,
+            name=f"{model}-{role.value}-level-{level}-basic-prompt", model=model, user_role=role, level=level
         ),
         dataset=hr_dataset,
         task_config=task_config,
@@ -304,32 +253,11 @@ async def basic_vs_better_prompt(model: KnownModelName):
     task_config = TaskConfig(user_role=role, model=model, prompt_name="agent_prompt.txt")
     await evaluate(
         report_info=ReportInfo(
-            name=f"{model}-{role.value}-level-{level}-better-prompt",
-            model=model,
-            user_role=role,
-            level=level,
+            name=f"{model}-{role.value}-level-{level}-better-prompt", model=model, user_role=role, level=level
         ),
         dataset=hr_dataset,
         task_config=task_config,
     )
 
 
-async def main():
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        await evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-2",
-                model=model,
-                user_role=Role.HR,
-                level=2,
-            ),
-            dataset=hr_dataset,
-            task_config=TaskConfig(user_role=Role.HR, model=model),
-        )
 
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(eval_vs_thinking(model="openai:gpt-4.1-nano"))

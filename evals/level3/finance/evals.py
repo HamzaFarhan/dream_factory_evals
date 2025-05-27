@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import date as date_
 
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -10,11 +9,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -101,8 +96,7 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         Case(
             name="finance_l3_2",
             inputs=Query(
-                query="What was the quarterly profit (revenue minus expenses) for Q1 2022?",
-                output_type=Q1Profit,
+                query="What was the quarterly profit (revenue minus expenses) for Q1 2022?", output_type=Q1Profit
             ),
             expected_output=QueryResult(
                 result=Q1Profit(q1_2022_profit=6500),
@@ -186,18 +180,3 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-3",
-                model=model,
-                user_role=Role.FINANCE,
-                level=3,
-            ),
-            dataset=finance_dataset,
-            task_config=TaskConfig(user_role=Role.FINANCE, model=model),
-        )

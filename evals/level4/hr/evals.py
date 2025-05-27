@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -11,11 +10,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -68,9 +63,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Staff",
                                     date_joined="2023-01-24",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Employee(
@@ -80,9 +73,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Manager",
                                     date_joined="2023-04-08",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Employee(
@@ -92,16 +83,11 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Staff",
                                     date_joined="2023-11-29",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                             ],
-                            role_distribution=RoleDistribution(
-                                Manager=1,
-                                Staff=2,
-                            ),
+                            role_distribution=RoleDistribution(Manager=1, Staff=2),
                             relevant_active_policies_by_2024_01_01=[
                                 Policy(
                                     policy_id=7,
@@ -110,9 +96,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     description="Policy details for Engineering department.",
                                     department_id=3,
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Policy(
@@ -122,9 +106,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     description="Policy details for Engineering department.",
                                     department_id=3,
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                             ],
@@ -139,9 +121,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Staff",
                                     date_joined="2022-07-07",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Employee(
@@ -151,9 +131,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Lead",
                                     date_joined="2022-08-06",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Employee(
@@ -163,16 +141,11 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     role="Staff",
                                     date_joined="2022-12-25",
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                             ],
-                            role_distribution=RoleDistribution(
-                                Lead=1,
-                                Staff=2,
-                            ),
+                            role_distribution=RoleDistribution(Lead=1, Staff=2),
                             relevant_active_policies_by_2024_01_01=[
                                 Policy(
                                     policy_id=7,
@@ -181,9 +154,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     description="Policy details for Engineering department.",
                                     department_id=3,
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                                 Policy(
@@ -193,9 +164,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                                     description="Policy details for Engineering department.",
                                     department_id=3,
                                     hr_departments_by_department_id=Department(
-                                        department_id=3,
-                                        name="Engineering",
-                                        manager_id=16,
+                                        department_id=3, name="Engineering", manager_id=16
                                     ),
                                 ),
                             ],
@@ -359,10 +328,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                     ),
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_departments",
-                            "filter": "name IN ('IT', 'Sales')",
-                        },
+                        params={"table_name": "hr_departments", "filter": "name IN ('IT', 'Sales')"},
                     ),
                     ToolCall(
                         tool_name="get_table_records",
@@ -392,21 +358,14 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                             effective_date="2023-05-13",
                             description="Policy details for HR department.",
                             department_id=4,
-                            hr_departments_by_department_id=Department(
-                                department_id=4,
-                                name="HR",
-                                manager_id=11,
-                            ),
+                            hr_departments_by_department_id=Department(department_id=4, name="HR", manager_id=11),
                         ),
                         strategic_direction="Data-driven decision-making",
                         targeted_roles=["Staff", "Lead"],
                     ),
                     current_hr_team_profile=HREmployeeProfile(
                         count=2,
-                        roles={
-                            "Staff": 1,
-                            "Lead": 1,
-                        },
+                        roles={"Staff": 1, "Lead": 1},
                         join_dates=["2023-02-12", "2023-09-08"],
                     ),
                     proposed_competency_initiatives=[
@@ -436,10 +395,7 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_departments",
-                            "filter": "department_id=4",
-                        },
+                        params={"table_name": "hr_departments", "filter": "department_id=4"},
                     ),
                     ToolCall(
                         tool_name="get_table_records_by_ids",
@@ -462,18 +418,3 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-4",
-                model=model,
-                user_role=Role.HR,
-                level=4,
-            ),
-            dataset=hr_dataset,
-            task_config=TaskConfig(user_role=Role.HR, model=model),
-        )

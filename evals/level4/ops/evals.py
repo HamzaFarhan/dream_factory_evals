@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -11,11 +10,7 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
 )
 
 from .output_types import (
@@ -62,20 +57,14 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                             machines_analyzed_ids=[1, 18, 21, 22, 71, 72, 73, 92],
                             total_2024_maintenance_events=6,
                             maintenance_action_breakdown_2024=MaintenanceActionBreakdown(
-                                Routine_check=2,
-                                Calibration=2,
-                                Software_update=1,
-                                Replaced_part=1,
+                                Routine_check=2, Calibration=2, Software_update=1, Replaced_part=1
                             ),
                         ),
                         Robinsonshire=LocationMachineAnalysis(
                             machines_analyzed_ids=[12, 13, 15, 16, 17, 50, 51, 52, 53],
                             total_2024_maintenance_events=10,
                             maintenance_action_breakdown_2024=MaintenanceActionBreakdown(
-                                Routine_check=1,
-                                Calibration=3,
-                                Software_update=1,
-                                Replaced_part=5,
+                                Routine_check=1, Calibration=3, Software_update=1, Replaced_part=5
                             ),
                         ),
                     ),
@@ -274,18 +263,3 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.OPS.value}-level-4",
-                model=model,
-                user_role=Role.OPS,
-                level=4,
-            ),
-            dataset=ops_dataset,
-            task_config=TaskConfig(user_role=Role.OPS, model=model),
-        )

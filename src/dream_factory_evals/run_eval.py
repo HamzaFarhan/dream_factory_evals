@@ -75,13 +75,7 @@ def run(
 
 
 async def _run_evaluation(
-    model: str,
-    role: str,
-    level: int,
-    report_name: str | None,
-    prompt_name: str,
-    max_tool_calls: int,
-    retries: int,
+    model: str, role: str, level: int, report_name: str | None, prompt_name: str, max_tool_calls: int, retries: int
 ):
     """Run the actual evaluation."""
     # Dynamic import of the dataset

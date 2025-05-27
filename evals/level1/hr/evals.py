@@ -5,23 +5,9 @@ from datetime import date as date_
 import logfire
 from pydantic_evals import Case, Dataset
 
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    ToolCall,
-)
+from dream_factory_evals.df_agent import EvaluateResult, EvaluateToolCalls, Query, QueryResult, ToolCall
 
-from .output_types import (
-    DepartmentCount,
-    Email,
-    Employee,
-    Employees,
-    ManagerCount,
-    Policies,
-    Policy,
-)
+from .output_types import DepartmentCount, Email, Employee, Employees, ManagerCount, Policies, Policy
 
 _ = logfire.configure()
 
@@ -53,18 +39,13 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="hr_l1_q2",
-            inputs=Query(
-                query="How many departments do we have in the company?",
-                output_type=DepartmentCount,
-            ),
+            inputs=Query(query="How many departments do we have in the company?", output_type=DepartmentCount),
             expected_output=QueryResult(
                 result=DepartmentCount(department_count=20),
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_departments",
-                        },
+                        params={"table_name": "hr_departments"},
                     )
                 ],
             ),
@@ -226,20 +207,13 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="hr_l1_q5",
-            inputs=Query(
-                query="How many managers do we have in the company?",
-                output_type=ManagerCount,
-            ),
+            inputs=Query(query="How many managers do we have in the company?", output_type=ManagerCount),
             expected_output=QueryResult(
                 result=ManagerCount(manager_count=7),
                 tool_calls=[
                     ToolCall(
                         tool_name="get_table_records",
-                        params={
-                            "table_name": "hr_employees",
-                            "filter": "role='Manager'",
-                            "fields": "employee_id",
-                        },
+                        params={"table_name": "hr_employees", "filter": "role='Manager'", "fields": "employee_id"},
                     )
                 ],
             ),

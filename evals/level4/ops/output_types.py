@@ -66,14 +66,8 @@ class LocationMaintenanceAnalysisResponse(BaseModel):
             self.analysis_period == other.analysis_period
             and self.machine_installation_cutoff == other.machine_installation_cutoff
             and self.location_comparison == other.location_comparison
-            and are_strings_similar(
-                self.strategic_suggestion.observation,
-                other.strategic_suggestion.observation,
-            )
-            and are_strings_similar(
-                self.strategic_suggestion.suggestion,
-                other.strategic_suggestion.suggestion,
-            )
+            and are_strings_similar(self.strategic_suggestion.observation, other.strategic_suggestion.observation)
+            and are_strings_similar(self.strategic_suggestion.suggestion, other.strategic_suggestion.suggestion)
         )
 
 
@@ -130,8 +124,7 @@ class AnomalyEventsAnalysisResponse(BaseModel):
             and self.most_frequent_anomaly_machine.anomaly_count
             == other.most_frequent_anomaly_machine.anomaly_count
             and are_strings_similar(
-                self.most_frequent_anomaly_machine.analysis,
-                other.most_frequent_anomaly_machine.analysis,
+                self.most_frequent_anomaly_machine.analysis, other.most_frequent_anomaly_machine.analysis
             )
             and are_strings_similar(
                 self.most_frequent_anomaly_machine.recommendation,
