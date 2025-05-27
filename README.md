@@ -279,25 +279,28 @@ The evaluation system provides a CLI tool for running evaluations:
 
 ```bash
 # Basic usage
-uv run src/dream_factory_evals/run_eval.py <model> <role> <level>
+uv run src/dream_factory_evals/run_eval.py run <model> <role> <level>
 
 # Examples
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2
-uv run src/dream_factory_evals/run_eval.py "anthropic:claude-4-sonnet-20250514" finance 3
-uv run src/dream_factory_evals/run_eval.py "google-gla:gemini-2.0-flash" ops 1
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
+uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-4-sonnet-20250514" finance 3
+uv run src/dream_factory_evals/run_eval.py run "google-gla:gemini-2.0-flash" ops 1
 ```
 
 ### CLI Options
 
 ```bash
 # Custom report name
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
 
 # Custom prompt file
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
 
 # Adjust retry and tool call limits
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4.1-mini" hr 2 --max-tool-calls 30 --retries 5
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --max-tool-calls 30 --retries 5
+
+# Enable thinking tool for step-by-step reasoning
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think
 ```
 
 ### Environment Variables
@@ -325,7 +328,7 @@ uv run src/dream_factory_evals/run_eval.py list-roles
 ```bash
 # Test multiple models on the same dataset
 for model in "openai:gpt-4.1-mini" "anthropic:claude-4-sonnet-20250514" "google-gla:gemini-2.0-flash"; do
-    uv run src/dream_factory_evals/run_eval.py "$model" hr 2
+    uv run src/dream_factory_evals/run_eval.py run "$model" hr 2
 done
 ```
 
@@ -364,9 +367,9 @@ The CLI generates two files in the `scores/` directory:
 
 ```bash
 # 1. Run evaluations for multiple models
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4o" hr 1
-uv run src/dream_factory_evals/run_eval.py "openai:gpt-4o-mini" hr 1
-uv run src/dream_factory_evals/run_eval.py "anthropic:claude-3-sonnet" hr 1
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4o" hr 1
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4o-mini" hr 1
+uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-3-sonnet" hr 1
 
 # 2. Create leaderboard
 uv run src/dream_factory_evals/create_leaderboard.py create "hr-level-1-leaderboard" \

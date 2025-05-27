@@ -52,6 +52,10 @@ def run(
     prompt_name: str = typer.Option(PROMPT_NAME, help="Prompt file to use"),
     max_tool_calls: int = typer.Option(MAX_TOOL_CALLS, help="Maximum number of tool calls"),
     retries: int = typer.Option(RETRIES, help="Number of retries on failure"),
+    # mcp_servers: list[str] = typer.Option(
+    #     [], help="MCP servers to use (e.g., @modelcontextprotocol/server-sequential-thinking)"
+    # ),
+    think: bool = typer.Option(False, help="Enable think tool"),
 ):
     """Run evaluations for a specific model, role, and level."""
 
@@ -71,11 +75,19 @@ def run(
         raise typer.Exit(1)
 
     # Run evaluation
-    asyncio.run(_run_evaluation(model, role, level, report_name, prompt_name, max_tool_calls, retries))
+    asyncio.run(_run_evaluation(model, role, level, report_name, prompt_name, max_tool_calls, retries, think))
 
 
 async def _run_evaluation(
-    model: str, role: str, level: int, report_name: str | None, prompt_name: str, max_tool_calls: int, retries: int
+    model: str,
+    role: str,
+    level: int,
+    report_name: str | None,
+    prompt_name: str,
+    max_tool_calls: int,
+    retries: int,
+    # mcp_servers: list[str],
+    think: bool,
 ):
     """Run the actual evaluation."""
     # Dynamic import of the dataset
@@ -96,6 +108,11 @@ async def _run_evaluation(
         # Convert role string to Role enum
         user_role = Role(role)
 
+        # Create MCP servers
+        # mcp_server_objects = [
+        #     MCPServerStdio(command="npx", args=["-y", server_name]) for server_name in mcp_servers
+        # ]
+
         # Create task config
         task_config = TaskConfig(
             user_role=user_role,
@@ -103,6 +120,8 @@ async def _run_evaluation(
             prompt_name=prompt_name,
             max_tool_calls=max_tool_calls,
             retries=retries,
+            # mcp_servers=mcp_server_objects if mcp_server_objects else None,
+            think=think,
         )
 
         # Create report info

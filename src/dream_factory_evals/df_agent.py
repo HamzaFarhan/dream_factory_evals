@@ -67,14 +67,10 @@ ResultT = TypeVar("ResultT")
 class Query[ResultT]:
     query: str
     output_type: type[ResultT]
-    result_schema: str = ""
 
     @property
     def prompt(self) -> str:
-        res = f"<query>\n{self.query}\n</query>"
-        if self.result_schema:
-            res += f"\n\n<result_schema>\n{self.result_schema}\n</result_schema>"
-        return res
+        return f"<query>\n{self.query}\n</query>"
 
 
 @dataclass
@@ -143,7 +139,42 @@ class TaskConfig(BaseModel):
     prompt_name: str = "basic_prompt.txt"
     mcp_servers: list[MCPServerStdio] | None = None
     max_tool_calls: int = MAX_TOOL_CALLS
+    think: bool = False
     new: bool = False
+
+
+def think(title: str, thought: str, action: str | None = None, confidence: float = 0.8) -> str:
+    """
+    Use this tool as a scratchpad to reason about the task and work through it step-by-step.
+
+    This tool helps break down complex problems into logical steps and track the reasoning process.
+    It can be called multiple times as needed. These internal thoughts are never revealed to the user.
+
+    Call it at the start of the task and after each tool call.
+
+    Parameters
+    ----------
+    title : str
+        A concise title for this step.
+    thought : str
+        Your detailed thought for this step.
+    action : str, optional
+        What you'll do based on this thought.
+    confidence : float, default 0.8
+        How confident you are about this thought (0.0 to 1.0).
+
+    Returns
+    -------
+    str
+        A formatted string containing the thought process.
+    """
+    confidence = min(1.0, max(0.0, confidence))
+    thought = f"<thought>\n<title>\n{title}\n</title>\n<thought>\n{thought}\n</thought>\n"
+    if action is not None:
+        thought += f"<action>\n{action}\n</action>\n"
+    thought += f"<confidence>\n{confidence}\n</confidence>\n\n</thought>\n"
+    logger.info(thought)
+    return thought
 
 
 def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Task[ResultT], Agent]:
@@ -172,13 +203,17 @@ def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Tas
     )
     mcp_servers = config.mcp_servers or []
     mcp_servers.append(tables_mcp_server)
+    system_prompt = (MODULE_DIR / config.prompt_name).read_text()
+    if config.think:
+        system_prompt += "\nUse the think tool to reason about the task and work through it step-by-step."
     agent = Agent(
         model=sglang_model(os.environ["SG_LANG_BASE_URL"])
         if not is_known_model_name(config.model)
         else config.model,
         name="df_agent",
-        system_prompt=(MODULE_DIR / config.prompt_name).read_text(),
+        system_prompt=system_prompt,
         mcp_servers=mcp_servers,
+        tools=[think] if config.think else [],
         instrument=True,
         retries=config.retries,
     )
@@ -198,8 +233,7 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
                             if agent.is_call_tools_node(node):
                                 for part in node.model_response.parts:
                                     if isinstance(part, ToolCallPart) and not any(
-                                        x in part.tool_name
-                                        for x in ["get_table_schema", "final_result", "thinking"]
+                                        x in part.tool_name for x in ["get_table_schema", "final_result", "think"]
                                     ):
                                         if num_tool_calls < config.max_tool_calls:
                                             tool_calls.append(
@@ -268,3 +302,19 @@ def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY
         f"String 2: {str2}\n"
     )
     return strings_similarity_agent.run_sync(prompt).output
+
+
+async def main():
+    thinking_server = MCPServerStdio(
+        command="npx", args=["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    )
+    query = Query(query="How many employees are there?", output_type=str)
+    task_config = TaskConfig(user_role=Role.CEO, model="openai:gpt-4.1-nano", mcp_servers=[thinking_server])
+    res = await task(query, task_config)
+    print(res)
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(main())
