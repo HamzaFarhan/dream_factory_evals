@@ -6,13 +6,13 @@
 - [Database Schema](#database-schema)
   - [Tables](#tables)
   - [Roles & Access Control](#roles--access-control)
-- [Getting Started](#getting-started)
 - [Implementation](#implementation)
   - [1. MCP Server](#1-mcp-server)
   - [2. Evaluation System](#2-evaluation-system)
   - [3. Value Proposition](#3-value-proposition)
 - [Running Evaluations](#running-evaluations)
-- [Examples](#examples)
+- [Creating Leaderboards](#creating-leaderboards)
+- [Example Queries](#example-queries)
 
 ## Overview
 
@@ -329,7 +329,67 @@ for model in "openai:gpt-4.1-mini" "anthropic:claude-4-sonnet-20250514" "google-
 done
 ```
 
-## Examples
+## Creating Leaderboards
+
+After running evaluations, you can create leaderboards to compare model performance across multiple evaluation reports.
+
+### CLI Interface
+
+```bash
+# Basic leaderboard creation
+uv run src/dream_factory_evals/create_leaderboard.py create <leaderboard_name> <report_name1> <report_name2> [...]
+
+# Example: Compare HR Level 1 performance across models
+uv run src/dream_factory_evals/create_leaderboard.py create "hr-level-1-comparison" \
+  "openai:gpt-4o-hr-level-1" \
+  "openai:gpt-4o-mini-hr-level-1" \
+  "anthropic:claude-3-sonnet-hr-level-1"
+```
+
+### Leaderboard Outputs
+
+The CLI generates two files in the `scores/` directory:
+
+1. **Summary Leaderboard** (`<leaderboard_name>.csv`):
+   - Aggregated metrics per model
+   - Average score, accuracy, tool calls, and duration
+   - Total scores and query counts
+   - Ranked by average score (descending)
+
+2. **Detailed Results** (`detailed_<leaderboard_name>.csv`):
+   - All individual query results
+   - Useful for deep-dive analysis
+
+### Example Workflow
+
+```bash
+# 1. Run evaluations for multiple models
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4o" hr 1
+uv run src/dream_factory_evals/run_eval.py "openai:gpt-4o-mini" hr 1
+uv run src/dream_factory_evals/run_eval.py "anthropic:claude-3-sonnet" hr 1
+
+# 2. Create leaderboard
+uv run src/dream_factory_evals/create_leaderboard.py create "hr-level-1-leaderboard" \
+  "openai:gpt-4o-hr-level-1" \
+  "openai:gpt-4o-mini-hr-level-1" \
+  "anthropic:claude-3-sonnet-hr-level-1"
+
+# 3. View results
+cat scores/hr-level-1-leaderboard.csv
+```
+
+### Leaderboard Metrics
+
+| Metric | Description |
+|--------|-------------|
+| `avg_score` | Average score across all queries (accuracy × 2 + correct_tool_calls) |
+| `avg_accuracy` | Average accuracy percentage |
+| `avg_tool_calls` | Average number of correct tool calls |
+| `avg_duration` | Average query completion time |
+| `total_score` | Sum of all scores |
+| `query_count` | Total number of queries evaluated |
+
+## Example Queries
 
 ### Level 1 Query (Basic)
 ```python
@@ -369,4 +429,4 @@ Expected Tool Calls: [
 
 ---
 
-**Key Innovation:** The combination of Pydantic-enforced structured outputs with semantic text comparison creates a robust evaluation framework that can handle both precise numerical results and nuanced textual analysis.
+**Key Innovation:** The combination of Pydantic-enforced structured outputs with semantic text comparison creates a robust evaluation framework that can handle both precise numerical results and nuanced textual analysis. Additionally, the automated leaderboard generation system enables seamless comparison of model performance across multiple evaluation runs, providing actionable insights for model selection and optimization.
