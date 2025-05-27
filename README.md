@@ -1,145 +1,115 @@
-# Overview
+# Dream Factory Evaluations
 
-We are evaluating how an `Agent` uses the `DreamFactory` `MCP`.
+## Table of Contents
 
-Given a query, we evaluate:
+- [Overview](#overview)
+- [Database Schema](#database-schema)
+  - [Tables](#tables)
+  - [Roles & Access Control](#roles--access-control)
+- [Getting Started](#getting-started)
+- [Implementation](#implementation)
+  - [1. MCP Server](#1-mcp-server)
+  - [2. Evaluation System](#2-evaluation-system)
+  - [3. Value Proposition](#3-value-proposition)
+- [Running Evaluations](#running-evaluations)
+- [Examples](#examples)
 
-1. The actual output
-2. The tool calls:
-    - The number of tool calls
-    - The parameters of the tool calls
-3. The duration
-4. The cost
+## Overview
 
-## Tables
+We are evaluating how an `Agent` uses the `DreamFactory` `MCP` (Model Context Protocol) server.
 
-We have 8 tables in our database:
+**What we evaluate for each query:**
 
-1. `hr_employees`
-2. `hr_departments`
-3. `hr_policies`
-4. `finance_expenses`
-5. `finance_products`
-6. `finance_revenues`
-7. `ops_machines`
-8. `ops_maintenance`
+1. **Actual output** - The structured response from the agent
+2. **Tool calls** - Number and parameters of MCP tool calls made
+3. **Duration** - Time taken to complete the query
+4. **Cost** - Resource consumption metrics
 
-## Roles
+This evaluation framework helps assess agent performance across different complexity levels and roles.
 
-We have 4 roles:
+## Database Schema
 
-1. `CEO`
-2. `HR`
-3. `Finance`
-4. `Ops`
+### Tables
 
-Each role has its own API key.
+We have **8 tables** in our database organized by business function:
 
-`CEO` has access to all tables.  
-`HR` has access to `hr_employees`, `hr_departments`, `hr_policies`.  
-`Finance` has access to `finance_expenses`, `finance_products`, `finance_revenues`.  
-`Ops` has access to `ops_machines`, `ops_maintenance`.  
+| **HR Tables** | **Finance Tables** | **Operations Tables** |
+|---------------|--------------------|-----------------------|
+| `hr_employees` | `finance_expenses` | `ops_machines` |
+| `hr_departments` | `finance_products` | `ops_maintenance` |
+| `hr_policies` | `finance_revenues` | |
 
-# Implementation
+### Roles & Access Control
 
-## 1. MCP
+We have **4 roles** with different access permissions:
 
-The server is configured using `DREAM_FACTORY_BASE_URL` and `DREAM_FACTORY_API_KEY` environment variables.
+| Role | Access Level | Available Tables |
+|------|-------------|------------------|
+| `CEO` | **All tables** | All 8 tables |
+| `HR` | **HR only** | `hr_employees`, `hr_departments`, `hr_policies` |
+| `Finance` | **Finance only** | `finance_expenses`, `finance_products`, `finance_revenues` |
+| `Ops` | **Operations only** | `ops_machines`, `ops_maintenance` |
 
-### Tools
+Each role has its own API key for authentication and authorization.
 
-- `get_table_schema`
-- `get_table_records`
-- `get_table_records_by_ids`
-- `calculate_sum`
-- `calculate_difference`
-- `calculate_mean`
+## Implementation
 
-### RBAC
+### 1. MCP Server
 
-`get_table_schema`, `get_table_records`, and `get_table_records_by_ids` accept `table_name` as a parameter.
+The MCP server (`src/dream_factory_evals/df_mcp.py`) provides a standardized interface to DreamFactory APIs.
 
-If a server configured with a certain role's API key tries to access a table that the role does not have access to, the server will return an error.  
-So `RBAC` is already enforced, but the `Agent` needs to know which tables are available to it.  
-Ideally, the `MCP` would also have a `list_table_names` tool that returns the tables that the role has access to.
-But that tool only worked with the `CEO` API key.
+**Configuration:** The server uses `DREAM_FACTORY_BASE_URL` and `DREAM_FACTORY_API_KEY` environment variables.
 
-As a workaround, we do this for every `Agent` run:
-1. Call the `list_table_names` tool with the `CEO` API key.
-2. Drop all tables who's name doesn't start with the role's name.  
-   So if the role is `HR`, we drop all tables who's name doesn't start with `hr_`.
-3. Append the remaining tables to the `Agent`'s instructions/system prompt along with the role.
+#### Available Tools
 
-## 2. Evals
+| Tool | Purpose | Parameters |
+|------|---------|------------|
+| `get_table_schema` | Retrieves table structure and field types | `table_name` |
+| `get_table_records` | Fetches records with filtering, pagination, joining | `table_name`, `filter`, `fields`, `limit`, `offset`, `order_field`, `related` |
+| `get_table_records_by_ids` | Retrieves specific records by ID | `table_name`, `ids`, `fields`, `related` |
+| `calculate_sum` | Computes sum of numerical values | `values` |
+| `calculate_difference` | Calculates difference between numbers | `num1`, `num2` |
+| `calculate_mean` | Computes arithmetic mean | `values` |
 
-We have 4 levels of evals with increasing complexity. For each level, we have 3-5 queries per role.  
-The queries are not that important because we are working with dummy data. The important thing is the process of creating the queries.
+#### RBAC Implementation
 
-### Structure
+Role-Based Access Control (RBAC) is enforced at the API level:
 
-Each query has:
-- `query_id`
-- `query`
-- `expected_response`
-- `expected_tool_calls`
+- **Server-side enforcement:** If an agent tries to access unauthorized tables, the server returns an error
+- **Client-side filtering:** We filter available tables based on role before agent execution
 
-#### expected_response
+**Workaround for table discovery:**
 
-This could be anything. The plain string, an object, a list of objects, etc.
+> **Note:** Non-CEO roles are not authorized to call the `list_table_names` tool, which is why it's implemented as a plain function rather than an MCP tool and must be called manually with CEO privileges.
 
-A level 1 query's `expected_response` may just be a number:
+1. Use `CEO` API key to call `list_table_names`
+2. Filter tables by role prefix (e.g., `hr_` for HR role)
+3. Include filtered table list in agent's system prompt
 
-```json
+### 2. Evaluation System
+
+We have **4 complexity levels** with **3-5 queries per role** at each level.
+
+#### Evaluation Structure
+
+Each evaluation case contains:
+
+```python
 {
     "query_id": "hr_l1_1",
     "query": "How many employees are there?",
-    "expected_response": {
-        "number_of_employees": 100
-    }
+    "expected_response": {...},
+    "expected_tool_calls": [...]
 }
 ```
 
-A level 4 query's `expected_response` may be an object with multiple fields along with analysis:
+#### The Pydantic Solution
 
-```json
-{
-    "query_id": "finance_l4_1",
-    "query": "Compare Q4 2023 vs Q4 2024 revenue performance for 'Software' and 'Electronics' products. Calculate growth rates and identify which category performed better. Also analyze total 'Marketing' expenses for both quarters. Provide one strategic recommendation based on the revenue-to-marketing spend efficiency.",
-    "expected_response": {
-        "quarterly_comparison": {
-            "Software": {
-                "Q4_2023_revenue": 15420.33,
-                "Q4_2024_revenue": 28750.12,
-                "growth_rate_percentage": 86.4
-            },
-            "Electronics": {
-                "Q4_2023_revenue": 13831.28,
-                "Q4_2024_revenue": 34569.61,
-                "growth_rate_percentage": 149.9
-            }
-        },
-        "marketing_expenses": {
-            "Q4_2023": 2450.75,
-            "Q4_2024": 3200.50
-        },
-        "analysis": {
-            "better_performing_category": "Electronics",
-            "revenue_to_marketing_efficiency": "Electronics showed 149.9% growth vs 86.4% for Software, while marketing spend increased only 30.6%"
-        },
-        "strategic_recommendation": "Allocate more marketing budget to Electronics products in Q1 2025, as they demonstrate superior growth response to marketing investment."
-    }
-}
-```
-The problem is, when evaluating the `Agent`'s response against the `expected_response`, we do an equality check.  
-Since we're working with LLMs, the `Agent`'s response for the above `hr_l1_1` query may be:
-- `100.0`
-- `"One Hundred"`
-- `"There are 100 employees"`
-- ...  
+**Problem:** LLM responses vary even for identical queries:
+- `100` vs `100.0` vs `"One Hundred"` vs `"There are 100 employees"`
 
-All of these are correct responses to the query, but they are not equal to `100`. And will fail the eval.
+**Solution:** Use Pydantic models to enforce structured outputs:
 
-To solve this, we use `Pydantic` to create `output_type`s for each query. So the `hr_l1_1` query is now defined as:
 ```python
 from pydantic import BaseModel
 from pydantic_evals import Case
@@ -158,50 +128,35 @@ case = Case(
     )
 )
 ```
-Now, when our `Agent` is run for this `case`, we will use `PydanticAI` to force it to output a `EmployeeCount` object which will have a valid integer as `number_of_employees`.  
-Two `EmployeeCount` objects can be checked for equality using `==`.
 
-But what about free form text like `strategic_recommendation` above for the `finance_l4_1` query?  
-Even if the `Agent` outputs a valid string with the correct recommendation, it is unlikely to be the exact string word for word as the one in the `expected_response`.
+#### Handling Free-Form Text
 
-To solve this, we use another small `Agent` to compare the main `Agent`'s output with the `expected_response`.  
-All it does is compare the `expected_response` and the `Agent`'s output strings and returns `True` if they are saying the same thing despite different wording/structure/grammar. Otherwise, it returns `False`.
+For strategic recommendations and analysis, we use semantic comparison:
 
-So this is now our `finance_l4_1` case:
 ```python
-from typing import Literal
-
-from pydantic import BaseModel
-
-from dream_factory_evals.df_agent import are_strings_similar
-from pydantic_evals import Case
-
-class CategoryPerformance(BaseModel):
-    Q4_2023_revenue: float
-    Q4_2024_revenue: float
-    growth_rate_percentage: float
-
-class MarketingExpenses(BaseModel):
-    Q4_2023: float
-    Q4_2024: float
-
 class Analysis(BaseModel):
     better_performing_category: Literal["Software", "Electronics"]
     revenue_to_marketing_efficiency: str
 
     def __eq__(self, other: object) -> bool:
-        """
-        This is a custom equality check.
-        `better_performing_category` is a literal string, so we can use `==` to compare them.
-        `revenue_to_marketing_efficiency` is a free form text, so we use the `are_strings_similar` function to compare them.
-        """
         if not isinstance(other, Analysis):
             return NotImplemented
         return (
             self.better_performing_category == other.better_performing_category
-            and are_strings_similar(self.revenue_to_marketing_efficiency, other.revenue_to_marketing_efficiency)
+            and are_strings_similar(
+                self.revenue_to_marketing_efficiency, 
+                other.revenue_to_marketing_efficiency
+            )
         )
+```
 
+The `are_strings_similar()` function uses a small LLM to compare semantic meaning rather than exact text matching.
+
+#### Complex Evaluation Example
+
+Here's a Level 4 finance query with multi-part analysis:
+
+```python
 class RevenueComparison(BaseModel):
     quarterly_comparison: dict[Literal["Software", "Electronics"], CategoryPerformance]
     marketing_expenses: MarketingExpenses
@@ -209,13 +164,6 @@ class RevenueComparison(BaseModel):
     strategic_recommendation: str
 
     def __eq__(self, other: object) -> bool:
-        """
-        This is a custom equality check.
-        `quarterly_comparison` is a dictionary of CategoryPerformance objects, so we can use `==` to compare them.
-        `marketing_expenses` is a MarketingExpenses object, so we can use `==` to compare them.
-        `analysis` is an Analysis object, so we can use `==` to compare them.
-        `strategic_recommendation` is a free form text, so we use the `are_strings_similar` function to compare them.
-        """
         if not isinstance(other, RevenueComparison):
             return NotImplemented
         return (
@@ -223,6 +171,7 @@ class RevenueComparison(BaseModel):
             and self.marketing_expenses == other.marketing_expenses
             and self.analysis == other.analysis
             and are_strings_similar(self.strategic_recommendation, other.strategic_recommendation)
+        )
 
 case = Case(
     name="finance_l4_1",
@@ -263,35 +212,156 @@ case = Case(
 )
 ```
 
-#### expected_tool_calls
+#### Tool Call Evaluation
 
-The `expected_output` of a `Case` will also have `tool_calls`. This would be a list of MCP tool calls that the `Agent` is expected to make. We will evaluate the number of tool calls and the parameters of the tool calls.
+We also evaluate the **MCP tool calls** made by the agent:
 
-### Process
+```python
+expected_tool_calls = [
+    ToolCall(
+        tool_name="get_table_records",
+        params={
+            "table_name": "finance_revenues",
+            "filter": "((quarter='Q4') AND (year=2023)) OR ((quarter='Q4') AND (year=2024))",
+            "fields": ["product_category", "revenue", "quarter", "year"]
+        }
+    ),
+    ToolCall(
+        tool_name="get_table_records", 
+        params={
+            "table_name": "finance_expenses",
+            "filter": "((quarter='Q4') AND (year=2023) AND (category='Marketing')) OR ((quarter='Q4') AND (year=2024) AND (category='Marketing'))"
+        }
+    )
+]
+```
 
-Of course, the first step is actually creating the queries.
-These are the steps:
-1. Use the DreamFactory API to get the data from the database and store it into json files.
-   One json file per table.
-2. Load these files into Cursor/Windsurf/ChatGPT/Claude/Gemini/etc.
-3. Explain what a level 1/2/3/4 query is.
-4. Create the queries and save them into a json file. One file per level.
-5. Each query will follow the [Structure](#structure) defined above.
-6. Create the `Case`s from the queries.
+#### Dataset Organization
 
-Now for each role in each level, we will have a `Dataset`. This dataset will have 3-5 `Case`s.  
+Each role/level combination has its own dataset:
 
-So if we go to `dream_factory_evals/evals/level2/hr/`, there is an `evals.py` file which has the level 2 `Dataset` for the `HR` role.  
-And there is an `output_types.py` file which has the `output_type`s for the `Dataset`.
+```
+evals/
+├── level1/
+│   ├── finance/evals.py
+│   ├── hr/evals.py
+│   └── ops/evals.py
+├── level2/
+│   ├── finance/evals.py
+│   ├── hr/evals.py
+│   └── ops/evals.py
+└── ...
+```
 
-We have to repeat this process for each role in each level.
+Each directory contains:
+- `evals.py` - Dataset with test cases
+- `output_types.py` - Pydantic models for structured outputs
 
-## 3. Value
+### 3. Value Proposition
 
-This insight of needing to create `output_type`s for each query is quite valuable and something that was not obvious to us at first.
+This evaluation framework provides several key insights:
 
-The `MCP` along with this process are the core deliverables of this project.
+1. **Structured Output Validation** - Using Pydantic models ensures consistent, comparable results across different LLM runs
 
+2. **Semantic Text Comparison** - For free-form text, we use LLM-based semantic comparison rather than exact string matching
 
+3. **Tool Usage Analysis** - Detailed tracking of MCP tool calls helps optimize agent efficiency
 
+4. **Role-Based Evaluation** - Testing different access levels ensures proper RBAC implementation
 
+5. **Complexity Scaling** - Four difficulty levels help identify where agents start to struggle
+
+## Running Evaluations
+
+### Basic Evaluation
+
+```bash
+# Run HR Level 2 evaluations
+uv run evals/level2/hr/evals.py
+```
+
+### Custom Evaluation
+
+```python
+from dream_factory_evals.df_agent import evaluate, ReportInfo, TaskConfig, Role
+
+# Configure evaluation
+task_config = TaskConfig(
+    user_role=Role.HR,
+    model="openai:gpt-4.1-mini",
+    retries=3,
+    max_tool_calls=20
+)
+
+# Run evaluation
+await evaluate(
+    report_info=ReportInfo(
+        name="hr-level2-test",
+        model="openai:gpt-4.1-mini", 
+        user_role=Role.HR,
+        level=2
+    ),
+    dataset=hr_dataset,
+    task_config=task_config
+)
+```
+
+### Comparing Models
+
+```python
+models = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini", "anthropic:claude-3-sonnet"]
+
+for model in models:
+    await evaluate(
+        report_info=ReportInfo(
+            name=f"{model}-hr-level2",
+            model=model,
+            user_role=Role.HR,
+            level=2
+        ),
+        dataset=hr_dataset,
+        task_config=TaskConfig(user_role=Role.HR, model=model)
+    )
+```
+
+## Examples
+
+### Level 1 Query (Basic)
+```python
+Query: "How many employees are there?"
+Expected Output: EmployeeCount(number_of_employees=100)
+Expected Tool Calls: [get_table_records(table_name="hr_employees")]
+```
+
+### Level 2 Query (Joining)
+```python
+Query: "What department does Alice Johnson work in?"
+Expected Output: EmployeeDepartment(employee="Alice Johnson", department="Sales")
+Expected Tool Calls: [
+    get_table_records(
+        table_name="hr_employees",
+        filter="(first_name='Alice') AND (last_name='Johnson')",
+        related="hr_departments_by_department_id"
+    )
+]
+```
+
+### Level 4 Query (Complex Analysis)
+```python
+Query: "Compare Q4 2023 vs Q4 2024 revenue performance..."
+Expected Output: RevenueComparison(
+    quarterly_comparison={...},
+    marketing_expenses={...},
+    analysis={...},
+    strategic_recommendation="..."
+)
+Expected Tool Calls: [
+    get_table_records(...),  # Revenue data
+    get_table_records(...),  # Marketing expenses
+    calculate_difference(...),  # Growth calculations
+]
+```
+
+---
+
+**Key Innovation:** The combination of Pydantic-enforced structured outputs with semantic text comparison creates a robust evaluation framework that can handle both precise numerical results and nuanced textual analysis.
