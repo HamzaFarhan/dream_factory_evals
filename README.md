@@ -16,7 +16,7 @@
 
 ## Overview
 
-We are evaluating how an `Agent` uses the `DreamFactory` `MCP` (Model Context Protocol) server.
+We are evaluating how an `Agent` uses the `DreamFactory` `MCP` server.
 
 **What we evaluate for each query:**
 
