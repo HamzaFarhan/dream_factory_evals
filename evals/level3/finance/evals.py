@@ -2,14 +2,6 @@ from __future__ import annotations
 
 from datetime import date as date_
 
-from output_types import (
-    CategoryTotal,
-    CategoryTotals,
-    ExpensePercentage,
-    Q1Profit,
-    QuarterlyAnalysis,
-    QuarterlyAnalysisItem,
-)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -23,6 +15,15 @@ from dream_factory_evals.df_agent import (
     TaskConfig,
     ToolCall,
     evaluate,
+)
+
+from .output_types import (
+    CategoryTotal,
+    CategoryTotals,
+    ExpensePercentage,
+    Q1Profit,
+    QuarterlyAnalysis,
+    QuarterlyAnalysisItem,
 )
 
 
@@ -111,7 +112,12 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                         params={
                             "table_name": "finance_revenues",
                             "filter": "(quarter=1) AND (year=2022)",
-                            "fields": ["revenue_amount", "revenue_date", "quarter", "year"],
+                            "fields": [
+                                "revenue_amount",
+                                "revenue_date",
+                                "quarter",
+                                "year",
+                            ],
                         },
                     ),
                     ToolCall(
@@ -187,7 +193,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-3", model=model, user_role=Role.FINANCE, level=3
+                name=f"{model}-{Role.FINANCE.value}-level-3",
+                model=model,
+                user_role=Role.FINANCE,
+                level=3,
             ),
             dataset=finance_dataset,
             task_config=TaskConfig(user_role=Role.FINANCE, model=model),

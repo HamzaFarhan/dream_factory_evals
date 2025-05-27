@@ -3,8 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from output_types import DepartmentCount, Email, Employee, Employees, ManagerCount, Policies, Policy
-from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
 from dream_factory_evals.df_agent import (
@@ -12,11 +10,17 @@ from dream_factory_evals.df_agent import (
     EvaluateToolCalls,
     Query,
     QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
     ToolCall,
-    evaluate,
+)
+
+from .output_types import (
+    DepartmentCount,
+    Email,
+    Employee,
+    Employees,
+    ManagerCount,
+    Policies,
+    Policy,
 )
 
 _ = logfire.configure()
@@ -49,7 +53,10 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="hr_l1_q2",
-            inputs=Query(query="How many departments do we have in the company?", output_type=DepartmentCount),
+            inputs=Query(
+                query="How many departments do we have in the company?",
+                output_type=DepartmentCount,
+            ),
             expected_output=QueryResult(
                 result=DepartmentCount(department_count=20),
                 tool_calls=[
@@ -219,7 +226,10 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="hr_l1_q5",
-            inputs=Query(query="How many managers do we have in the company?", output_type=ManagerCount),
+            inputs=Query(
+                query="How many managers do we have in the company?",
+                output_type=ManagerCount,
+            ),
             expected_output=QueryResult(
                 result=ManagerCount(manager_count=7),
                 tool_calls=[
@@ -237,15 +247,3 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
     ],
     evaluators=[EvaluateResult[ResultT](), EvaluateToolCalls[ResultT]()],
 )
-
-
-if __name__ == "__main__":
-    models: list[KnownModelName] = ["openai:gpt-4.1-nano", "openai:gpt-4.1-mini"]
-    for model in models:
-        evaluate(
-            report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-1", model=model, user_role=Role.HR, level=1
-            ),
-            dataset=hr_dataset,
-            task_config=TaskConfig(user_role=Role.HR, model=model),
-        )

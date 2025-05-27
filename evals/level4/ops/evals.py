@@ -3,7 +3,22 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from output_types import (
+from pydantic_ai.models import KnownModelName
+from pydantic_evals import Case, Dataset
+
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    ReportInfo,
+    Role,
+    TaskConfig,
+    ToolCall,
+    evaluate,
+)
+
+from .output_types import (
     AgeStatusCount,
     AnalysisAndIntervention,
     AnomalyEventsAnalysisResponse,
@@ -19,20 +34,6 @@ from output_types import (
     MostFrequentAnomalyMachine,
     OldestMachineMaintenance,
     StrategicSuggestion,
-)
-from pydantic_ai.models import KnownModelName
-from pydantic_evals import Case, Dataset
-
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
-    ToolCall,
-    evaluate,
 )
 
 _ = logfire.configure()
@@ -257,7 +258,13 @@ ops_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                         params={
                             "table_name": "ops_machines",
                             "filter": "status = 'Active' OR status = 'Maintenance'",
-                            "fields": ["machine_id", "machine_name", "location", "status", "installation_date"],
+                            "fields": [
+                                "machine_id",
+                                "machine_name",
+                                "location",
+                                "status",
+                                "installation_date",
+                            ],
                             "related": "ops_maintenance_by_machine_id",
                         },
                     )
@@ -274,7 +281,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.OPS.value}-level-4", model=model, user_role=Role.OPS, level=4
+                name=f"{model}-{Role.OPS.value}-level-4",
+                model=model,
+                user_role=Role.OPS,
+                level=4,
             ),
             dataset=ops_dataset,
             task_config=TaskConfig(user_role=Role.OPS, model=model),

@@ -51,7 +51,7 @@ class AnalysisSummary(BaseModel):
     engineering_cohort_2022_joiners: CohortAnalysis
     observed_patterns: str
     policy_context_discussion: str
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, AnalysisSummary):
             return NotImplemented
@@ -66,20 +66,19 @@ class AnalysisSummary(BaseModel):
 class TalentRecommendation(BaseModel):
     recommendation: str
     justification: str
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, TalentRecommendation):
             return NotImplemented
-        return (
-            are_strings_similar(self.recommendation, other.recommendation)
-            and are_strings_similar(self.justification, other.justification)
+        return are_strings_similar(self.recommendation, other.recommendation) and are_strings_similar(
+            self.justification, other.justification
         )
 
 
 class EngineeringAnalysisResponse(BaseModel):
     analysis_summary: AnalysisSummary
     recommendations_for_talent_management: list[TalentRecommendation]
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, EngineeringAnalysisResponse):
             return NotImplemented
@@ -98,7 +97,7 @@ class PolicyAnalysis(BaseModel):
     department_id: int | None = None
     department_name: str | None = None
     applicable_scope: str
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, PolicyAnalysis):
             return NotImplemented
@@ -108,8 +107,11 @@ class PolicyAnalysis(BaseModel):
             and self.effective_date == other.effective_date
             and are_strings_similar(self.description, other.description)
             and self.department_id == other.department_id
-            and (self.department_name == other.department_name if self.department_name is None or other.department_name is None 
-                 else are_strings_similar(self.department_name, other.department_name))
+            and (
+                self.department_name == other.department_name
+                if self.department_name is None or other.department_name is None
+                else are_strings_similar(self.department_name, other.department_name)
+            )
             and are_strings_similar(self.applicable_scope, other.applicable_scope)
         )
 
@@ -134,7 +136,7 @@ class PolicyRecruitmentSuggestion(BaseModel):
     suggestion: str
     justification: str
     target_roles: list[str]
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, PolicyRecruitmentSuggestion):
             return NotImplemented
@@ -151,7 +153,7 @@ class PolicyRecruitmentResponse(BaseModel):
     recruitment_period_analysis: dict[str, DepartmentRecruitingAnalysis]
     policy_impact_assessment: str
     recruitment_suggestions: list[PolicyRecruitmentSuggestion]
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, PolicyRecruitmentResponse):
             return NotImplemented
@@ -170,7 +172,7 @@ class HRDepartmentContext(BaseModel):
     policy_details: Policy
     strategic_direction: str
     targeted_roles: list[str]
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, HRDepartmentContext):
             return NotImplemented
@@ -195,7 +197,7 @@ class CompetencyDevelopmentInitiative(BaseModel):
     description: str
     target_roles: list[str]
     expected_outcome: str
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CompetencyDevelopmentInitiative):
             return NotImplemented
@@ -212,7 +214,7 @@ class StrategicCompetencyResponse(BaseModel):
     strategic_context: HRDepartmentContext
     current_hr_team_profile: HREmployeeProfile
     proposed_competency_initiatives: list[CompetencyDevelopmentInitiative]
-    
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, StrategicCompetencyResponse):
             return NotImplemented

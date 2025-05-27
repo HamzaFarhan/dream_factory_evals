@@ -3,7 +3,22 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from output_types import (
+from pydantic_ai.models import KnownModelName
+from pydantic_evals import Case, Dataset
+
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    ReportInfo,
+    Role,
+    TaskConfig,
+    ToolCall,
+    evaluate,
+)
+
+from .output_types import (
     AnalysisAndStrategySuggestion,
     CapitalExpense,
     CategoryQuarterlyRevenue,
@@ -18,20 +33,6 @@ from output_types import (
     QuarterlyAmount,
     RevenueAnalysis,
     RevenueComparisonYoY,
-)
-from pydantic_ai.models import KnownModelName
-from pydantic_evals import Case, Dataset
-
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
-    ToolCall,
-    evaluate,
 )
 
 _ = logfire.configure()
@@ -172,7 +173,12 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                         params={
                             "table_name": "finance_expenses",
                             "filter": "(category='Capital') AND (expense_date >= '2023-01-01') AND (expense_date <= '2023-12-31')",
-                            "fields": ["expense_id", "description", "amount", "expense_date"],
+                            "fields": [
+                                "expense_id",
+                                "description",
+                                "amount",
+                                "expense_date",
+                            ],
                         },
                     ),
                     ToolCall(
@@ -180,7 +186,12 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                         params={
                             "table_name": "finance_revenues",
                             "filter": "((year=2023) AND (quarter=4)) OR (year=2024)",
-                            "fields": ["revenue_amount", "quarter", "year", "product_id"],
+                            "fields": [
+                                "revenue_amount",
+                                "quarter",
+                                "year",
+                                "product_id",
+                            ],
                             "related": "finance_products_by_product_id",
                         },
                     ),
@@ -248,7 +259,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-4", model=model, user_role=Role.FINANCE, level=4
+                name=f"{model}-{Role.FINANCE.value}-level-4",
+                model=model,
+                user_role=Role.FINANCE,
+                level=4,
             ),
             dataset=finance_dataset,
             task_config=TaskConfig(user_role=Role.FINANCE, model=model),

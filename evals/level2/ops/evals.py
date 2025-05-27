@@ -2,15 +2,6 @@ from __future__ import annotations
 
 from datetime import date as date_
 
-from output_types import (
-    MachineAgeInfo,
-    MachineAnomalyInfo,
-    MachineLocation,
-    MachineMaintenanceInfo,
-    MachinesWithAnomalies,
-    MaintenanceActionCount,
-    MaintenanceStatusInfo,
-)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -24,6 +15,16 @@ from dream_factory_evals.df_agent import (
     TaskConfig,
     ToolCall,
     evaluate,
+)
+
+from .output_types import (
+    MachineAgeInfo,
+    MachineAnomalyInfo,
+    MachineLocation,
+    MachineMaintenanceInfo,
+    MachinesWithAnomalies,
+    MaintenanceActionCount,
+    MaintenanceStatusInfo,
 )
 
 
@@ -187,7 +188,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.OPS.value}-level-2", model=model, user_role=Role.OPS, level=2
+                name=f"{model}-{Role.OPS.value}-level-2",
+                model=model,
+                user_role=Role.OPS,
+                level=2,
             ),
             dataset=ops_dataset,
             task_config=TaskConfig(user_role=Role.OPS, model=model),

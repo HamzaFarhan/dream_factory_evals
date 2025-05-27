@@ -25,7 +25,9 @@ class ChatResult:
 
 
 async def chat(
-    user_prompt: str, task_config: TaskConfig, message_history: list[ModelMessage] | None = None
+    user_prompt: str,
+    task_config: TaskConfig,
+    message_history: list[ModelMessage] | None = None,
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=MarkdownResponse)
     task_config.new = True

@@ -143,7 +143,13 @@ expenses_dict = {
         "Land purchase",
         "Technology infrastructure",
     ],
-    "Misc": ["Legal fees", "Charitable donations", "Employee training", "Travel expenses", "Consulting services"],
+    "Misc": [
+        "Legal fees",
+        "Charitable donations",
+        "Employee training",
+        "Travel expenses",
+        "Consulting services",
+    ],
 }
 for i in range(EXPENSES):
     dt = fake.date_between(start_date="-2y", end_date="today")
@@ -181,7 +187,10 @@ for loc in machine_locations:
 # --- OPS_MAINTENANCE ---
 maintenances: list[dict[str, Any]] = []
 actions_dict = {
-    "Routine check": {False: ["Routine check completed."], True: ["Anomaly found during routine check."]},
+    "Routine check": {
+        False: ["Routine check completed."],
+        True: ["Anomaly found during routine check."],
+    },
     "Replaced part": {
         False: ["Replaced faulty sensor.", "Minor malfunction fixed."],
         True: ["Replacement failed.", "Part incompatible."],

@@ -3,18 +3,6 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from output_types import (
-    DepartmentStaffPolicies,
-    DepartmentStaffPolicy,
-    DepartmentsWithGap,
-    DepartmentTimingAnalysis,
-    DepartmentTimingAnalysisItem,
-    PolicyFirstDepartment,
-    PolicyFirstDepartments,
-    RoleDistributionAnalysis,
-    RoleDistributionAnalysisItem,
-    StaffInfo,
-)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -28,6 +16,19 @@ from dream_factory_evals.df_agent import (
     TaskConfig,
     ToolCall,
     evaluate,
+)
+
+from .output_types import (
+    DepartmentStaffPolicies,
+    DepartmentStaffPolicy,
+    DepartmentsWithGap,
+    DepartmentTimingAnalysis,
+    DepartmentTimingAnalysisItem,
+    PolicyFirstDepartment,
+    PolicyFirstDepartments,
+    RoleDistributionAnalysis,
+    RoleDistributionAnalysisItem,
+    StaffInfo,
 )
 
 _ = logfire.configure()
@@ -421,7 +422,12 @@ hr_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
                         tool_name="get_table_records",
                         params={
                             "table_name": "hr_policies",
-                            "fields": ["policy_id", "title", "effective_date", "department_id"],
+                            "fields": [
+                                "policy_id",
+                                "title",
+                                "effective_date",
+                                "department_id",
+                            ],
                             "order_by": "effective_date ASC",
                             "related": "hr_departments_by_department_id",
                         },
@@ -455,7 +461,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-3", model=model, user_role=Role.HR, level=3
+                name=f"{model}-{Role.HR.value}-level-3",
+                model=model,
+                user_role=Role.HR,
+                level=3,
             ),
             dataset=hr_dataset,
             task_config=TaskConfig(user_role=Role.HR, model=model),

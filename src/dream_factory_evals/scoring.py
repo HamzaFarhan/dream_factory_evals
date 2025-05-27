@@ -106,7 +106,12 @@ if __name__ == "__main__":
     level = 1
     models: list[KnownModelName] = ["openai:gpt-4o", "openai:gpt-4o-mini"]
     report_infos: list[ReportInfo] = [
-        ReportInfo(name=f"{model}-{user_role.value}-level-{level}", model=model, user_role=user_role, level=level)
+        ReportInfo(
+            name=f"{model}-{user_role.value}-level-{level}",
+            model=model,
+            user_role=user_role,
+            level=level,
+        )
         for model in models
     ]
     create_leaderboard(leaderboard_name=f"{user_role.value}-level-{level}", report_infos=report_infos)

@@ -38,11 +38,16 @@ class TableUrlWithHeaders(TypedDict):
 
 
 def table_url_with_headers(
-    table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
+    table_name: str,
+    base_url: str | None = None,
+    dream_factory_api_key: str | None = None,
 ) -> TableUrlWithHeaders:
     base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
     dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
-    return {"url": f"{base_url}/_table/{table_name}", "headers": {"X-DreamFactory-API-Key": dream_factory_api_key}}
+    return {
+        "url": f"{base_url}/_table/{table_name}",
+        "headers": {"X-DreamFactory-API-Key": dream_factory_api_key},
+    }
 
 
 def list_table_names(
@@ -64,12 +69,17 @@ def list_table_names(
     """
     base_url = base_url or os.environ["DREAM_FACTORY_BASE_URL"]
     dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
-    return httpx.get(url=f"{base_url}/_table", headers={"X-DreamFactory-API-Key": dream_factory_api_key}).json()
+    return httpx.get(
+        url=f"{base_url}/_table",
+        headers={"X-DreamFactory-API-Key": dream_factory_api_key},
+    ).json()
 
 
 @server.tool()
 def get_table_schema(
-    table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
+    table_name: str,
+    base_url: str | None = None,
+    dream_factory_api_key: str | None = None,
 ) -> dict[str, str | dict[str, str]]:
     """Get the schema of a table.
 
@@ -91,7 +101,8 @@ def get_table_schema(
     dream_factory_api_key = dream_factory_api_key or os.environ["DREAM_FACTORY_API_KEY"]
     logger.info(f"Accessing schema for table {table_name} with API key {dream_factory_api_key}")
     return httpx.get(
-        url=f"{base_url}/_schema/{table_name}", headers={"X-DreamFactory-API-Key": dream_factory_api_key}
+        url=f"{base_url}/_schema/{table_name}",
+        headers={"X-DreamFactory-API-Key": dream_factory_api_key},
     ).json()
 
 
@@ -176,14 +187,22 @@ def get_table_records(
     return httpx.get(
         **table_url_with_headers(table_name=table_name),
         params=get_params(
-            filter=filter, fields=fields, limit=limit, offset=offset, order_field=order_field, related=related
+            filter=filter,
+            fields=fields,
+            limit=limit,
+            offset=offset,
+            order_field=order_field,
+            related=related,
         ),
     ).json()
 
 
 @server.tool()
 def get_table_records_by_ids(
-    table_name: str, ids: str | list[str], fields: str | list[str] = "*", related: str | list[str] = ""
+    table_name: str,
+    ids: str | list[str],
+    fields: str | list[str] = "*",
+    related: str | list[str] = "",
 ) -> dict[str, str | dict[str, str]]:
     """Get one or more records from a table by their IDs.
 

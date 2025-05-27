@@ -1,14 +1,6 @@
 from __future__ import annotations
 
 import logfire
-from output_types import (
-    Expense,
-    Expenses,
-    ProductCount,
-    RevenueAmount,
-    TotalAmount,
-    TotalRevenue,
-)
 from pydantic_ai.models import KnownModelName
 from pydantic_evals import Case, Dataset
 
@@ -22,6 +14,15 @@ from dream_factory_evals.df_agent import (
     TaskConfig,
     ToolCall,
     evaluate,
+)
+
+from .output_types import (
+    Expense,
+    Expenses,
+    ProductCount,
+    RevenueAmount,
+    TotalAmount,
+    TotalRevenue,
 )
 
 logfire.configure()
@@ -49,7 +50,10 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="finance_l1_q2",
-            inputs=Query(query="How many products are in the Electronics category?", output_type=ProductCount),
+            inputs=Query(
+                query="How many products are in the Electronics category?",
+                output_type=ProductCount,
+            ),
             expected_output=QueryResult(
                 result=ProductCount(product_count=7),
                 tool_calls=[
@@ -67,7 +71,8 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         Case(
             name="finance_l1_q3",
             inputs=Query(
-                query="What is the total amount spent on Capital expenses in 2022?", output_type=TotalAmount
+                query="What is the total amount spent on Capital expenses in 2022?",
+                output_type=TotalAmount,
             ),
             expected_output=QueryResult(
                 result=TotalAmount(total_amount=1700),
@@ -85,7 +90,10 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="finance_l1_q4",
-            inputs=Query(query="What was the revenue amount for Product 10?", output_type=RevenueAmount),
+            inputs=Query(
+                query="What was the revenue amount for Product 10?",
+                output_type=RevenueAmount,
+            ),
             expected_output=QueryResult(
                 result=RevenueAmount(revenue_amount=1500),
                 tool_calls=[
@@ -102,7 +110,10 @@ finance_dataset = Dataset[Query[ResultT], QueryResult[ResultT]](
         ),
         Case(
             name="finance_l1_q5",
-            inputs=Query(query="What are the top 3 highest expenses in 2023?", output_type=Expenses),
+            inputs=Query(
+                query="What are the top 3 highest expenses in 2023?",
+                output_type=Expenses,
+            ),
             expected_output=QueryResult(
                 result=Expenses(
                     expenses=[
@@ -146,7 +157,10 @@ def main():
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.FINANCE.value}-level-1", model=model, user_role=Role.FINANCE, level=1
+                name=f"{model}-{Role.FINANCE.value}-level-1",
+                model=model,
+                user_role=Role.FINANCE,
+                level=1,
             ),
             dataset=finance_dataset,
             task_config=TaskConfig(user_role=Role.FINANCE, model=model),

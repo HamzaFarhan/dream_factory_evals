@@ -3,7 +3,22 @@ from __future__ import annotations
 from datetime import date as date_
 
 import logfire
-from output_types import (
+from pydantic_ai.models import KnownModelName
+from pydantic_evals import Case, Dataset
+
+from dream_factory_evals.df_agent import (
+    EvaluateResult,
+    EvaluateToolCalls,
+    Query,
+    QueryResult,
+    ReportInfo,
+    Role,
+    TaskConfig,
+    ToolCall,
+    evaluate,
+)
+
+from .output_types import (
     AnalysisSummary,
     CohortAnalysis,
     CompetencyDevelopmentInitiative,
@@ -21,20 +36,6 @@ from output_types import (
     RoleDistribution,
     StrategicCompetencyResponse,
     TalentRecommendation,
-)
-from pydantic_ai.models import KnownModelName
-from pydantic_evals import Case, Dataset
-
-from dream_factory_evals.df_agent import (
-    EvaluateResult,
-    EvaluateToolCalls,
-    Query,
-    QueryResult,
-    ReportInfo,
-    Role,
-    TaskConfig,
-    ToolCall,
-    evaluate,
 )
 
 _ = logfire.configure()
@@ -468,7 +469,10 @@ if __name__ == "__main__":
     for model in models:
         evaluate(
             report_info=ReportInfo(
-                name=f"{model}-{Role.HR.value}-level-4", model=model, user_role=Role.HR, level=4
+                name=f"{model}-{Role.HR.value}-level-4",
+                model=model,
+                user_role=Role.HR,
+                level=4,
             ),
             dataset=hr_dataset,
             task_config=TaskConfig(user_role=Role.HR, model=model),
