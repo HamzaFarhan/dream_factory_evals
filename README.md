@@ -590,7 +590,15 @@ Each level agent is optimized differently to handle increasing complexity:
 router_agent = Agent(
     model="google-gla:gemini-2.0-flash", 
     name="router_agent", 
-    output_type=Level
+    output_type=Level,
+    instructions=(
+        "Analyze the incoming query and determine its complexity level.\n"
+        "Level 1: Simple counting/lookups.\n"
+        "Level 2: Joins/filtering.\n"
+        "Level 3: Complex calculations/multi-table analysis.\n"
+        "Level 4: Strategic analysis/recommendations requiring deep reasoning.\n"
+        "Return the level as a string."
+    )
 )
 ```
 

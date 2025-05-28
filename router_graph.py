@@ -21,7 +21,19 @@ class ReviewResult(BaseModel):
     reason: str
 
 
-router_agent = Agent(model="google-gla:gemini-2.0-flash", name="router_agent", output_type=Level)  # type: ignore
+router_agent = Agent(
+    model="google-gla:gemini-2.0-flash",
+    name="router_agent",
+    output_type=Level,  # type: ignore
+    instructions=(
+        "Analyze the incoming query and determine its complexity level.\n"
+        "Level 1: Simple counting/lookups.\n"
+        "Level 2: Joins/filtering.\n"
+        "Level 3: Complex calculations/multi-table analysis.\n"
+        "Level 4: Strategic analysis/recommendations requiring deep reasoning.\n"
+        "Return the level as a string."
+    ),
+)
 level1_agent = Agent(model="google-gla:gemini-2.0-flash", name="level1_agent")
 level2_agent = Agent(model="google-gla:gemini-2.0-flash", name="level2_agent")
 level3_agent = Agent(model="google-gla:gemini-2.0-flash", name="level3_agent")
