@@ -16,6 +16,7 @@
 - [Running Evaluations](#running-evaluations)
 - [Creating Leaderboards](#creating-leaderboards)
 - [Example Queries](#example-queries)
+- [Bonus: Multi-Level Agent Graph](#bonus-multi-level-agent-graph)
 
 ## Setup
 
@@ -531,6 +532,111 @@ Expected Tool Calls: [
     calculate_difference(...),  # Growth calculations
 ]
 ```
+
+## Bonus: Multi-Level Agent Graph
+
+### Overview
+
+Beyond the standard evaluation framework, we've implemented an advanced **multi-level agent graph** that automatically routes queries to specialized agents based on complexity. This system uses different agents optimized for each difficulty level, with a router to determine the appropriate level and a review system for quality control.
+
+![Router Graph](router_graph.jpg)
+
+### Architecture
+
+The graph consists of several key components:
+
+1. **Router Agent** - Analyzes incoming queries and determines the appropriate complexity level
+2. **Level-Specific Agents** - Specialized agents optimized for each difficulty level
+3. **Review Agent** - Validates responses and can trigger re-routing if needed
+4. **Feedback Loop** - Failed reviews can route back to appropriate level agents
+
+### Agent Specialization
+
+Each level agent is optimized differently to handle increasing complexity:
+
+| Level | Agent Characteristics | Optimization Focus |
+|-------|----------------------|-------------------|
+| **Level 1** | Basic model, simple prompts | Speed and efficiency for straightforward queries |
+| **Level 2** | Enhanced prompts, basic reasoning | Table joining and filtering operations |
+| **Level 3** | More powerful model or advanced prompts | Complex calculations and multi-step analysis |
+| **Level 4** | Most powerful model + advanced system prompts | Strategic analysis, complex reasoning, custom memory |
+
+### Key Features
+
+#### Intelligent Routing
+```python
+router_agent = Agent(
+    model="google-gla:gemini-2.0-flash", 
+    name="router_agent", 
+    output_type=Level
+)
+```
+
+The router agent analyzes query complexity and routes to the appropriate level:
+- **Level 1**: Simple counting, basic lookups
+- **Level 2**: Joins, filtering, basic aggregations  
+- **Level 3**: Complex calculations, multi-table analysis
+- **Level 4**: Strategic analysis, recommendations, complex reasoning
+
+#### Quality Assurance
+```python
+review_agent = Agent(
+    model="google-gla:gemini-2.0-flash", 
+    name="review_agent", 
+    output_type=ReviewResult
+)
+```
+
+The review agent validates responses and can trigger re-routing:
+- Checks response correctness against the original query
+- Provides detailed feedback on why responses failed
+- Routes back to appropriate level agents for retry
+
+#### Adaptive Complexity
+```python
+@dataclass
+class ReviewNode(BaseNode[GraphState, None, OutputT]):
+    async def run(self, ctx: GraphRunContext[GraphState]) -> Level1Node[OutputT] | ... | End[OutputT]:
+        review = await review_agent.run(user_prompt=prompt, message_history=ctx.state.message_history)
+        if review.output.correct:
+            return End(self.node_output)
+        # Route back to appropriate level for retry
+        if self.from_level == "level1":
+            return Level1Node(user_prompt=review.output.reason, output_type=self.output_type)
+        # ... other levels
+```
+
+### Benefits
+
+1. **Optimized Resource Usage** - Simple queries use lightweight agents, complex queries get powerful models
+2. **Quality Control** - Built-in review system ensures response accuracy
+3. **Adaptive Routing** - Failed responses can be re-routed to more appropriate agents
+4. **Scalable Architecture** - Easy to add new levels or modify agent capabilities
+
+### Usage Example
+
+```python
+from router_graph import graph, GraphState, RouterNode
+
+# Initialize the graph
+state = GraphState()
+router_node = RouterNode(
+    user_prompt="Compare Q4 2023 vs Q4 2024 revenue performance...", 
+    output_type=RevenueComparison
+)
+
+# Run the graph - it will automatically route through appropriate agents
+result = await graph.run(router_node, state)
+```
+
+### Implementation Details
+
+The graph maintains conversation history across nodes, allowing for:
+- **Context preservation** between routing decisions
+- **Iterative refinement** when reviews fail
+- **Learning from failures** to improve subsequent routing
+
+This architecture demonstrates how different agent capabilities can be orchestrated to handle varying query complexities efficiently while maintaining high quality standards through automated review processes.
 
 ---
 
