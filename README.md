@@ -661,5 +661,23 @@ The graph maintains conversation history across nodes, allowing for:
 This architecture demonstrates how different agent capabilities can be orchestrated to handle varying query complexities efficiently while maintaining high quality standards through automated review processes.
 
 ---
+# Key Innovation    
+This evaluation framework introduces several innovations for LLM agent assessment:
 
-**Key Innovation:** The combination of Pydantic-enforced structured outputs with semantic text comparison creates a robust evaluation framework that can handle both precise numerical results and nuanced textual analysis. Additionally, the automated leaderboard generation system enables seamless comparison of model performance across multiple evaluation runs, providing actionable insights for model selection and optimization.
+**1. Pydantic-Enforced Structured Outputs** - Eliminates response variability by enforcing strict output schemas, enabling consistent comparison of agent performance across different models and runs.
+
+**2. Semantic Text Comparison** - Uses LLM-based semantic analysis for free-form text evaluation, moving beyond exact string matching to assess meaning and intent in strategic recommendations and analysis.
+
+**3. MCP Server Integration** - Provides standardized access to DreamFactory APIs through the Model Context Protocol, creating a realistic enterprise data environment for agent evaluation.
+
+**4. Role-Based Access Control (RBAC) Testing** - Evaluates agent behavior under different permission levels (CEO, HR, Finance, Ops), ensuring proper security boundary respect in enterprise environments.
+
+**5. Multi-Level Complexity Scaling** - Four graduated difficulty levels test everything from basic lookups to complex multi-table analysis and strategic reasoning, identifying where agents begin to struggle.
+
+**6. Automated Leaderboard Generation** - Seamless comparison of model performance across multiple evaluation runs with detailed metrics on accuracy, tool efficiency, and execution time.
+
+**7. Intelligent Multi-Level Agent Graph** - Advanced routing system that automatically directs queries to specialized agents based on complexity, with built-in quality assurance and adaptive re-routing for optimal resource utilization.
+
+**8. Comprehensive Observability** - Full OpenTelemetry-based logging via Logfire provides complete visibility into agent execution traces, tool calls, model interactions, and performance metrics.
+
+The combination of these innovations creates a robust, enterprise-ready evaluation framework that provides actionable insights for model selection, optimization, and deployment in production environments with complex data access patterns and security requirements.
