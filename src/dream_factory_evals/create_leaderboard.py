@@ -83,35 +83,41 @@ def create_leaderboard(leaderboard_name: str, report_names: list[str]) -> None:
     combined_df = pd.DataFrame()
 
     for report_name in report_names:
-        model_df = save_scores(report_name)
-        combined_df = pd.concat([combined_df, model_df])
-
-    # Calculate aggregate metrics per model
-    leaderboard = (
-        combined_df.groupby("model")  # type: ignore
-        .agg(
-            avg_score=("score", "mean"),
-            avg_accuracy=("accuracy", "mean"),
-            avg_tool_calls=("correct_tool_calls", "mean"),
-            avg_duration=("duration", "mean"),
-            total_score=("score", "sum"),
-            query_count=("name", "count"),
+        try:
+            model_df = save_scores(report_name)
+            combined_df = pd.concat([combined_df, model_df])
+        except Exception as e:
+            logger.error(f"Error saving scores for {report_name}: {e}")
+            continue
+    try:
+        leaderboard = (
+            combined_df.groupby("evaluation_name")  # type: ignore
+            .agg(
+                avg_score=("score", "mean"),
+                avg_accuracy=("accuracy", "mean"),
+                avg_tool_calls=("correct_tool_calls", "mean"),
+                avg_duration=("duration", "mean"),
+                total_score=("score", "sum"),
+                query_count=("case_name", "count"),
+            )
+            .reset_index()
         )
-        .reset_index()
-    )
 
-    # Sort by average score descending
-    leaderboard = leaderboard.sort_values("avg_score", ascending=False)  # type: ignore
+        # Sort by average score descending
+        leaderboard = leaderboard.sort_values("avg_score", ascending=False)  # type: ignore
 
-    # Save leaderboard
-    leaderboard_path = Path("scores") / f"{leaderboard_name}.csv"
-    leaderboard.to_csv(leaderboard_path, index=False)
-    logger.success(f"Created leaderboard at {leaderboard_path}")
+        # Save leaderboard
+        leaderboard_path = Path("scores") / f"{leaderboard_name}.csv"
+        leaderboard.to_csv(leaderboard_path, index=False)
+        logger.success(f"Created leaderboard at {leaderboard_path}")
 
-    # Also save the full results with all queries for each model
-    detailed_path = Path("scores") / f"detailed_{leaderboard_name}.csv"
-    combined_df.to_csv(detailed_path, index=False)
-    logger.success(f"Saved detailed comparison at {detailed_path}")
+        # Also save the full results with all queries for each model
+        detailed_path = Path("scores") / f"detailed_{leaderboard_name}.csv"
+        combined_df.to_csv(detailed_path, index=False)
+        logger.success(f"Saved detailed comparison at {detailed_path}")
+    except Exception as e:
+        logger.error(f"Error creating leaderboard: {e}")
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

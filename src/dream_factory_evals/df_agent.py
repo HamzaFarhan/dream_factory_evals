@@ -270,7 +270,7 @@ def sglang_model(base_url: str) -> Model:
 
 
 class ReportInfo(BaseModel):
-    name: Annotated[str, AfterValidator(lambda x: x.replace(" ", "-").replace(":", "-"))]
+    name: Annotated[str, AfterValidator(lambda x: x.replace(" ", "-"))]
     model: ModelT
     user_role: Role
     level: int

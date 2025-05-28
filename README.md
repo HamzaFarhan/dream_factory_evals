@@ -443,10 +443,10 @@ After running evaluations, you can create leaderboards to compare model performa
 
 ```bash
 # Basic leaderboard creation
-uv run src/dream_factory_evals/create_leaderboard.py create <leaderboard_name> <report_name1> <report_name2> [...]
+uv run src/dream_factory_evals/create_leaderboard.py <leaderboard_name> <report_name1> <report_name2> [...]
 
 # Example: Compare HR Level 1 performance across models
-uv run src/dream_factory_evals/create_leaderboard.py create "hr-level-1-comparison" \
+uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-comparison" \
   "openai:gpt-4o-hr-level-1" \
   "openai:gpt-4o-mini-hr-level-1" \
   "anthropic:claude-3-sonnet-hr-level-1"
@@ -470,19 +470,41 @@ The CLI generates two files in the `scores/` directory:
 
 ```bash
 # 1. Run evaluations for multiple models
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4o" hr 1
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4o-mini" hr 1
-uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-3-sonnet" hr 1
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-nano" hr 1
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 1
 
 # 2. Create leaderboard
-uv run src/dream_factory_evals/create_leaderboard.py create "hr-level-1-leaderboard" \
-  "openai:gpt-4o-hr-level-1" \
-  "openai:gpt-4o-mini-hr-level-1" \
-  "anthropic:claude-3-sonnet-hr-level-1"
-
-# 3. View results
-cat scores/hr-level-1-leaderboard.csv
+uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-leaderboard" \
+  "openai:gpt-4.1-nano-hr-level-1" "openai:gpt-4.1-mini-hr-level-1"
 ```
+
+**Summary Leaderboard (`hr-level-1-leaderboard.csv`):**
+
+| evaluation_name | avg_score | avg_accuracy | avg_tool_calls | avg_duration | total_score | query_count |
+|----------------|-----------|--------------|----------------|--------------|-------------|-------------|
+| openai:gpt-4.1-mini-hr-level-1 | 2.6 | 2.0 | 0.6 | 14.86 | 13 | 5 |
+| openai:gpt-4.1-nano-hr-level-1 | 2.4 | 2.0 | 0.4 | 12.52 | 12 | 5 |
+
+**Detailed Results (`detailed_hr-level-1-leaderboard.csv`):**
+
+| evaluation_name | case_name | duration | accuracy | score | correct_tool_calls | notes |
+|----------------|-----------|----------|----------|-------|-------------------|-------|
+| openai:gpt-4.1-nano-hr-level-1 | hr_l1_q1 | 15.15 | 2 | 2 | 0 | Too many tool calls: 2 > 1 |
+| openai:gpt-4.1-nano-hr-level-1 | hr_l1_q2 | 11.11 | 2 | 3 | 1 | ✓ |
+| openai:gpt-4.1-nano-hr-level-1 | hr_l1_q3 | 13.53 | 2 | 2 | 0 | Too many tool calls: 2 > 1 |
+| openai:gpt-4.1-nano-hr-level-1 | hr_l1_q4 | 14.34 | 2 | 3 | 1 | ✓ |
+| openai:gpt-4.1-nano-hr-level-1 | hr_l1_q5 | 8.47 | 2 | 2 | 0 | Too many tool calls: 2 > 1 |
+| openai:gpt-4.1-mini-hr-level-1 | hr_l1_q1 | 11.44 | 2 | 3 | 1 | ✓ |
+| openai:gpt-4.1-mini-hr-level-1 | hr_l1_q2 | 9.78 | 2 | 2 | 0 | Tool call params mismatch |
+| openai:gpt-4.1-mini-hr-level-1 | hr_l1_q3 | 24.78 | 2 | 2 | 0 | Too many tool calls: 3 > 1 |
+| openai:gpt-4.1-mini-hr-level-1 | hr_l1_q4 | 18.77 | 2 | 3 | 1 | ✓ |
+| openai:gpt-4.1-mini-hr-level-1 | hr_l1_q5 | 9.53 | 2 | 3 | 1 | ✓ |
+
+**Key Insights:**
+- Both models achieved perfect accuracy (2.0) on all queries
+- `gpt-4.1-mini` scored slightly higher overall (2.6 vs 2.4 average score)
+- `gpt-4.1-nano` was faster on average (12.52s vs 14.86s)
+- Main difference: tool call efficiency - both models sometimes made unnecessary extra tool calls
 
 ### Leaderboard Metrics
 
