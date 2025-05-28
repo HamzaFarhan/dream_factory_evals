@@ -12,7 +12,6 @@
 - [Implementation](#implementation)
   - [1. MCP Server](#1-mcp-server)
   - [2. Evaluation System](#2-evaluation-system)
-  - [3. Value Proposition](#3-value-proposition)
 - [Running Evaluations](#running-evaluations)
 - [Creating Leaderboards](#creating-leaderboards)
 - [Example Queries](#example-queries)
@@ -329,20 +328,6 @@ Each directory contains:
 - `evals.py` - Dataset with test cases
 - `output_types.py` - Pydantic models for structured outputs
 
-### 3. Value Proposition
-
-This evaluation framework provides several key insights:
-
-1. **Structured Output Validation** - Using Pydantic models ensures consistent, comparable results across different LLM runs
-
-2. **Semantic Text Comparison** - For free-form text, we use LLM-based semantic comparison rather than exact string matching
-
-3. **Tool Usage Analysis** - Detailed tracking of MCP tool calls helps optimize agent efficiency
-
-4. **Role-Based Evaluation** - Testing different access levels ensures proper RBAC implementation
-
-5. **Complexity Scaling** - Four difficulty levels help identify where agents start to struggle
-
 ## Running Evaluations
 
 ### CLI Interface
@@ -364,6 +349,11 @@ uv run src/dream_factory_evals/run_eval.py run "google-gla:gemini-2.0-flash" ops
 ```bash
 # Custom report name
 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
+
+# Default report name format (if --report-name not specified)
+# Format: {model}-{role}-level-{level}
+# Example: "openai:gpt-4.1-mini-hr-level-2"
+uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
 
 # Custom prompt file
 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
