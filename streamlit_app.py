@@ -5,7 +5,7 @@ from loguru import logger
 from pydantic_ai.messages import ModelMessage
 from pydantic_ai.models import KnownModelName
 
-from dream_factory_evals.df_agent import Role, ToolCall, ToolCallResult
+from dream_factory_evals.df_agent import Role, TaskConfig, ToolCall, ToolCallResult
 from dream_factory_evals.df_chat import ChatResult, chat
 
 
@@ -13,7 +13,8 @@ async def run_chat(
     prompt: str, role: Role, model: KnownModelName, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     try:
-        chat_result = await chat(user_prompt=prompt, user_role=role, model=model, message_history=message_history)
+        task_config = TaskConfig(user_role=role, model=model)
+        chat_result = await chat(user_prompt=prompt, task_config=task_config, message_history=message_history)
         return chat_result
     except Exception as e:
         logger.exception(f"Error during chat: {e}")
