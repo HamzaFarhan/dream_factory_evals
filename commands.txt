@@ -1,25 +1,59 @@
-34.170.237.144
-dream-factory-mcp-demo.dreamai.io
-
+# URL for the app:
+https://chat.app.dreamfactory.com
 
 
 # Login to VM:
-gcloud compute ssh --zone "us-central1-c" "apps-demo" --project "dreamai-pocs"
+gcloud compute ssh --zone "us-central1-f" "appsvm1" --project "ai-benchmarking-project"
+
 
 # Become root:
 sudo su -
 
 # Update code:
-cd /opt/dream_factory_evals_app/dream_factory_evals && git pull
+cd /opt/dream_factory_evals_app/dream_factory_evals
+#again `git pull` is not working, so update the code manually.
 
 # Build Docker Image
-docker build . -f Dockerfile -t gcr.io/dreamai-pocs/apps-demo/dream_factory_evals-app:v1
-
-# Bounce docker compose
-cd /opt/dream_factory_evals_app && docker-compose down && docker-compose up -d
+cd /opt/dream_factory_evals_app/dream_factory_evals && docker build . -f Dockerfile -t gcr.io/ai-benchmarking-project/apps1/dream_factory_evals-app:v1 && cd /opt/dream_factory_evals_app && docker-compose down && docker-compose up -d
 
 # Check logs:
 docker logs -f dream_factory_evals-app
 
 # URL for the app:
-https://dream-factory-mcp-demo.dreamai.io
+https://chat.app.dreamfactory.com
+```
+
+*benchmark.app (sglang)*
+```
+# URL for the app:
+https://benchmark.app.dreamfactory.com
+
+
+ZONE="us-central1-c"
+PROJECT_ID="ai-benchmarking-project"
+VMNAME="appsvm2"
+
+# Start VM
+gcloud compute instances start $VMNAME --zone=$ZONE --project=$PROJECT_ID
+
+# Login
+gcloud compute ssh --zone $ZONE $VMNAME --project $PROJECT_ID
+
+
+# Become Root
+sudo su -
+
+
+cd /opt/dream_factory_evals_app
+docker-compose up -d
+
+cd /opt/dream_factory_evals_app/nginx-certbot
+docker-compose up -d
+
+# URL for the app:
+https://benchmark.app.dreamfactory.com
+
+
+# Stop the VM 
+gcloud compute instances stop $VMNAME --zone=$ZONE --project=$PROJECT_ID
+```

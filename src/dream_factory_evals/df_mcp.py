@@ -1,5 +1,5 @@
 import os
-from typing import TypedDict
+from typing import Any, TypedDict
 
 import httpx
 from loguru import logger
@@ -45,9 +45,7 @@ def table_url_with_headers(
     return {"url": f"{base_url}/_table/{table_name}", "headers": {"X-DreamFactory-API-Key": dream_factory_api_key}}
 
 
-def list_table_names(
-    base_url: str | None = None, dream_factory_api_key: str | None = None
-) -> dict[str, list[dict[str, str]]]:
+def list_table_names(base_url: str | None = None, dream_factory_api_key: str | None = None) -> dict[str, Any]:
     """List the names of all tables in the database.
 
     Parameters
@@ -70,7 +68,7 @@ def list_table_names(
 @server.tool()
 def get_table_schema(
     table_name: str, base_url: str | None = None, dream_factory_api_key: str | None = None
-) -> dict[str, str | dict[str, str]]:
+) -> dict[str, Any]:
     """Get the schema of a table.
 
     Parameters
@@ -104,7 +102,7 @@ def get_table_records(
     offset: int = 0,
     order_field: str = "",
     related: str | list[str] = "",
-) -> dict[str, str | dict[str, str]]:
+) -> dict[str, Any]:
     """Get the records of a table.
 
     Parameters
@@ -184,7 +182,7 @@ def get_table_records(
 @server.tool()
 def get_table_records_by_ids(
     table_name: str, ids: str | list[str], fields: str | list[str] = "*", related: str | list[str] = ""
-) -> dict[str, str | dict[str, str]]:
+) -> dict[str, Any]:
     """Get one or more records from a table by their IDs.
 
     Parameters

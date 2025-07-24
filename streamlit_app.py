@@ -54,13 +54,8 @@ with st.sidebar:
     st.header("Settings")
     model: KnownModelName = st.selectbox(
         "Select Model",
-        [
-            "google-gla:gemini-2.0-flash",
-            "anthropic:claude-3-5-sonnet-latest",
-            "openai:gpt-4.1-mini",
-            "openai:o4-mini",
-        ],
-        index=0,  # Default to gemini-2.0-flash
+        ["google-gla:gemini-2.5-flash", "anthropic:claude-sonnet-4-0", "openai:gpt-4.1"],
+        index=0,  # Default to gemini-2.5-flash
     )
 
     role = st.selectbox(

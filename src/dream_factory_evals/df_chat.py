@@ -72,7 +72,7 @@ async def chat(
                                         "final_result",
                                     ]:
                                         tool_calls[part.tool_call_id]["result"] = ToolCallResult(
-                                            tool_name=part.tool_name, result=part.content.content
+                                            tool_name=part.tool_name, result=part.content
                                         )
                     res = (
                         agent_run.result.output.content
@@ -93,3 +93,17 @@ async def chat(
     return ChatResult(
         result="Sorry, I couldn't complete the task.", tool_calls=tool_calls, message_history=message_history
     )
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    from dream_factory_evals.df_agent import Role
+
+    res = asyncio.run(
+        chat(
+            "list the hr employees in department 1",
+            TaskConfig(user_role=Role.HR, model="google-gla:gemini-2.5-flash"),
+        )
+    )
+    print(res)

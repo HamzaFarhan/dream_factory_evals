@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
-from typing import Annotated, Any, Generic, Literal, TypeVar, get_args
+from typing import Annotated, Any, Literal, TypeGuard, TypeVar, get_args
 
 import logfire
 from dotenv import load_dotenv
@@ -12,30 +12,27 @@ from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ToolCallPart
 from pydantic_ai.models import KnownModelName, Model
+from pydantic_ai.models.fallback import FallbackModel
 from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.providers.openrouter import OpenRouterProvider
 from pydantic_evals import Dataset
 from pydantic_evals.evaluators import EvaluationReason, Evaluator, EvaluatorContext
 from tenacity import AsyncRetrying, stop_after_attempt, wait_random
 
 from dream_factory_evals.df_mcp import list_table_names
 
-_ = load_dotenv()
+load_dotenv()
 logfire.configure()
+logfire.instrument_httpx(capture_all=True)
 
 MODULE_DIR = Path(__file__).parent
 
 RETRIES = 3
 MAX_TOOL_CALLS = 20
-STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.0-flash"
+STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.5-flash"
 
 type ModelT = KnownModelName | Literal["SG_LANG", "Qwen2.5"]
-
-
-def is_known_model_name(model: ModelT) -> bool:
-    """Check if the given string is a valid KnownModelName."""
-    known_model_names = get_args(KnownModelName.__value__)
-    return model in known_model_names
 
 
 class ToolCall(BaseModel):
@@ -117,7 +114,7 @@ class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
         return EvaluationReason(value=True)
 
 
-class Task(BaseModel, Generic[ResultT]):
+class Task[ResultT](BaseModel):
     query: Query[ResultT]
     user_role: Role
     available_tables: list[str]
@@ -137,7 +134,6 @@ class TaskConfig(BaseModel):
     model: ModelT
     retries: int = RETRIES
     prompt_name: str = "basic_prompt.txt"
-    mcp_servers: list[MCPServerStdio] | None = None
     max_tool_calls: int = MAX_TOOL_CALLS
     think: bool = False
     new: bool = False
@@ -177,6 +173,18 @@ def think(title: str, thought: str, action: str | None = None, confidence: float
     return thought
 
 
+def is_known_model_name(model: ModelT) -> TypeGuard[KnownModelName]:
+    """Check if the given string is a valid KnownModelName."""
+    known_model_names = get_args(KnownModelName.__value__)
+    return model in known_model_names
+
+
+def setup_model(model_name: ModelT) -> Model | KnownModelName:
+    if is_known_model_name(model_name):
+        return FallbackModel(OpenAIModel(model_name=model_name, provider=OpenRouterProvider()), model_name)
+    return sglang_model(os.environ["SG_LANG_BASE_URL"])
+
+
 def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
@@ -201,8 +209,7 @@ def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Tas
         args=["run", str(MODULE_DIR / "df_mcp.py")],
         env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
     )
-    mcp_servers = config.mcp_servers or []
-    mcp_servers.append(tables_mcp_server)
+    mcp_servers = [tables_mcp_server]
     system_prompt = (MODULE_DIR / config.prompt_name).read_text()
     if config.think:
         system_prompt += "\nUse the think tool to reason about the task and work through it step-by-step."
@@ -302,19 +309,3 @@ def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY
         f"String 2: {str2}\n"
     )
     return strings_similarity_agent.run_sync(prompt).output
-
-
-async def main():
-    thinking_server = MCPServerStdio(
-        command="npx", args=["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    )
-    query = Query(query="How many employees are there?", output_type=str)
-    task_config = TaskConfig(user_role=Role.CEO, model="openai:gpt-4.1-nano", mcp_servers=[thinking_server])
-    res = await task(query, task_config)
-    print(res)
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    asyncio.run(main())
