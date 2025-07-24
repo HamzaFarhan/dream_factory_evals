@@ -181,7 +181,11 @@ def is_known_model_name(model: ModelT) -> TypeGuard[KnownModelName]:
 
 def setup_model(model_name: ModelT) -> Model | KnownModelName:
     if is_known_model_name(model_name):
-        return FallbackModel(OpenAIModel(model_name=model_name, provider=OpenRouterProvider()), model_name)
+        try:
+            return FallbackModel(OpenAIModel(model_name=model_name, provider=OpenRouterProvider()), model_name)
+        except Exception as e:
+            logger.error(f"Failed to set up model {model_name}: {e}")
+            return model_name
     return sglang_model(os.environ["SG_LANG_BASE_URL"])
 
 
