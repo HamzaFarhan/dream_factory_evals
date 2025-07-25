@@ -241,9 +241,7 @@ def setup_task_and_agent(
             "\nUse the think tool to reason about the task and work through it step-by-step."
         )
     agent = Agent(
-        model=sglang_model(os.environ["SG_LANG_BASE_URL"])
-        if not is_known_model_name(config.model)
-        else config.model,
+        model=setup_model(config.model),
         name="df_agent",
         system_prompt=system_prompt,
         mcp_servers=mcp_servers,
