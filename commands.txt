@@ -10,8 +10,7 @@ gcloud compute ssh --zone "us-central1-f" "appsvm1" --project "ai-benchmarking-p
 sudo su -
 
 # Update code:
-cd /opt/dream_factory_evals_app/dream_factory_evals
-#again `git pull` is not working, so update the code manually.
+cd /opt/dream_factory_evals_app/dream_factory_evals && git pull
 
 # Build Docker Image
 cd /opt/dream_factory_evals_app/dream_factory_evals && docker build . -f Dockerfile -t gcr.io/ai-benchmarking-project/apps1/dream_factory_evals-app:v1 && cd /opt/dream_factory_evals_app && docker-compose down && docker-compose up -d

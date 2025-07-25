@@ -13,7 +13,7 @@ from pydantic_ai.mcp import MCPServerStdio
 from pydantic_ai.messages import ToolCallPart
 from pydantic_ai.models import KnownModelName, Model
 from pydantic_ai.models.fallback import FallbackModel
-from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.models.openai import OpenAIModel, OpenAIModelName
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.providers.openrouter import OpenRouterProvider
 from pydantic_evals import Dataset
@@ -93,7 +93,9 @@ class EvaluateResult(Evaluator[Query[ResultT], QueryResult[ResultT]]):
 
 @dataclass
 class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
-    def evaluate(self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]) -> EvaluationReason:
+    def evaluate(
+        self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]
+    ) -> EvaluationReason:
         if ctx.expected_output is None:
             return EvaluationReason(value=True)
         if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
@@ -103,7 +105,9 @@ class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
             )
         reason = ""
         tool_num = 1
-        for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
+        for output_tool_call, expected_tool_call in zip(
+            ctx.output.tool_calls, ctx.expected_output.tool_calls
+        ):
             if output_tool_call.tool_name != expected_tool_call.tool_name:
                 reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
@@ -182,14 +186,26 @@ def is_known_model_name(model: ModelT) -> TypeGuard[KnownModelName]:
 def setup_model(model_name: ModelT) -> Model | KnownModelName:
     if is_known_model_name(model_name):
         try:
-            return FallbackModel(OpenAIModel(model_name=model_name, provider=OpenRouterProvider()), model_name)
+            open_router_model_map: dict[KnownModelName, OpenAIModelName] = {
+                "anthropic:claude-sonnet-4-0": "anthropic/claude-sonnet-4",
+                "openai:gpt-4.1": "openai/gpt-4.1",
+                "google-gla:gemini-2.5-flash": "google/gemini-2.5-flash",
+            }
+            return FallbackModel(
+                OpenAIModel(
+                    model_name=open_router_model_map[model_name], provider=OpenRouterProvider()
+                ),
+                model_name,
+            )
         except Exception as e:
             logger.error(f"Failed to set up model {model_name}: {e}")
             return model_name
     return sglang_model(os.environ["SG_LANG_BASE_URL"])
 
 
-def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Task[ResultT], Agent]:
+def setup_task_and_agent(
+    query: Query[ResultT], config: TaskConfig
+) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -199,7 +215,9 @@ def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Tas
     ]
 
     if config.user_role != Role.CEO:
-        available_tables = [t for t in available_tables if t.startswith(config.user_role.value)]
+        available_tables = [
+            t for t in available_tables if t.startswith(config.user_role.value)
+        ]
 
     task = Task(query=query, user_role=config.user_role, available_tables=available_tables)
     url_key = "DREAM_FACTORY_BASE_URL" if not config.new else "NEW_DREAM_FACTORY_BASE_URL"
@@ -211,12 +229,17 @@ def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Tas
     tables_mcp_server = MCPServerStdio(
         command="uv",
         args=["run", str(MODULE_DIR / "df_mcp.py")],
-        env={"DREAM_FACTORY_BASE_URL": os.environ[url_key], "DREAM_FACTORY_API_KEY": os.environ[api_key_key]},
+        env={
+            "DREAM_FACTORY_BASE_URL": os.environ[url_key],
+            "DREAM_FACTORY_API_KEY": os.environ[api_key_key],
+        },
     )
     mcp_servers = [tables_mcp_server]
     system_prompt = (MODULE_DIR / config.prompt_name).read_text()
     if config.think:
-        system_prompt += "\nUse the think tool to reason about the task and work through it step-by-step."
+        system_prompt += (
+            "\nUse the think tool to reason about the task and work through it step-by-step."
+        )
     agent = Agent(
         model=sglang_model(os.environ["SG_LANG_BASE_URL"])
         if not is_known_model_name(config.model)
@@ -235,30 +258,42 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
     task, agent = setup_task_and_agent(query=inputs, config=config)
     tool_calls: list[ToolCall] = []
     try:
-        async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
+        async for attempt in AsyncRetrying(
+            wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)
+        ):
             with attempt:
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
-                    async with agent.iter(user_prompt=task.prompt, output_type=inputs.output_type) as agent_run:
+                    async with agent.iter(
+                        user_prompt=task.prompt, output_type=inputs.output_type
+                    ) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
                                 for part in node.model_response.parts:
                                     if isinstance(part, ToolCallPart) and not any(
-                                        x in part.tool_name for x in ["get_table_schema", "final_result", "think"]
+                                        x in part.tool_name
+                                        for x in ["get_table_schema", "final_result", "think"]
                                     ):
                                         if num_tool_calls < config.max_tool_calls:
                                             tool_calls.append(
-                                                ToolCall(tool_name=part.tool_name, params=part.args_as_dict())
+                                                ToolCall(
+                                                    tool_name=part.tool_name,
+                                                    params=part.args_as_dict(),
+                                                )
                                             )
                                             num_tool_calls += 1
                                         else:
-                                            error_msg = (
-                                                f"Too many tool calls: {num_tool_calls} > {config.max_tool_calls}"
-                                            )
+                                            error_msg = f"Too many tool calls: {num_tool_calls} > {config.max_tool_calls}"
                                             logger.warning(error_msg)
-                                            return QueryResult(result=None, tool_calls=tool_calls, error=error_msg)
+                                            return QueryResult(
+                                                result=None,
+                                                tool_calls=tool_calls,
+                                                error=error_msg,
+                                            )
                     if agent_run.result is None:
-                        return QueryResult(result=None, tool_calls=tool_calls, error="No result produced")
+                        return QueryResult(
+                            result=None, tool_calls=tool_calls, error="No result produced"
+                        )
                     return QueryResult(result=agent_run.result.output, tool_calls=tool_calls)
     except Exception as e:
         error_msg = f"Unexpected error: {str(e)}"
@@ -272,12 +307,16 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
         )
     )
     return QueryResult(
-        result=None, tool_calls=tool_calls, error="Internal Server Error: Unexpected execution path."
+        result=None,
+        tool_calls=tool_calls,
+        error="Internal Server Error: Unexpected execution path.",
     )
 
 
 def sglang_model(base_url: str) -> Model:
-    return OpenAIModel("Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
+    return OpenAIModel(
+        "Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG")
+    )
 
 
 class ReportInfo(BaseModel):
@@ -294,7 +333,9 @@ async def evaluate(
     # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task
 ):
     logger.info(f"Evaluating {report_info.name}")
-    report = await dataset.evaluate(task=lambda inputs: task(inputs, task_config), name=report_info.name)
+    report = await dataset.evaluate(
+        task=lambda inputs: task(inputs, task_config), name=report_info.name
+    )
     report.print(
         include_input=True,
         include_output=True,
@@ -305,8 +346,12 @@ async def evaluate(
     )
 
 
-def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY_MODEL) -> bool:
-    strings_similarity_agent = Agent(model=model, name="strings_similarity_agent", output_type=bool)
+def are_strings_similar(
+    str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY_MODEL
+) -> bool:
+    strings_similarity_agent = Agent(
+        model=model, name="strings_similarity_agent", output_type=bool
+    )
     prompt = (
         "The wording/structure/grammar may be different, but are these 2 strings saying the same thing?\n"
         f"String 1: {str1}\n"
