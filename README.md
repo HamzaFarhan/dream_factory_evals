@@ -340,7 +340,7 @@ uv run src/dream_factory_evals/run_eval.py run <model> <role> <level>
 
 # Examples
 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
-uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-4-sonnet-20250514" finance 3
+uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-sonnet-4-0" finance 3
 uv run src/dream_factory_evals/run_eval.py run "google-gla:gemini-2.0-flash" ops 1
 ```
 

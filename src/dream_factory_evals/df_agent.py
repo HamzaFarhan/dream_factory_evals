@@ -143,7 +143,9 @@ class TaskConfig(BaseModel):
     new: bool = False
 
 
-def think(title: str, thought: str, action: str | None = None, confidence: float = 0.8) -> str:
+def think(
+    title: str, thought: str, action: str | None = None, confidence: float = 0.8
+) -> str:
     """
     Use this tool as a scratchpad to reason about the task and work through it step-by-step.
 
@@ -193,12 +195,13 @@ def setup_model(model_name: ModelT) -> Model | KnownModelName:
             }
             return FallbackModel(
                 OpenAIModel(
-                    model_name=open_router_model_map[model_name], provider=OpenRouterProvider()
+                    model_name=open_router_model_map[model_name],
+                    provider=OpenRouterProvider(),
                 ),
                 model_name,
             )
         except Exception as e:
-            logger.error(f"Failed to set up model {model_name}: {e}")
+            logger.warning(f"Failed to set up model {model_name}: {e}")
             return model_name
     return sglang_model(os.environ["SG_LANG_BASE_URL"])
 
@@ -270,7 +273,11 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
                                 for part in node.model_response.parts:
                                     if isinstance(part, ToolCallPart) and not any(
                                         x in part.tool_name
-                                        for x in ["get_table_schema", "final_result", "think"]
+                                        for x in [
+                                            "get_table_schema",
+                                            "final_result",
+                                            "think",
+                                        ]
                                     ):
                                         if num_tool_calls < config.max_tool_calls:
                                             tool_calls.append(
