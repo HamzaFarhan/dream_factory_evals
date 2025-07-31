@@ -28,7 +28,7 @@ async def chat(
     user_prompt: str, task_config: TaskConfig, message_history: list[ModelMessage] | None = None
 ) -> ChatResult:
     inputs = Query(query=user_prompt, output_type=MarkdownResponse)
-    task_config.new = True
+    task_config.new = False
     task, agent = setup_task_and_agent(query=inputs, config=task_config)
     tool_calls: dict[str, dict[str, ToolCall | ToolCallResult]] = {}
     try:

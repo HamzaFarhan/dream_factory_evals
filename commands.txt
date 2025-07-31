@@ -54,5 +54,11 @@ https://benchmark.app.dreamfactory.com
 
 
 # Stop the VM 
+
+ZONE="us-central1-c"
+PROJECT_ID="ai-benchmarking-project"
+VMNAME="appsvm2"
 gcloud compute instances stop $VMNAME --zone=$ZONE --project=$PROJECT_ID
+
+
 ```
