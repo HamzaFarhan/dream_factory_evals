@@ -1,0 +1,21 @@
+# Use Python base image
+FROM python:3.12
+
+# Set the working directory
+WORKDIR /app
+
+# Copy toml and Readme file
+COPY pyproject.toml /app
+COPY README.md /app
+
+# Install pip and hatch globally
+RUN pip install --no-cache-dir hatch
+
+# Copy project files
+COPY . /app
+
+# Expose ports as needed
+EXPOSE 8501
+
+# Command to run your application
+CMD ["/bin/bash", "-c", "while true; do sleep 10; done"]

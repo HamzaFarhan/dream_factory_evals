@@ -107,12 +107,12 @@ def create_leaderboard(leaderboard_name: str, report_names: list[str]) -> None:
         leaderboard = leaderboard.sort_values("avg_score", ascending=False)  # type: ignore
 
         # Save leaderboard
-        leaderboard_path = Path("scores") / f"{leaderboard_name}.csv"
+        leaderboard_path = SCORES_DIR / f"{leaderboard_name}.csv"
         leaderboard.to_csv(leaderboard_path, index=False)
         logger.success(f"Created leaderboard at {leaderboard_path}")
 
         # Also save the full results with all queries for each model
-        detailed_path = Path("scores") / f"detailed_{leaderboard_name}.csv"
+        detailed_path = SCORES_DIR / f"detailed_{leaderboard_name}.csv"
         combined_df.to_csv(detailed_path, index=False)
         logger.success(f"Saved detailed comparison at {detailed_path}")
     except Exception as e:
