@@ -32,7 +32,7 @@ def get_valid_models() -> list[str]:
         for m in list(get_args(KnownModelName.__value__))
         if any(m.startswith(x) for x in ["anthropic", "google", "openai"])
     ]
-    literal_models = ["Qwen2.5"]
+    literal_models = ["Qwen2.5", "Other"]
     return known_models + literal_models
 
 
