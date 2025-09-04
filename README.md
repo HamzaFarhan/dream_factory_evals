@@ -336,33 +336,33 @@ The evaluation system provides a CLI tool for running evaluations:
 
 ```bash
 # Basic usage
-uv run src/dream_factory_evals/run_eval.py run <model> <role> <level>
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run <model> <role> <level>
 
 # Examples
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
-uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-sonnet-4-0" finance 3
-uv run src/dream_factory_evals/run_eval.py run "google-gla:gemini-2.0-flash" ops 1
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "anthropic:claude-sonnet-4-0" finance 3
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "google-gla:gemini-2.0-flash" ops 1
 ```
 
 ### CLI Options
 
 ```bash
 # Custom report name
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "my-custom-test"
 
 # Default report name format (if --report-name not specified)
 # Format: {model}-{role}-level-{level}
 # Example: "openai:gpt-4.1-mini-hr-level-2"
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2
 
 # Custom prompt file
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt"
 
 # Adjust retry and tool call limits
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --max-tool-calls 30 --retries 5
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --max-tool-calls 30 --retries 5
 
 # Enable thinking tool for step-by-step reasoning
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think
 ```
 
 ### Environment Variables
@@ -379,10 +379,10 @@ export RETRIES="3"
 
 ```bash
 # List all available models
-uv run src/dream_factory_evals/run_eval.py list-models
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py list-models
 
 # List all available roles  
-uv run src/dream_factory_evals/run_eval.py list-roles
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py list-roles
 ```
 
 ### Comparing Models
@@ -390,7 +390,7 @@ uv run src/dream_factory_evals/run_eval.py list-roles
 ```bash
 # Test multiple models on the same dataset
 for model in "openai:gpt-4.1-mini" "anthropic:claude-4-sonnet-20250514" "google-gla:gemini-2.0-flash"; do
-    uv run src/dream_factory_evals/run_eval.py run "$model" hr 2
+    docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "$model" hr 2
 done
 ```
 
@@ -400,12 +400,12 @@ You can also compare the same model with different configurations to optimize pe
 
 ```bash
 # Compare different prompts
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "basic_prompt.txt" --report-name "gpt-4.1-mini-hr-2-basic"
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt" --report-name "gpt-4.1-mini-hr-2-advanced"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "basic_prompt.txt" --report-name "gpt-4.1-mini-hr-2-basic"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --prompt-name "advanced_prompt.txt" --report-name "gpt-4.1-mini-hr-2-advanced"
 
 # Compare with and without think tool
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "gpt-4.1-mini-hr-2-no-think"
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think --report-name "gpt-4.1-mini-hr-2-with-think"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --report-name "gpt-4.1-mini-hr-2-no-think"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 2 --think --report-name "gpt-4.1-mini-hr-2-with-think"
 
 # Compare all configurations for a model
 model="openai:gpt-4.1-mini"
@@ -413,16 +413,16 @@ role="hr"
 level=2
 
 # Basic prompt without think
-uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --report-name "${model}-${role}-${level}-basic"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --report-name "${model}-${role}-${level}-basic"
 
 # Basic prompt with think
-uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --think --report-name "${model}-${role}-${level}-basic-think"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "basic_prompt.txt" --think --report-name "${model}-${role}-${level}-basic-think"
 
 # Advanced prompt without think
-uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --report-name "${model}-${role}-${level}-advanced"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --report-name "${model}-${role}-${level}-advanced"
 
 # Advanced prompt with think
-uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --think --report-name "${model}-${role}-${level}-advanced-think"
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "$model" "$role" "$level" --prompt-name "advanced_prompt.txt" --think --report-name "${model}-${role}-${level}-advanced-think"
 ```
 
 ## Creating Leaderboards
@@ -433,10 +433,10 @@ After running evaluations, you can create leaderboards to compare model performa
 
 ```bash
 # Basic leaderboard creation
-uv run src/dream_factory_evals/create_leaderboard.py <leaderboard_name> <report_name1> <report_name2> [...]
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/create_leaderboard.py <leaderboard_name> <report_name1> <report_name2> [...]
 
 # Example: Compare HR Level 1 performance across models
-uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-comparison" \
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-comparison" \
   "openai:gpt-4o-hr-level-1" \
   "openai:gpt-4o-mini-hr-level-1" \
   "anthropic:claude-3-sonnet-hr-level-1"
@@ -460,11 +460,11 @@ The CLI generates two files in the `scores/` directory:
 
 ```bash
 # 1. Run evaluations for multiple models
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-nano" hr 1
-uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 1
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-nano" hr 1
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "openai:gpt-4.1-mini" hr 1
 
 # 2. Create leaderboard
-uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-leaderboard" \
+docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/create_leaderboard.py "hr-level-1-leaderboard" \
   "openai:gpt-4.1-nano-hr-level-1" "openai:gpt-4.1-mini-hr-level-1"
 ```
 

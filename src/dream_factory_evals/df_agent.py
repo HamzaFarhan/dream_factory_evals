@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
-from typing import Annotated, Any, Literal, TypeGuard, TypeVar, get_args
+from typing import Annotated, Any, TypeGuard, TypeVar, get_args
 
 import logfire
 from dotenv import load_dotenv
@@ -32,7 +32,7 @@ RETRIES = 3
 MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.5-flash"
 
-type ModelT = KnownModelName | Literal["Qwen2.5"]
+type ModelT = KnownModelName | str
 
 
 class ToolCall(BaseModel):

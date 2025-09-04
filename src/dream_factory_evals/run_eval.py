@@ -32,7 +32,7 @@ def get_valid_models() -> list[str]:
         for m in list(get_args(KnownModelName.__value__))
         if any(m.startswith(x) for x in ["anthropic", "google", "openai"])
     ]
-    literal_models = ["Qwen2.5", "Other"]
+    literal_models = ["SGLang"]
     return known_models + literal_models
 
 
@@ -60,10 +60,10 @@ def run(
     """Run evaluations for a specific model, role, and level."""
 
     # Validate inputs
-    valid_models = get_valid_models()
-    if model not in valid_models:
-        logger.error(f"Invalid model: {model}. Valid models: {', '.join(valid_models)}")
-        raise typer.Exit(1)
+    # valid_models = get_valid_models()
+    # if model not in valid_models:
+    #     logger.error(f"Invalid model: {model}. Valid models: {', '.join(valid_models)}")
+    #     raise typer.Exit(1)
 
     valid_roles = get_valid_roles()
     if role not in valid_roles:
@@ -75,7 +75,11 @@ def run(
         raise typer.Exit(1)
 
     # Run evaluation
-    asyncio.run(_run_evaluation(model, role, level, report_name, prompt_name, max_tool_calls, retries, think))
+    asyncio.run(
+        _run_evaluation(
+            model.replace("/", ":"), role, level, report_name, prompt_name, max_tool_calls, retries, think
+        )
+    )
 
 
 async def _run_evaluation(
