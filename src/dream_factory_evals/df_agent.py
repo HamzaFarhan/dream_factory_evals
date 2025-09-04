@@ -195,7 +195,7 @@ def setup_model(model_name: ModelT) -> Model | KnownModelName:
                 model_name,
             )
         except Exception as e:
-            logger.warning(f"Failed to set up model {model_name}: {e}")
+            logger.warning(f"Failed to set up model through open router {model_name}: {e}")
             return model_name
     return sglang_model(os.environ["SG_LANG_BASE_URL"], model_name)
 
@@ -302,7 +302,7 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
     )
 
 
-def sglang_model(base_url: str, model_name: Literal["Qwen2.5"]) -> Model:
+def sglang_model(base_url: str, model_name: ModelT) -> Model:
     return OpenAIModel(model_name, provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
 
 
