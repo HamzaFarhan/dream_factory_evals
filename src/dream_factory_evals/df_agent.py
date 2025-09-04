@@ -32,7 +32,7 @@ RETRIES = 3
 MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.5-flash"
 
-type ModelT = KnownModelName | Literal["SG_LANG", "Qwen2.5"]
+type ModelT = KnownModelName | Literal["Qwen2.5", "Qwen3"]
 
 
 class ToolCall(BaseModel):
@@ -93,9 +93,7 @@ class EvaluateResult(Evaluator[Query[ResultT], QueryResult[ResultT]]):
 
 @dataclass
 class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
-    def evaluate(
-        self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]
-    ) -> EvaluationReason:
+    def evaluate(self, ctx: EvaluatorContext[Query[ResultT], QueryResult[ResultT]]) -> EvaluationReason:
         if ctx.expected_output is None:
             return EvaluationReason(value=True)
         if len(ctx.output.tool_calls) > len(ctx.expected_output.tool_calls):
@@ -105,9 +103,7 @@ class EvaluateToolCalls(Evaluator[Query[ResultT], QueryResult[ResultT]]):
             )
         reason = ""
         tool_num = 1
-        for output_tool_call, expected_tool_call in zip(
-            ctx.output.tool_calls, ctx.expected_output.tool_calls
-        ):
+        for output_tool_call, expected_tool_call in zip(ctx.output.tool_calls, ctx.expected_output.tool_calls):
             if output_tool_call.tool_name != expected_tool_call.tool_name:
                 reason += f"Tool call mismatch: {output_tool_call.tool_name} != {expected_tool_call.tool_name} at tool number: {tool_num}\n"
             if sorted(output_tool_call.params) != sorted(expected_tool_call.params):
@@ -143,9 +139,7 @@ class TaskConfig(BaseModel):
     new: bool = False
 
 
-def think(
-    title: str, thought: str, action: str | None = None, confidence: float = 0.8
-) -> str:
+def think(title: str, thought: str, action: str | None = None, confidence: float = 0.8) -> str:
     """
     Use this tool as a scratchpad to reason about the task and work through it step-by-step.
 
@@ -203,12 +197,10 @@ def setup_model(model_name: ModelT) -> Model | KnownModelName:
         except Exception as e:
             logger.warning(f"Failed to set up model {model_name}: {e}")
             return model_name
-    return sglang_model(os.environ["SG_LANG_BASE_URL"])
+    return sglang_model(os.environ["SG_LANG_BASE_URL"], model_name)
 
 
-def setup_task_and_agent(
-    query: Query[ResultT], config: TaskConfig
-) -> tuple[Task[ResultT], Agent]:
+def setup_task_and_agent(query: Query[ResultT], config: TaskConfig) -> tuple[Task[ResultT], Agent]:
     available_tables = [
         t["name"]
         for t in list_table_names(
@@ -218,9 +210,7 @@ def setup_task_and_agent(
     ]
 
     if config.user_role != Role.CEO:
-        available_tables = [
-            t for t in available_tables if t.startswith(config.user_role.value)
-        ]
+        available_tables = [t for t in available_tables if t.startswith(config.user_role.value)]
 
     task = Task(query=query, user_role=config.user_role, available_tables=available_tables)
     url_key = "DREAM_FACTORY_BASE_URL" if not config.new else "NEW_DREAM_FACTORY_BASE_URL"
@@ -240,9 +230,7 @@ def setup_task_and_agent(
     mcp_servers = [tables_mcp_server]
     system_prompt = (MODULE_DIR / config.prompt_name).read_text()
     if config.think:
-        system_prompt += (
-            "\nUse the think tool to reason about the task and work through it step-by-step."
-        )
+        system_prompt += "\nUse the think tool to reason about the task and work through it step-by-step."
     agent = Agent(
         model=setup_model(config.model),
         name="df_agent",
@@ -259,15 +247,11 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
     task, agent = setup_task_and_agent(query=inputs, config=config)
     tool_calls: list[ToolCall] = []
     try:
-        async for attempt in AsyncRetrying(
-            wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)
-        ):
+        async for attempt in AsyncRetrying(wait=wait_random(min=1, max=3), stop=stop_after_attempt(3)):
             with attempt:
                 async with agent.run_mcp_servers():
                     num_tool_calls = 0
-                    async with agent.iter(
-                        user_prompt=task.prompt, output_type=inputs.output_type
-                    ) as agent_run:
+                    async with agent.iter(user_prompt=task.prompt, output_type=inputs.output_type) as agent_run:
                         async for node in agent_run:
                             if agent.is_call_tools_node(node):
                                 for part in node.model_response.parts:
@@ -288,7 +272,9 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
                                             )
                                             num_tool_calls += 1
                                         else:
-                                            error_msg = f"Too many tool calls: {num_tool_calls} > {config.max_tool_calls}"
+                                            error_msg = (
+                                                f"Too many tool calls: {num_tool_calls} > {config.max_tool_calls}"
+                                            )
                                             logger.warning(error_msg)
                                             return QueryResult(
                                                 result=None,
@@ -296,9 +282,7 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
                                                 error=error_msg,
                                             )
                     if agent_run.result is None:
-                        return QueryResult(
-                            result=None, tool_calls=tool_calls, error="No result produced"
-                        )
+                        return QueryResult(result=None, tool_calls=tool_calls, error="No result produced")
                     return QueryResult(result=agent_run.result.output, tool_calls=tool_calls)
     except Exception as e:
         error_msg = f"Unexpected error: {str(e)}"
@@ -318,10 +302,8 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
     )
 
 
-def sglang_model(base_url: str) -> Model:
-    return OpenAIModel(
-        "Qwen2.5", provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG")
-    )
+def sglang_model(base_url: str, model_name: Literal["Qwen2.5", "Qwen3"]) -> Model:
+    return OpenAIModel(model_name, provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
 
 
 class ReportInfo(BaseModel):
@@ -338,9 +320,7 @@ async def evaluate(
     # task: Callable[[Query[ResultT], TaskConfig], Awaitable[QueryResult[ResultT]]] = task
 ):
     logger.info(f"Evaluating {report_info.name}")
-    report = await dataset.evaluate(
-        task=lambda inputs: task(inputs, task_config), name=report_info.name
-    )
+    report = await dataset.evaluate(task=lambda inputs: task(inputs, task_config), name=report_info.name)
     report.print(
         include_input=True,
         include_output=True,
@@ -351,12 +331,8 @@ async def evaluate(
     )
 
 
-def are_strings_similar(
-    str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY_MODEL
-) -> bool:
-    strings_similarity_agent = Agent(
-        model=model, name="strings_similarity_agent", output_type=bool
-    )
+def are_strings_similar(str1: str, str2: str, model: ModelT = STRINGS_SIMILARITY_MODEL) -> bool:
+    strings_similarity_agent = Agent(model=model, name="strings_similarity_agent", output_type=bool)
     prompt = (
         "The wording/structure/grammar may be different, but are these 2 strings saying the same thing?\n"
         f"String 1: {str1}\n"

@@ -32,10 +32,11 @@ ZONE="us-central1-c"
 PROJECT_ID="ai-benchmarking-project"
 VMNAME="appsvm2"
 
-# Start VM
 gcloud compute instances start $VMNAME --zone=$ZONE --project=$PROJECT_ID
 
-# Login
+ZONE="us-central1-c"
+PROJECT_ID="ai-benchmarking-project"
+VMNAME="appsvm2"
 gcloud compute ssh --zone $ZONE $VMNAME --project $PROJECT_ID
 
 
