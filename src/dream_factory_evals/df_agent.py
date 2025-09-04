@@ -32,7 +32,7 @@ RETRIES = 3
 MAX_TOOL_CALLS = 20
 STRINGS_SIMILARITY_MODEL = "google-gla:gemini-2.5-flash"
 
-type ModelT = KnownModelName | Literal["Qwen2.5", "Qwen3"]
+type ModelT = KnownModelName | Literal["Qwen2.5"]
 
 
 class ToolCall(BaseModel):
@@ -302,7 +302,7 @@ async def task(inputs: Query[ResultT], config: TaskConfig) -> QueryResult[Result
     )
 
 
-def sglang_model(base_url: str, model_name: Literal["Qwen2.5", "Qwen3"]) -> Model:
+def sglang_model(base_url: str, model_name: Literal["Qwen2.5"]) -> Model:
     return OpenAIModel(model_name, provider=OpenAIProvider(base_url=base_url, api_key="SG_LANG"))
 
 
