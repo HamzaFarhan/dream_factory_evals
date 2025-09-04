@@ -77,7 +77,7 @@ cd /opt/dream_factory_evals_app
 
 docker exec -it dream_factory_evals_app-leaderboard-1 uv run src/dream_factory_evals/run_eval.py run "qwen3-8b" hr 1
 
-# Stop the VM
+# Remember to stop the VM when you are done to save costs.
 ZONE="us-central1-c"
 PROJECT_ID="ai-benchmarking-project"
 VMNAME="appsvm2"
